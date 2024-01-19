@@ -1,14 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingRight="@dimen/_5sdp"
+    android:paddingLeft="@dimen/_5sdp"
+    android:paddingBottom="@dimen/_10sdp"
+    android:orientation="vertical"
     tools:context=".activities.DishFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/_10sdp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content">
+        <EditText
+            android:text="ok"
+            android:background="@drawable/edit_input"
+            android:layout_width="wrap_content"
+            android:paddingLeft="@dimen/_5sdp"
+            android:paddingRight="@dimen/_5sdp"
+            android:layout_weight="1"
+            android:layout_height="@dimen/_35sdp"/>
+        <EditText
+            android:text="ko"
+            android:background="@drawable/edit_input"
+            android:layout_width="wrap_content"
+            android:paddingLeft="@dimen/_5sdp"
+            android:paddingRight="@dimen/_5sdp"
+            android:layout_marginLeft="@dimen/_5sdp"
+            android:layout_weight="1"
+            android:layout_height="@dimen/_35sdp"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <EditText
+            android:background="@drawable/edit_searchd"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:paddingLeft="@dimen/_5sdp"
+            android:paddingRight="@dimen/_5sdp"
+            android:hint="Search the dishes ..."
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:layout_height="@dimen/_35sdp"/>
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:layout_width="@dimen/_45sdp"
+            android:background="#EAE7E7"
+            android:src="@drawable/search"
+            android:layout_height="@dimen/_35sdp"/>
+    </LinearLayout>
 
-</FrameLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/_2sdp"
+        android:textStyle="bold"
+        android:text="The dishes"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_14ssp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>

@@ -1,9 +1,464 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".activities.DetailResActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/main"
+        app:title="Detail restaurant"
+        app:titleTextColor="@color/white"
+        tools:ignore="MissingConstraints" />
+
+    <ScrollView
+        android:layout_marginBottom="@dimen/_5sdp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_marginLeft="@dimen/_5sdp"
+            android:layout_marginRight="@dimen/_5sdp"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ImageView
+                android:id="@+id/productimg"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_180sdp"
+                android:layout_marginLeft="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_20sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:background="#C5C5C5"
+                android:scaleType="fitXY" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_2sdp"
+                android:textStyle="bold"
+                android:text="King Grap"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_14ssp" />
+            <TextView
+                android:id="@+id/shop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:drawableStart="@drawable/shop_20"
+                android:drawablePadding="@dimen/_4sdp"
+                android:text="New restaurant"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_14ssp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/rank"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/round_star"
+                    android:drawablePadding="@dimen/_5sdp"
+                    android:gravity="center"
+                    android:text="3.5 Rating"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_14ssp" />
+
+                <View
+                    android:layout_width="@dimen/_1sdp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:layout_marginTop="@dimen/_3sdp"
+                    android:layout_marginRight="@dimen/_5sdp"
+                    android:layout_marginBottom="@dimen/_3sdp"
+                    android:background="@color/black" />
+
+                <TextView
+                    android:id="@+id/danhgia"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="0 Evaluate"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_14ssp" />
+
+                <View
+                    android:layout_width="@dimen/_1sdp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_3sdp"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_3sdp"
+                    android:background="@color/black" />
+
+                <TextView
+                    android:id="@+id/sold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="0 Dishes"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_14ssp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:text="Liked: "
+                    android:textStyle=""
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_14ssp"
+                    android:layout_width="@dimen/_80sdp"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:text="400"
+                    android:textSize="@dimen/_14ssp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:text="Open: "
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_14ssp"
+                    android:layout_width="@dimen/_80sdp"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:text="07:00 - 22:00"
+                    android:textSize="@dimen/_14ssp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:text="Address: "
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_14ssp"
+                    android:layout_width="@dimen/_80sdp"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:text="Hòa An, Cẩm Lệ, Đà Nẵng"
+                    android:textSize="@dimen/_14ssp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:text="Phone: "
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_14ssp"
+                    android:layout_width="@dimen/_80sdp"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:text="0776991460"
+                    android:textSize="@dimen/_14ssp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:textColor="@color/black"
+                    android:text="Follow Us: "
+                    android:layout_gravity="center"
+                    android:textSize="@dimen/_14ssp"
+                    android:layout_width="@dimen/_80sdp"
+                    android:layout_height="wrap_content"/>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:src="@drawable/facebook"
+                        android:layout_width="@dimen/_28sdp"
+                        android:layout_height="@dimen/_28sdp"/>
+                    <ImageView
+                        android:src="@drawable/instagram"
+                        android:layout_marginLeft="@dimen/_2sdp"
+                        android:layout_width="@dimen/_28sdp"
+                        android:layout_height="@dimen/_28sdp"/>
+                    <ImageView
+                        android:src="@drawable/twitter"
+                        android:layout_marginLeft="@dimen/_2sdp"
+                        android:layout_width="@dimen/_28sdp"
+                        android:layout_height="@dimen/_28sdp"/>
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:textColor="@color/black"
+                    android:text="Support: "
+                    android:textSize="@dimen/_14ssp"
+                    android:layout_width="@dimen/_80sdp"
+                    android:layout_gravity="center"
+                    android:layout_height="wrap_content"/>
+                <ImageView
+                    android:src="@drawable/message"
+                    android:layout_width="@dimen/_28sdp"
+                    android:layout_height="@dimen/_28sdp"/>
+            </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:text="Description"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_14sdp" />
+
+            <TextView
+                android:id="@+id/descrip"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:maxLines="5"
+                android:text="I. Reservation: Consulting - Reservation\n
+
+- Please make a reservation at least 60 minutes in advance for the best service\n
+
+- Your reservation will be held for a maximum of 10 minutes\n
+
+- The restaurant only accepts table reservations for 2 guests or more\n
+
+II. Complimentary incentives: A promotion program is being built"
+                android:textColor="#656565"
+                android:textSize="@dimen/_14sdp" />
+            <TextView
+                android:id="@+id/toggleButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                android:backgroundTint="@color/white"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:text="Read more" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_2sdp"
+                android:textStyle="bold"
+                android:text="Speciality dishes"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_14ssp" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/listproductother"
+                android:layout_width="match_parent"
+                android:layout_marginRight="5dp"
+                app:spanCount="2"
+                android:layout_gravity="center"
+                android:background="#f1f5f9"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="5dp"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_2sdp"
+                android:textStyle="bold"
+                android:text="Order restaurant"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_14ssp" />
+            <LinearLayout
+                android:layout_marginTop="@dimen/_5sdp"
+                android:background="@color/re_main"
+                android:layout_width="match_parent"
+                android:paddingTop="@dimen/_15sdp"
+                android:paddingBottom="@dimen/_15sdp"
+                android:paddingRight="@dimen/_10sdp"
+                android:paddingLeft="@dimen/_10sdp"
+                android:orientation="vertical"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/_15sdp"
+                    android:paddingRight="@dimen/_15sdp"
+                    android:background="@drawable/edit_order"
+                    tools:ignore="MissingConstraints">
+                    <TextView
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_width="match_parent"
+                        android:gravity="center"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/_2sdp"
+                        android:text="Order restaurant"
+                        android:padding="@dimen/_5sdp"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_14ssp" />
+                    <View
+                        android:layout_gravity="center"
+                        android:background="#C3C2C2"
+                        android:layout_marginLeft="@dimen/_5sdp"
+                        android:layout_marginRight="@dimen/_5sdp"
+                        android:layout_width="match_parent"
+                        android:layout_marginBottom="@dimen/_10sdp"
+                        android:layout_height="1dp"/>
+                    <TextView
+                        android:layout_marginBottom="@dimen/_2sdp"
+                        android:textSize="@dimen/_14ssp"
+                        android:text="Name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                    <EditText
+                        android:background="@drawable/edit_input"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_35sdp"/>
+                    <TextView
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_marginBottom="@dimen/_2sdp"
+                        android:textSize="@dimen/_14ssp"
+                        android:text="Phone Number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                    <EditText
+                        android:background="@drawable/edit_input"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_35sdp"/>
+                    <TextView
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_marginBottom="@dimen/_2sdp"
+                        android:textSize="@dimen/_14ssp"
+                        android:text="Table"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                    <EditText
+                        android:background="@drawable/edit_input"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_35sdp"/>
+                    <TextView
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_marginBottom="@dimen/_2sdp"
+                        android:textSize="@dimen/_14ssp"
+                        android:text="Date Time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                    <EditText
+                        android:background="@drawable/edit_input"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_35sdp"/>
+                    <TextView
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_marginBottom="@dimen/_2sdp"
+                        android:textSize="@dimen/_14ssp"
+                        android:text="From"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                    <EditText
+                        android:background="@drawable/edit_input"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_35sdp"/>
+                    <TextView
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_marginBottom="@dimen/_2sdp"
+                        android:textSize="@dimen/_14ssp"
+                        android:text="To"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                    <EditText
+                        android:background="@drawable/edit_input"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_35sdp"/>
+                    <TextView
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_marginBottom="@dimen/_2sdp"
+                        android:textSize="@dimen/_14ssp"
+                        android:text="Number of People"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                    <EditText
+                        android:background="@drawable/edit_input"
+                        android:layout_width="match_parent"
+                        android:layout_marginBottom="@dimen/_10sdp"
+                        android:layout_height="@dimen/_35sdp"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:paddingLeft="@dimen/_15sdp"
+                    android:paddingRight="@dimen/_15sdp"
+                    android:background="@drawable/edit_order"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    tools:ignore="MissingConstraints">
+                    <TextView
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_width="match_parent"
+                        android:gravity="center"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/_2sdp"
+                        android:text="The dishes"
+                        android:padding="@dimen/_5sdp"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_14ssp" />
+                    <View
+                        android:layout_gravity="center"
+                        android:background="#C3C2C2"
+                        android:layout_marginLeft="@dimen/_5sdp"
+                        android:layout_marginRight="@dimen/_5sdp"
+                        android:layout_width="match_parent"
+                        android:layout_marginBottom="@dimen/_10sdp"
+                        android:layout_height="1dp"/>
+                    <EditText
+                        android:background="@drawable/edit_input"
+                        android:layout_width="match_parent"
+                        android:layout_marginBottom="@dimen/_5sdp"
+                        android:layout_height="@dimen/_35sdp"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <EditText
+                            android:background="@drawable/edit_searchd"
+                            android:layout_width="wrap_content"
+                            android:layout_weight="1"
+                            android:paddingLeft="@dimen/_5sdp"
+                            android:paddingRight="@dimen/_5sdp"
+                            android:hint="Search the dishes ..."
+                            android:layout_marginBottom="@dimen/_10sdp"
+                            android:layout_height="@dimen/_35sdp"/>
+                        <androidx.appcompat.widget.AppCompatImageButton
+                            android:layout_width="@dimen/_45sdp"
+                            android:background="#EAE7E7"
+                            android:src="@drawable/search"
+                            android:layout_height="@dimen/_35sdp"/>
+                    </LinearLayout>
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:orientation="vertical"
+                        android:layout_marginBottom="@dimen/_10sdp"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
+                <androidx.appcompat.widget.AppCompatButton
+                    android:text="Next"
+                    android:background="@color/main"
+                    android:layout_width="wrap_content"
+                    android:textColor="@color/white"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_height="@dimen/_30sdp"/>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

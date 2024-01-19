@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:padding="@dimen/_5sdp"
+    android:background="#f3f7f5"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <ImageView
+        android:src="@drawable/exres"
+        android:background="@drawable/edit_img"
+        android:padding="@dimen/_2sdp"
+        android:layout_width="@dimen/_90sdp"
+        android:layout_height="@dimen/_90sdp"/>
+    <LinearLayout
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_15ssp"
+            android:text="Urban Spice Hub"
+            android:paddingBottom="@dimen/_1sdp"
+            android:paddingLeft="@dimen/_10sdp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:textColor="#5E5A5A"
+            android:textSize="@dimen/_14ssp"
+            android:text="Rid: res4bb15ag25c"
+            android:paddingLeft="@dimen/_10sdp"
+            android:paddingTop="@dimen/_1sdp"
+            android:paddingBottom="@dimen/_1sdp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:textColor="@color/black"
+            android:textSize="@dimen/_14ssp"
+            android:text="Contact: 0354342295"
+            android:paddingTop="@dimen/_1sdp"
+            android:paddingBottom="@dimen/_1sdp"
+            android:paddingLeft="@dimen/_10sdp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:textColor="@color/black"
+            android:textSize="@dimen/_14ssp"
+            android:text="Open: 07:00 - 22:00"
+            android:paddingLeft="@dimen/_10sdp"
+            android:paddingTop="@dimen/_1sdp"
+            android:paddingBottom="@dimen/_1sdp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+    <ImageButton
+        android:src="@drawable/baseline_delete"
+        android:background="@android:color/transparent"
+        android:layout_width="@dimen/_25sdp"
+        android:layout_gravity="center"
+        android:scaleType="fitXY"
+        android:layout_height="@dimen/_25sdp"/>
+</LinearLayout>

@@ -1,9 +1,153 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".activities.DetailDishActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/main"
+        app:title="Detail dish"
+        app:titleTextColor="@color/white"
+        tools:ignore="MissingConstraints" />
+
+    <ScrollView
+        android:layout_marginBottom="@dimen/_5sdp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_marginLeft="@dimen/_5sdp"
+            android:layout_marginRight="@dimen/_5sdp"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ImageView
+                android:id="@+id/productimg"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_180sdp"
+                android:layout_marginLeft="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_20sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:background="#C5C5C5"
+                android:scaleType="fitXY" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_2sdp"
+                android:textStyle="bold"
+                android:text="King Grap"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_14ssp" />
+            <LinearLayout
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:text="By: "
+                    android:textStyle=""
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_14ssp"
+                    android:layout_width="@dimen/_80sdp"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:text="New Restaurant"
+                    android:textSize="@dimen/_14ssp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:text="Price: "
+                    android:textStyle=""
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_14ssp"
+                    android:layout_width="@dimen/_80sdp"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:text="40.00$"
+                    android:textSize="@dimen/_14ssp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:text="Coupon: "
+                    android:textStyle=""
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_14ssp"
+                    android:layout_width="@dimen/_80sdp"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:text="10%"
+                    android:textSize="@dimen/_14ssp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+            <androidx.appcompat.widget.AppCompatButton
+                android:background="@color/main"
+                android:text="View restaurant"
+                android:paddingLeft="@dimen/_5sdp"
+                android:textColor="@color/white"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:paddingRight="@dimen/_5sdp"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_30sdp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:text="Description: "
+                android:textColor="@color/black"
+                android:textSize="@dimen/_14sdp" />
+
+            <TextView
+                android:id="@+id/descrip"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:maxLines="5"
+                android:text="I. Reservation: Consulting - Reservation\n
+
+- Please make a reservation at least 60 minutes in advance for the best service\n
+
+- Your reservation will be held for a maximum of 10 minutes\n
+
+- The restaurant only accepts table reservations for 2 guests or more\n
+
+II. Complimentary incentives: A promotion program is being built"
+                android:textColor="#656565"
+                android:textSize="@dimen/_14sdp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_2sdp"
+                android:textStyle="bold"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:text="The other dishes of restaurant"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_14ssp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_marginTop="@dimen/_5sdp"
+                android:orientation="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>
