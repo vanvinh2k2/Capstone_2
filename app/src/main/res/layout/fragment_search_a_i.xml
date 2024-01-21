@@ -22,26 +22,36 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <ImageButton
-            android:id="@+id/camera"
-            android:layout_width="@dimen/_40sdp"
-            android:layout_height="@dimen/_40sdp"
-            android:layout_below="@id/anh"
+        <FrameLayout
             android:layout_weight="1"
             android:layout_marginTop="@dimen/_5sdp"
-            android:background="@null"
-            android:src="@drawable/camera_60" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageButton
+                android:id="@+id/camera"
+                android:layout_width="@dimen/_28sdp"
+                android:layout_height="@dimen/_28sdp"
+                android:scaleType="fitXY"
+                android:layout_gravity="center"
+                android:background="@null"
+                android:src="@drawable/camera_60" />
+        </FrameLayout>
 
-        <ImageButton
-            android:id="@+id/colection"
-            android:layout_width="@dimen/_40sdp"
-            android:layout_height="@dimen/_40sdp"
+        <FrameLayout
             android:layout_weight="1"
-            android:layout_below="@id/anh"
-            android:layout_alignParentEnd="true"
             android:layout_marginTop="@dimen/_5sdp"
-            android:background="@null"
-            android:src="@drawable/folder_60" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageButton
+                android:id="@+id/colection"
+                android:layout_width="@dimen/_28sdp"
+                android:layout_height="@dimen/_28sdp"
+                android:background="@null"
+                android:scaleType="fitXY"
+                android:layout_gravity="center"
+                android:src="@drawable/folder_60" />
+        </FrameLayout>
+
     </LinearLayout>
 
     <LinearLayout
@@ -51,33 +61,24 @@
         android:orientation="horizontal"
         android:layout_below="@id/camera"
         android:layout_width="match_parent"
+        android:gravity="center"
         android:layout_height="wrap_content">
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/conform"
             android:text="Confirm"
-            android:layout_weight="1"
             android:textColor="@color/white"
-            android:textSize="@dimen/_13ssp"
+            android:textSize="@dimen/_11ssp"
             android:background="@color/main"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/cancel"
-            android:layout_weight="1"
-            android:text="Cancel"
-            android:textColor="@color/white"
-            android:textSize="@dimen/_13ssp"
-            android:layout_marginLeft="@dimen/_15sdp"
-            android:background="@color/main"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_30sdp"/>
     </LinearLayout>
     <TextView
         android:text="Searching with results"
-        android:textSize="@dimen/_14ssp"
+        android:textSize="@dimen/_13ssp"
         android:textColor="@color/black"
         android:paddingLeft="@dimen/_5sdp"
         android:layout_marginTop="@dimen/_15sdp"
+        android:visibility="invisible"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
     <androidx.recyclerview.widget.RecyclerView

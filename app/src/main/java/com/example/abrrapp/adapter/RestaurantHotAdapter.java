@@ -41,10 +41,8 @@ public class RestaurantHotAdapter extends RecyclerView.Adapter<RestaurantHotAdap
         Restaurant restaurant = listRes.get(position);
         holder.title.setText(restaurant.getTitle());
         holder.rate.setText("4");
-        holder.open.setText(restaurant.getTime_open()+ " : "+ restaurant.getTime_close());
-        Picasso.get().load(restaurant.getImage())
-                .placeholder(R.drawable.exres)
-                .into(holder.image);
+        holder.open.setText(restaurant.getTime_open().substring(0, 5)+ " - "+ restaurant.getTime_close().substring(0, 5));
+        Picasso.get().load(restaurant.getImage()).into(holder.image);
     }
 
     @Override

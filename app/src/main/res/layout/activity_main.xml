@@ -39,6 +39,7 @@
             android:textStyle="bold" />
 
         <FrameLayout
+            android:id="@+id/loveRes"
             android:layout_width="@dimen/_22sdp"
             android:layout_height="@dimen/_22sdp"
             android:layout_gravity="center"
@@ -67,6 +68,7 @@
         </FrameLayout>
 
         <FrameLayout
+            android:id="@+id/historyOrder"
             android:layout_width="@dimen/_22sdp"
             android:layout_height="@dimen/_22sdp"
             android:layout_gravity="center"
@@ -103,20 +105,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/phone"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginEnd="@dimen/_10sdp"
-        android:layout_marginBottom="@dimen/_10sdp"
-        android:src="@drawable/phone"
-        android:tintMode="@color/green"
-        app:backgroundTint="#faebd7"
-        app:fabCustomSize="@dimen/_39sdp"
-        app:layout_constraintBottom_toTopOf="@+id/menu_nav"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:ignore="MissingConstraints" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/menu_nav"

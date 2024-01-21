@@ -17,7 +17,6 @@
             android:scaleType="fitXY"
             android:padding="@dimen/_2sdp"
             android:background="@drawable/edit_img"
-            android:src="@drawable/exres"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
     </FrameLayout>
@@ -77,6 +76,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <TextView
+            android:id="@+id/price"
             android:textSize="@dimen/_12ssp"
             android:textStyle="bold"
             android:text="20$"
@@ -87,6 +87,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <TextView
+            android:id="@+id/old_price"
             android:textSize="@dimen/_11ssp"
             android:text="15$"
             android:textColor="#939292"
@@ -112,6 +113,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <TextView
+            android:id="@+id/by_res"
             android:textSize="@dimen/_11ssp"
             android:text="New Restaurant"
             android:textColor="@color/black"

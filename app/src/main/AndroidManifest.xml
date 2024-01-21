@@ -14,7 +14,11 @@
         android:roundIcon="@drawable/logo1"
         android:supportsRtl="true"
         android:theme="@style/Theme.ABRRApp"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <activity
+            android:name=".activities.ChangeProfileActivity"
+            android:exported="false" />
         <activity
             android:name=".activities.DetailHistoryOrderActivity"
             android:exported="false" />

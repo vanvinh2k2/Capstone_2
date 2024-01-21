@@ -48,7 +48,6 @@
                     <ImageView
                         android:id="@+id/anhSp"
                         android:padding="@dimen/_2sdp"
-                        android:src="@drawable/exres"
                         android:background="@drawable/edit_img"
                         android:layout_width="@dimen/_75sdp"
                         android:layout_height="@dimen/_75sdp"

@@ -5,15 +5,6 @@ public class Restaurant {
             description, phone, password, address, time_close;
     int like;
 
-    public Restaurant(String rid, String title, String image, String time_open, String address, String time_close) {
-        this.rid = rid;
-        this.title = title;
-        this.image = image;
-        this.time_open = time_open;
-        this.address = address;
-        this.time_close = time_close;
-    }
-
     public String getRid() {
         return rid;
     }

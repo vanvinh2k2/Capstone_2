@@ -10,12 +10,20 @@
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/main"
-        app:title="Like restaurant"
         app:titleTextColor="@color/white"
-        tools:ignore="MissingConstraints" />
+        android:background="@color/main"
+        android:layout_height="?attr/actionBarSize"
+        tools:ignore="MissingConstraints">
+        <TextView
+            android:text="Like restaurant"
+            android:textSize="@dimen/_14ssp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </androidx.appcompat.widget.Toolbar>
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/loveRes"
         android:layout_marginTop="@dimen/_10sdp"
         android:layout_marginLeft="@dimen/_5sdp"
         android:layout_marginRight="@dimen/_5sdp"

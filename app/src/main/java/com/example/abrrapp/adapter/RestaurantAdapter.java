@@ -39,11 +39,9 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
         Restaurant restaurant = listRes.get(position);
         holder.title.setText(restaurant.getTitle());
         holder.rate.setText("4");
-        holder.open.setText(restaurant.getTime_open()+ " : "+ restaurant.getTime_close());
+        holder.open.setText(restaurant.getTime_open().substring(0, 5)+ " - "+ restaurant.getTime_close().substring(0, 5));
         holder.address.setText(restaurant.getAddress());
-        Picasso.get().load(restaurant.getImage())
-                .placeholder(R.drawable.exres)
-                .into(holder.image);
+        Picasso.get().load(restaurant.getImage()).into(holder.image);
     }
 
     @Override

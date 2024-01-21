@@ -2,7 +2,9 @@ package com.example.abrrapp.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -23,6 +25,7 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         init();
+        process();
     }
     boolean checkInput(){
         if(nameedt.getText().toString().trim().isEmpty()){
@@ -46,6 +49,16 @@ public class RegisterActivity extends AppCompatActivity {
             copasswordedt.requestFocus();
             return false;
         }else return true;
+    }
+
+    private void process() {
+        logintxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     void text(String v){
