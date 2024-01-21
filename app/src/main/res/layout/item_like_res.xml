@@ -20,7 +20,7 @@
             android:id="@+id/title"
             android:textStyle="bold"
             android:textColor="@color/black"
-            android:textSize="@dimen/_15ssp"
+            android:textSize="@dimen/_13ssp"
             android:text="Urban Spice Hub"
             android:paddingBottom="@dimen/_1sdp"
             android:paddingLeft="@dimen/_10sdp"
@@ -29,7 +29,7 @@
         <TextView
             android:id="@+id/rid"
             android:textColor="#5E5A5A"
-            android:textSize="@dimen/_14ssp"
+            android:textSize="@dimen/_13ssp"
             android:text="Rid: res4bb15ag25c"
             android:paddingLeft="@dimen/_10sdp"
             android:paddingTop="@dimen/_1sdp"
@@ -38,8 +38,8 @@
             android:layout_height="wrap_content"/>
         <TextView
             android:id="@+id/contact"
-            android:textColor="@color/black"
-            android:textSize="@dimen/_14ssp"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/_13ssp"
             android:text="Contact: 0354342295"
             android:paddingTop="@dimen/_1sdp"
             android:paddingBottom="@dimen/_1sdp"
@@ -48,8 +48,8 @@
             android:layout_height="wrap_content"/>
         <TextView
             android:id="@+id/open"
-            android:textColor="@color/black"
-            android:textSize="@dimen/_14ssp"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/_13ssp"
             android:text="Open: 07:00 - 22:00"
             android:paddingLeft="@dimen/_10sdp"
             android:paddingTop="@dimen/_1sdp"

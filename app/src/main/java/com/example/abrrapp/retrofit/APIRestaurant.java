@@ -3,6 +3,7 @@ package com.example.abrrapp.retrofit;
 
 import com.example.abrrapp.models.DishModel;
 import com.example.abrrapp.models.LikeRestaurantModel;
+import com.example.abrrapp.models.OrderModel;
 import com.example.abrrapp.models.RestaurantModel;
 import com.example.abrrapp.models.UserModel;
 
@@ -31,6 +32,12 @@ public interface APIRestaurant {
 
     @GET("list-like/{uid}/")
     Observable<LikeRestaurantModel> getListLikeRes(
+            @Path("uid") String uid,
+            @Header("Authorization") String credentials
+    );
+
+    @GET("list-order/{uid}/")
+    Observable<OrderModel> getListOrder(
             @Path("uid") String uid,
             @Header("Authorization") String credentials
     );

@@ -22,7 +22,8 @@
             android:layout_height="wrap_content"/>
     </androidx.appcompat.widget.Toolbar>
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_marginTop="@dimen/_10sdp"
+        android:id="@+id/list_order"
+        android:layout_marginTop="@dimen/_5sdp"
         android:layout_marginLeft="@dimen/_5sdp"
         android:layout_marginRight="@dimen/_5sdp"
         android:orientation="vertical"

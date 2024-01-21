@@ -240,6 +240,7 @@
                             android:paddingRight="@dimen/_5sdp"
                             android:layout_width="wrap_content"
                             android:textColor="@color/white"
+                            android:layout_marginTop="@dimen/_2sdp"
                             android:layout_marginRight="@dimen/_5sdp"
                             android:layout_height="@dimen/_30sdp"/>
                         <androidx.appcompat.widget.AppCompatButton

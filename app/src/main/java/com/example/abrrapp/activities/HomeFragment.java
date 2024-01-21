@@ -107,7 +107,6 @@ public class HomeFragment extends Fragment {
                             listResRCV.setAdapter(resAdapter);
                         },
                         throwable -> {
-                            Log.e("er1", throwable.getMessage()+" ko");
                             Toast.makeText(getContext(), throwable.getMessage()+"", Toast.LENGTH_SHORT).show();
                         }
                 ));
@@ -124,7 +123,6 @@ public class HomeFragment extends Fragment {
                             listResHotRCV.setAdapter(resHotAdapter);
                         },
                         throwable -> {
-                            Log.e("er1", throwable.getMessage()+" ko");
                             Toast.makeText(getContext(), throwable.getMessage()+"", Toast.LENGTH_SHORT).show();
                         }
                 ));
@@ -140,9 +138,5 @@ public class HomeFragment extends Fragment {
         listResHot = new ArrayList<>();
     }
 
-    @Override
-    public void onDestroy() {
-        disposable.clear();
-        super.onDestroy();
-    }
+
 }
