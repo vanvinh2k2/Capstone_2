@@ -2,9 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:padding="@dimen/_5sdp"
     android:background="#f3f7f5"
+    android:layout_marginBottom="@dimen/_5sdp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
     <ImageView
+        android:id="@+id/image"
         android:background="@drawable/edit_img"
         android:padding="@dimen/_2sdp"
         android:layout_width="@dimen/_90sdp"
@@ -15,6 +17,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <TextView
+            android:id="@+id/title"
             android:textStyle="bold"
             android:textColor="@color/black"
             android:textSize="@dimen/_15ssp"
@@ -24,6 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <TextView
+            android:id="@+id/rid"
             android:textColor="#5E5A5A"
             android:textSize="@dimen/_14ssp"
             android:text="Rid: res4bb15ag25c"
@@ -33,6 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <TextView
+            android:id="@+id/contact"
             android:textColor="@color/black"
             android:textSize="@dimen/_14ssp"
             android:text="Contact: 0354342295"
@@ -42,6 +47,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <TextView
+            android:id="@+id/open"
             android:textColor="@color/black"
             android:textSize="@dimen/_14ssp"
             android:text="Open: 07:00 - 22:00"
@@ -53,6 +59,7 @@
 
     </LinearLayout>
     <ImageButton
+        android:id="@+id/delete"
         android:src="@drawable/baseline_delete"
         android:background="@android:color/transparent"
         android:layout_width="@dimen/_25sdp"

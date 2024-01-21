@@ -3,7 +3,7 @@
     android:orientation="vertical"
     android:background="@drawable/edit_frame"
     android:layout_marginTop="@dimen/_5sdp"
-    android:gravity="center"
+    android:gravity="center|top"
     android:layout_gravity="center"
     android:layout_marginRight="@dimen/_3sdp"
     android:layout_marginLeft="@dimen/_3sdp"
@@ -37,12 +37,11 @@
         android:id="@+id/address"
         android:textSize="@dimen/_11ssp"
         android:textColor="@color/black"
-        android:gravity="fill"
         android:text="Hoa An, Cam Le, Da Nang"
         android:layout_width="match_parent"
         android:paddingLeft="@dimen/_5sdp"
         android:paddingRight="@dimen/_5sdp"
-        android:layout_height="@dimen/_18sdp"/>
+        android:layout_height="wrap_content"/>
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
