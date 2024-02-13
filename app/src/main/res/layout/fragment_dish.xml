@@ -6,7 +6,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:paddingRight="@dimen/_5sdp"
     android:paddingLeft="@dimen/_5sdp"
-    android:paddingBottom="@dimen/_10sdp"
     android:orientation="vertical"
     tools:context=".activities.DishFragment">
 
@@ -39,7 +38,7 @@
         android:textStyle="bold"
         android:text="The dishes"
         android:textColor="@color/black"
-        android:textSize="@dimen/_15ssp" />
+        android:textSize="@dimen/_15sdp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list_dish"

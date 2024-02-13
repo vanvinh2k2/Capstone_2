@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"/>
         <TextView
             android:id="@+id/contact"
-            android:textColor="@color/gray"
+            android:textColor="#5E5A5A"
             android:textSize="@dimen/_13ssp"
             android:text="Contact: 0354342295"
             android:paddingTop="@dimen/_1sdp"
@@ -48,7 +48,7 @@
             android:layout_height="wrap_content"/>
         <TextView
             android:id="@+id/open"
-            android:textColor="@color/gray"
+            android:textColor="#5E5A5A"
             android:textSize="@dimen/_13ssp"
             android:text="Open: 07:00 - 22:00"
             android:paddingLeft="@dimen/_10sdp"

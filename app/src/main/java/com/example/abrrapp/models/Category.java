@@ -1,7 +1,14 @@
 package com.example.abrrapp.models;
 
-public class Category {
+import java.io.Serializable;
+
+public class Category implements Serializable {
     String cid, title, image;
+
+    public Category(String cid, String title) {
+        this.cid = cid;
+        this.title = title;
+    }
 
     public String getCid() {
         return cid;

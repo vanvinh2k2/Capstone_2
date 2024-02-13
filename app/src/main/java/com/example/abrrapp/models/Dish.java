@@ -1,6 +1,8 @@
 package com.example.abrrapp.models;
 
-public class Dish {
+import java.io.Serializable;
+
+public class Dish implements Serializable {
     String did, title, image, description, product_status, date;
     Restaurant restaurant;
     float price, old_price;

@@ -1,8 +1,15 @@
 package com.example.abrrapp.models;
 
-public class Table {
+import java.io.Serializable;
+
+public class Table implements Serializable {
     String tid, title;
     int number_seat;
+
+    public Table(String tid, String title) {
+        this.tid = tid;
+        this.title = title;
+    }
 
     public String getTid() {
         return tid;

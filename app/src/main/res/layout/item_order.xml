@@ -23,7 +23,6 @@
                     android:layout_weight="1"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_13ssp"
-                    android:textStyle="bold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
                 <TextView
@@ -67,6 +66,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="New Restaurant"
+                        android:textStyle="bold"
                         android:maxLines="1"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_13ssp" />
@@ -76,7 +76,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Date order: 24/03/2002"
-                        android:textColor="@color/gray"
+                        android:textColor="@color/black"
                         android:textSize="@dimen/_13ssp" />
 
                     <TextView
@@ -84,7 +84,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Number people: 4"
-                        android:textColor="@color/gray"
+                        android:textColor="@color/black"
                         android:textSize="@dimen/_13ssp" />
 
                     <TextView
@@ -92,7 +92,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Total: 100$"
-                        android:textColor="@color/black"
+                        android:textColor="#009688"
                         android:textSize="@dimen/_13ssp" />
                 </LinearLayout>
             </LinearLayout>

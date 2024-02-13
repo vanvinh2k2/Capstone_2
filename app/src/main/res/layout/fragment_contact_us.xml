@@ -131,7 +131,7 @@
                 android:text="Send feed back"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_15ssp"
+                android:textSize="@dimen/_15sdp"
                 android:padding="@dimen/_5sdp"
                 android:textStyle="bold"
                 android:layout_width="wrap_content"

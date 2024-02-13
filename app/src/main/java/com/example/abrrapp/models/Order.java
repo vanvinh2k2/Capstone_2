@@ -1,6 +1,8 @@
 package com.example.abrrapp.models;
 
-public class Order {
+import java.io.Serializable;
+
+public class Order implements Serializable {
     String oid, order_date, full_name, phone, product_status, time_from, time_to;
     float price, deposit;
     boolean paid_status;

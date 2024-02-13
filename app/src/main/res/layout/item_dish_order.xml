@@ -1,51 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="#f3f7f5"
+    android:background="@color/white"
     android:orientation="horizontal"
     android:padding="@dimen/_5sdp"
+    android:layout_marginBottom="@dimen/_5sdp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
     <ImageView
+        android:id="@+id/image"
         android:background="@drawable/edit_img"
         android:padding="@dimen/_2sdp"
-        android:layout_width="@dimen/_90sdp"
-        android:layout_height="@dimen/_90sdp"/>
+        android:scaleType="fitXY"
+        android:layout_width="@dimen/_80sdp"
+        android:layout_height="@dimen/_80sdp"/>
     <LinearLayout
         android:layout_weight="1"
         android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <TextView
+            android:id="@+id/title"
             android:textStyle="bold"
             android:textColor="@color/black"
-            android:textSize="@dimen/_15ssp"
+            android:textSize="@dimen/_13ssp"
             android:text="Cua hoang de"
-            android:paddingBottom="@dimen/_1sdp"
             android:paddingLeft="@dimen/_10sdp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <TextView
+            android:id="@+id/price"
             android:textColor="#009688"
-            android:textSize="@dimen/_14ssp"
+            android:textSize="@dimen/_13ssp"
             android:text="Price: 15.00$"
-            android:paddingTop="@dimen/_1sdp"
-            android:paddingBottom="@dimen/_1sdp"
             android:paddingLeft="@dimen/_10sdp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <TextView
+            android:id="@+id/suggessed"
             android:textColor="#5E5A5A"
-            android:textSize="@dimen/_14ssp"
+            android:textSize="@dimen/_13ssp"
             android:text="Suggessed"
+            android:visibility="gone"
             android:paddingLeft="@dimen/_10sdp"
-            android:paddingTop="@dimen/_1sdp"
-            android:paddingBottom="@dimen/_1sdp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <LinearLayout
             android:paddingLeft="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_4sdp"
+            android:layout_marginTop="@dimen/_3sdp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
             <TextView
@@ -54,23 +56,26 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/edit_quantity"
                 android:paddingLeft="@dimen/_12sdp"
-                android:paddingTop="@dimen/_3sdp"
                 android:paddingRight="@dimen/_12sdp"
-                android:paddingBottom="@dimen/_3sdp"
+                android:paddingBottom="@dimen/_2sdp"
+                android:paddingTop="@dimen/_2sdp"
                 android:text="-"
                 android:layout_marginRight="1dp"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_14sdp" />
+                android:textSize="@dimen/_13sdp" />
             <EditText
+                android:id="@+id/quanlity"
                 android:text="1"
                 android:background="@drawable/edit_input"
-                android:paddingLeft="@dimen/_15sdp"
-                android:paddingRight="@dimen/_15sdp"
-                android:paddingBottom="@dimen/_3sdp"
-                android:paddingTop="@dimen/_3sdp"
+                android:paddingLeft="@dimen/_5sdp"
+                android:paddingRight="@dimen/_5sdp"
+                android:paddingBottom="@dimen/_2sdp"
+                android:paddingTop="@dimen/_2sdp"
+                android:inputType="number"
                 android:layout_gravity="center"
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/_50sdp"
                 android:gravity="center"
+                android:textSize="@dimen/_13ssp"
                 android:layout_height="wrap_content"/>
             <TextView
                 android:id="@+id/tang"
@@ -78,16 +83,17 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/edit_quantity"
                 android:paddingLeft="@dimen/_12sdp"
-                android:paddingTop="@dimen/_3sdp"
                 android:paddingRight="@dimen/_12sdp"
-                android:paddingBottom="@dimen/_3sdp"
+                android:paddingBottom="@dimen/_2sdp"
+                android:paddingTop="@dimen/_2sdp"
                 android:text="+"
                 android:layout_marginRight="1dp"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_14sdp" />
+                android:textSize="@dimen/_13sdp" />
         </LinearLayout>
     </LinearLayout>
     <ImageButton
+        android:id="@+id/add"
         android:background="@drawable/edit_btn_add"
         android:src="@drawable/baseline_add"
         android:layout_width="@dimen/_28sdp"

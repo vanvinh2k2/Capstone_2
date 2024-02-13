@@ -27,32 +27,33 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <LinearLayout
-            android:background="@color/re_main"
+            android:background="@color/white"
             android:layout_width="match_parent"
-            android:paddingTop="@dimen/_15sdp"
-            android:paddingBottom="@dimen/_15sdp"
-            android:paddingRight="@dimen/_10sdp"
-            android:paddingLeft="@dimen/_10sdp"
+            android:paddingTop="@dimen/_5sdp"
+            android:paddingBottom="@dimen/_5sdp"
+            android:paddingRight="@dimen/_5sdp"
+            android:paddingLeft="@dimen/_5sdp"
             android:orientation="vertical"
             android:layout_height="wrap_content">
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="@dimen/_15sdp"
-                android:paddingRight="@dimen/_15sdp"
+                android:paddingLeft="@dimen/_10sdp"
+                android:paddingRight="@dimen/_10sdp"
                 android:background="@drawable/edit_order"
                 tools:ignore="MissingConstraints">
                 <TextView
                     android:layout_marginTop="@dimen/_5sdp"
                     android:layout_width="match_parent"
                     android:gravity="center"
+                    android:textStyle="bold"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/_2sdp"
                     android:text="Information of user"
                     android:padding="@dimen/_5sdp"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_14ssp" />
+                    android:textSize="@dimen/_13ssp" />
                 <View
                     android:layout_gravity="center"
                     android:background="#C3C2C2"
@@ -67,15 +68,16 @@
                     <TextView
                         android:layout_marginTop="@dimen/_5sdp"
                         android:layout_marginBottom="@dimen/_2sdp"
-                        android:textSize="@dimen/_14ssp"
+                        android:textSize="@dimen/_13ssp"
                         android:textColor="@color/black"
                         android:text="Name user: "
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                     <TextView
+                        android:id="@+id/name"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:layout_marginBottom="@dimen/_2sdp"
-                        android:textSize="@dimen/_14ssp"
+                        android:textSize="@dimen/_13ssp"
                         android:gravity="end"
                         android:text="No name"
                         android:layout_width="match_parent"
@@ -87,15 +89,16 @@
                     <TextView
                         android:layout_marginTop="@dimen/_5sdp"
                         android:layout_marginBottom="@dimen/_2sdp"
-                        android:textSize="@dimen/_14ssp"
+                        android:textSize="@dimen/_13ssp"
                         android:textColor="@color/black"
                         android:text="Phone: "
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                     <TextView
+                        android:id="@+id/phone"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:layout_marginBottom="@dimen/_2sdp"
-                        android:textSize="@dimen/_14ssp"
+                        android:textSize="@dimen/_13ssp"
                         android:gravity="end"
                         android:text="0354342295"
                         android:layout_width="match_parent"
@@ -107,15 +110,16 @@
                     <TextView
                         android:layout_marginTop="@dimen/_5sdp"
                         android:layout_marginBottom="@dimen/_2sdp"
-                        android:textSize="@dimen/_14ssp"
+                        android:textSize="@dimen/_13ssp"
                         android:textColor="@color/black"
                         android:text="Email: "
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                     <TextView
+                        android:id="@+id/email"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:layout_marginBottom="@dimen/_2sdp"
-                        android:textSize="@dimen/_14ssp"
+                        android:textSize="@dimen/_13ssp"
                         android:gravity="end"
                         android:text="ngov6769@gmail.com"
                         android:layout_width="match_parent"
@@ -127,15 +131,16 @@
                     <TextView
                         android:layout_marginTop="@dimen/_5sdp"
                         android:layout_marginBottom="@dimen/_2sdp"
-                        android:textSize="@dimen/_14ssp"
+                        android:textSize="@dimen/_13ssp"
                         android:textColor="@color/black"
                         android:text="Date order: "
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                     <TextView
+                        android:id="@+id/date"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:layout_marginBottom="@dimen/_2sdp"
-                        android:textSize="@dimen/_14ssp"
+                        android:textSize="@dimen/_13ssp"
                         android:gravity="end"
                         android:text="24/03/2002"
                         android:layout_width="match_parent"
@@ -147,15 +152,16 @@
                     <TextView
                         android:layout_marginTop="@dimen/_5sdp"
                         android:layout_marginBottom="@dimen/_2sdp"
-                        android:textSize="@dimen/_14ssp"
+                        android:textSize="@dimen/_13ssp"
                         android:textColor="@color/black"
                         android:text="Time: "
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                     <TextView
+                        android:id="@+id/time"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:layout_marginBottom="@dimen/_2sdp"
-                        android:textSize="@dimen/_14ssp"
+                        android:textSize="@dimen/_13ssp"
                         android:gravity="end"
                         android:text="07:00 - 09:00"
                         android:layout_width="match_parent"
@@ -167,15 +173,16 @@
                     <TextView
                         android:layout_marginTop="@dimen/_5sdp"
                         android:layout_marginBottom="@dimen/_2sdp"
-                        android:textSize="@dimen/_14ssp"
+                        android:textSize="@dimen/_13ssp"
                         android:textColor="@color/black"
                         android:text="Number of people: "
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                     <TextView
+                        android:id="@+id/num_people"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:layout_marginBottom="@dimen/_2sdp"
-                        android:textSize="@dimen/_14ssp"
+                        android:textSize="@dimen/_13ssp"
                         android:gravity="end"
                         android:text="4 peoples"
                         android:layout_width="match_parent"
@@ -188,15 +195,16 @@
                     <TextView
                         android:layout_marginTop="@dimen/_5sdp"
                         android:layout_marginBottom="@dimen/_2sdp"
-                        android:textSize="@dimen/_14ssp"
+                        android:textSize="@dimen/_13ssp"
                         android:textColor="@color/black"
                         android:text="Table: "
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                     <TextView
+                        android:id="@+id/table"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:layout_marginBottom="@dimen/_2sdp"
-                        android:textSize="@dimen/_14ssp"
+                        android:textSize="@dimen/_13ssp"
                         android:gravity="end"
                         android:text="Table 7"
                         android:layout_width="match_parent"
@@ -207,21 +215,22 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_15sdp"
-                android:paddingLeft="@dimen/_15sdp"
-                android:paddingRight="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:paddingLeft="@dimen/_10sdp"
+                android:paddingRight="@dimen/_10sdp"
                 android:background="@drawable/edit_order"
                 tools:ignore="MissingConstraints">
                 <TextView
                     android:layout_marginTop="@dimen/_5sdp"
                     android:layout_width="match_parent"
                     android:gravity="center"
+                    android:textStyle="bold"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/_2sdp"
                     android:text="Information of order"
                     android:padding="@dimen/_5sdp"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_14ssp" />
+                    android:textSize="@dimen/_13ssp" />
                 <View
                     android:layout_gravity="center"
                     android:background="#C3C2C2"
@@ -231,50 +240,57 @@
                     android:layout_marginBottom="@dimen/_10sdp"
                     android:layout_height="1dp"/>
                 <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/listOrder"
                     android:orientation="vertical"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
                 <TextView
+                    android:id="@+id/subtotal"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/_2sdp"
                     android:text="SubTotal: 485$"
-                    android:textColor="@color/gray"
-                    android:textSize="@dimen/_14ssp" />
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_13ssp" />
                 <TextView
+                    android:id="@+id/deposit"
                     android:layout_marginTop="@dimen/_1sdp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/_2sdp"
                     android:text="Diposited: 85$"
-                    android:textColor="@color/gray"
-                    android:textSize="@dimen/_14ssp" />
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_13ssp" />
                 <TextView
+                    android:id="@+id/total"
                     android:layout_marginTop="@dimen/_1sdp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/_2sdp"
                     android:textStyle="bold"
                     android:text="Grand Total: 400$"
-                    android:textColor="@color/green"
-                    android:textSize="@dimen/_14ssp" />
+                    android:textColor="#009688"
+                    android:textSize="@dimen/_13ssp" />
                 <TextView
+                    android:id="@+id/status"
                     android:layout_marginTop="@dimen/_1sdp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/_2sdp"
                     android:text="Status order: Confirmed"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_14ssp" />
+                    android:textSize="@dimen/_13ssp" />
                 <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/cancel"
                     android:text="Cancel"
                     android:background="@color/main"
                     android:textColor="@color/white"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:layout_marginBottom="@dimen/_10sdp"
                     android:layout_width="wrap_content"
+                    android:textSize="@dimen/_11sdp"
                     android:layout_height="@dimen/_30sdp"/>
             </LinearLayout>
         </LinearLayout>

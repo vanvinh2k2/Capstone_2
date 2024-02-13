@@ -8,24 +8,25 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.example.abrrapp.R;
-import com.example.abrrapp.models.Restaurant;
+import com.example.abrrapp.models.Category;
+import com.example.abrrapp.models.Table;
 
 import java.util.List;
 
-public class ResDropAdapter extends BaseAdapter {
+public class CategoryDropAdapter extends BaseAdapter {
     int layout;
     Context context;
-    List<Restaurant> listRes;
+    List<Category> listCategory;
 
-    public ResDropAdapter(int layout, Context context, List<Restaurant> listRes) {
+    public CategoryDropAdapter(int layout, Context context, List<Category> listCategory) {
         this.layout = layout;
         this.context = context;
-        this.listRes = listRes;
+        this.listCategory = listCategory;
     }
 
     @Override
     public int getCount() {
-        return listRes.size();
+        return listCategory.size();
     }
 
     @Override
@@ -44,7 +45,7 @@ public class ResDropAdapter extends BaseAdapter {
                 context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         view = inflater.inflate(layout,null);
         TextView seleted = view.findViewById(R.id.seleted);
-        seleted.setText(listRes.get(i).getTitle());
+        seleted.setText(listCategory.get(i).getTitle());
         return view;
     }
 
@@ -54,7 +55,7 @@ public class ResDropAdapter extends BaseAdapter {
                 context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         convertView = inflater.inflate(R.layout.item_drop_down,null);
         TextView tvCategory = convertView.findViewById(R.id.item);
-        tvCategory.setText(listRes.get(position).getTitle());
+        tvCategory.setText(listCategory.get(position).getTitle());
         return convertView;
     }
 }

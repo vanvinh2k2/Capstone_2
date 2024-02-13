@@ -1,6 +1,8 @@
 package com.example.abrrapp.models;
 
-public class Restaurant {
+import java.io.Serializable;
+
+public class Restaurant implements Serializable {
     String rid, title, username, email, image, time_open,
             description, phone, password, address, time_close;
     int like;

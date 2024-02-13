@@ -1,8 +1,24 @@
 package com.example.abrrapp.models;
 
-public class User {
-    String id, username, is_active, date_joined, email, avatar,
+import java.io.Serializable;
+
+public class User implements Serializable {
+    String id, username, date_joined, email, avatar,
             full_name, phone, provider, verified, address;
+    boolean is_active;
+    Token token;
+
+    public boolean isIs_active() {
+        return is_active;
+    }
+
+    public Token getToken() {
+        return token;
+    }
+
+    public void setToken(Token token) {
+        this.token = token;
+    }
 
     public String getId() {
         return id;
@@ -20,11 +36,11 @@ public class User {
         this.username = username;
     }
 
-    public String getIs_active() {
+    public boolean getIs_active() {
         return is_active;
     }
 
-    public void setIs_active(String is_active) {
+    public void setIs_active(boolean is_active) {
         this.is_active = is_active;
     }
 

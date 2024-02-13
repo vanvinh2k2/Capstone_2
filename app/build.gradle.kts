@@ -59,4 +59,6 @@ dependencies {
     implementation("com.google.android.gms:play-services-auth:20.5.0")
     //facebook
     implementation("com.facebook.android:facebook-android-sdk:9.1.1")
+    //paypal
+    implementation("com.paypal.sdk:paypal-android-sdk:2.16.0")
 }

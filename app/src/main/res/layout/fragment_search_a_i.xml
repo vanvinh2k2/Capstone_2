@@ -67,7 +67,7 @@
             android:id="@+id/conform"
             android:text="Confirm"
             android:textColor="@color/white"
-            android:textSize="@dimen/_11ssp"
+            android:textSize="@dimen/_11sdp"
             android:background="@color/main"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/_30sdp"/>

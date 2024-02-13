@@ -2,7 +2,9 @@ package com.example.abrrapp.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +16,9 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.abrrapp.R;
+import com.example.abrrapp.activities.DetailHistoryOrderActivity;
 import com.example.abrrapp.models.Order;
+import com.example.abrrapp.onClick.ItemClickListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
@@ -63,6 +67,18 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
         if(order.getProduct_status().compareTo("cancel") == 0){
             holder.statustxt.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.red));
         }
+
+        holder.setClickListener(new ItemClickListener() {
+            @Override
+            public void setOnItemClick(View view, int pos, boolean isLongClick) {
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("data", order);
+                Intent intent = new Intent(context, DetailHistoryOrderActivity.class);
+                intent.putExtra("bundle", bundle);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -70,8 +86,9 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
         return listOrder.size();
     }
 
-    public class OrderHistoryHolder extends RecyclerView.ViewHolder{
+    public class OrderHistoryHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView oidtxt, statustxt, titletxt, datetxt, numPeopletxt, totaltxt;
+        ItemClickListener clickListener;
         ImageView image;
         public OrderHistoryHolder(@NonNull View itemView) {
             super(itemView);
@@ -82,6 +99,16 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
             numPeopletxt = itemView.findViewById(R.id.num_people);
             totaltxt = itemView.findViewById(R.id.total);
             image = itemView.findViewById(R.id.image);
+            itemView.setOnClickListener(this);
+        }
+
+        public void setClickListener(ItemClickListener clickListener) {
+            this.clickListener = clickListener;
+        }
+
+        @Override
+        public void onClick(View view) {
+            clickListener.setOnItemClick(view, getAdapterPosition(), false);
         }
     }
 }

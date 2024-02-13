@@ -35,9 +35,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <ImageView
-                android:id="@+id/productimg"
+                android:id="@+id/image"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_180sdp"
+                android:layout_height="@dimen/_200sdp"
                 android:layout_marginLeft="@dimen/_20sdp"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginRight="@dimen/_20sdp"
@@ -45,29 +45,20 @@
                 android:background="#C5C5C5"
                 android:scaleType="fitXY" />
             <TextView
+                android:id="@+id/title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/_2sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
                 android:textStyle="bold"
                 android:text="King Grap"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_14ssp" />
-            <TextView
-                android:id="@+id/shop"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:drawableStart="@drawable/shop_20"
-                android:drawablePadding="@dimen/_4sdp"
-                android:text="New restaurant"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_14ssp" />
+                android:textSize="@dimen/_15sdp" />
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:id="@+id/rank"
+                    android:id="@+id/rating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:drawableStart="@drawable/round_star"
@@ -75,25 +66,7 @@
                     android:gravity="center"
                     android:text="3.5 Rating"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_14ssp" />
-
-                <View
-                    android:layout_width="@dimen/_1sdp"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="@dimen/_5sdp"
-                    android:layout_marginTop="@dimen/_3sdp"
-                    android:layout_marginRight="@dimen/_5sdp"
-                    android:layout_marginBottom="@dimen/_3sdp"
-                    android:background="@color/black" />
-
-                <TextView
-                    android:id="@+id/danhgia"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="0 Evaluate"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_14ssp" />
+                    android:textSize="@dimen/_13ssp" />
 
                 <View
                     android:layout_width="@dimen/_1sdp"
@@ -102,16 +75,34 @@
                     android:layout_marginTop="@dimen/_3sdp"
                     android:layout_marginRight="@dimen/_10sdp"
                     android:layout_marginBottom="@dimen/_3sdp"
-                    android:background="@color/black" />
+                    android:background="@color/gray" />
 
                 <TextView
-                    android:id="@+id/sold"
+                    android:id="@+id/evaluate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="0 Evaluate"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_13ssp" />
+
+                <View
+                    android:layout_width="@dimen/_1sdp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_3sdp"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_3sdp"
+                    android:background="@color/gray" />
+
+                <TextView
+                    android:id="@+id/num_dish"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="0 Dishes"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_14ssp" />
+                    android:textSize="@dimen/_13ssp" />
             </LinearLayout>
             <LinearLayout
                 android:layout_marginTop="@dimen/_5sdp"
@@ -121,12 +112,13 @@
                     android:text="Liked: "
                     android:textStyle=""
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_14ssp"
+                    android:textSize="@dimen/_13ssp"
                     android:layout_width="@dimen/_80sdp"
                     android:layout_height="wrap_content"/>
                 <TextView
+                    android:id="@+id/like"
                     android:text="400"
-                    android:textSize="@dimen/_14ssp"
+                    android:textSize="@dimen/_13ssp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
             </LinearLayout>
@@ -137,12 +129,13 @@
                 <TextView
                     android:text="Open: "
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_14ssp"
+                    android:textSize="@dimen/_13ssp"
                     android:layout_width="@dimen/_80sdp"
                     android:layout_height="wrap_content"/>
                 <TextView
+                    android:id="@+id/open"
                     android:text="07:00 - 22:00"
-                    android:textSize="@dimen/_14ssp"
+                    android:textSize="@dimen/_13ssp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
             </LinearLayout>
@@ -153,12 +146,13 @@
                 <TextView
                     android:text="Address: "
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_14ssp"
+                    android:textSize="@dimen/_13ssp"
                     android:layout_width="@dimen/_80sdp"
                     android:layout_height="wrap_content"/>
                 <TextView
+                    android:id="@+id/address"
                     android:text="Hòa An, Cẩm Lệ, Đà Nẵng"
-                    android:textSize="@dimen/_14ssp"
+                    android:textSize="@dimen/_13ssp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
             </LinearLayout>
@@ -169,12 +163,13 @@
                 <TextView
                     android:text="Phone: "
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_14ssp"
+                    android:textSize="@dimen/_13ssp"
                     android:layout_width="@dimen/_80sdp"
                     android:layout_height="wrap_content"/>
                 <TextView
+                    android:id="@+id/phone"
                     android:text="0776991460"
-                    android:textSize="@dimen/_14ssp"
+                    android:textSize="@dimen/_13ssp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
             </LinearLayout>
@@ -186,7 +181,7 @@
                     android:textColor="@color/black"
                     android:text="Follow Us: "
                     android:layout_gravity="center"
-                    android:textSize="@dimen/_14ssp"
+                    android:textSize="@dimen/_13ssp"
                     android:layout_width="@dimen/_80sdp"
                     android:layout_height="wrap_content"/>
                 <LinearLayout
@@ -214,11 +209,12 @@
                 <TextView
                     android:textColor="@color/black"
                     android:text="Support: "
-                    android:textSize="@dimen/_14ssp"
+                    android:textSize="@dimen/_13ssp"
                     android:layout_width="@dimen/_80sdp"
                     android:layout_gravity="center"
                     android:layout_height="wrap_content"/>
                 <ImageView
+                    android:id="@+id/chat"
                     android:src="@drawable/message"
                     android:layout_width="@dimen/_28sdp"
                     android:layout_height="@dimen/_28sdp"/>
@@ -227,12 +223,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_5sdp"
-                android:text="Description"
+                android:text="Description:"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_14sdp" />
+                android:textSize="@dimen/_13ssp" />
 
             <TextView
-                android:id="@+id/descrip"
+                android:id="@+id/descript"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_5sdp"
@@ -247,13 +243,13 @@
 
 II. Complimentary incentives: A promotion program is being built"
                 android:textColor="#656565"
-                android:textSize="@dimen/_14sdp" />
+                android:textSize="@dimen/_13ssp" />
             <TextView
-                android:id="@+id/toggleButton"
+                android:id="@+id/read"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_12ssp"
+                android:textSize="@dimen/_11ssp"
                 android:backgroundTint="@color/white"
                 android:layout_marginBottom="@dimen/_10sdp"
                 android:text="Read more" />
@@ -264,18 +260,14 @@ II. Complimentary incentives: A promotion program is being built"
                 android:textStyle="bold"
                 android:text="Speciality dishes"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_14ssp" />
+                android:textSize="@dimen/_15sdp" />
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/listproductother"
+                android:id="@+id/list_product"
                 android:layout_width="match_parent"
-                android:layout_marginRight="5dp"
-                app:spanCount="2"
                 android:layout_gravity="center"
-                android:background="#f1f5f9"
                 android:orientation="horizontal"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="5dp"
+                android:layout_marginTop="@dimen/_5sdp"
                 android:layout_height="wrap_content"/>
             <TextView
                 android:layout_marginTop="@dimen/_5sdp"
@@ -285,7 +277,7 @@ II. Complimentary incentives: A promotion program is being built"
                 android:textStyle="bold"
                 android:text="Order restaurant"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_14ssp" />
+                android:textSize="@dimen/_15sdp" />
             <LinearLayout
                 android:layout_marginTop="@dimen/_5sdp"
                 android:background="@color/re_main"
@@ -311,9 +303,10 @@ II. Complimentary incentives: A promotion program is being built"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/_2sdp"
                         android:text="Order restaurant"
+                        android:textStyle="bold"
                         android:padding="@dimen/_5sdp"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_14ssp" />
+                        android:textSize="@dimen/_13ssp" />
                     <View
                         android:layout_gravity="center"
                         android:background="#C3C2C2"
@@ -324,79 +317,105 @@ II. Complimentary incentives: A promotion program is being built"
                         android:layout_height="1dp"/>
                     <TextView
                         android:layout_marginBottom="@dimen/_2sdp"
-                        android:textSize="@dimen/_14ssp"
+                        android:textSize="@dimen/_13ssp"
                         android:text="Name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                     <EditText
+                        android:id="@+id/name_user"
+                        android:textSize="@dimen/_13ssp"
+                        android:paddingLeft="@dimen/_10sdp"
+                        android:paddingRight="@dimen/_10sdp"
                         android:background="@drawable/edit_input"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_35sdp"/>
                     <TextView
                         android:layout_marginTop="@dimen/_5sdp"
                         android:layout_marginBottom="@dimen/_2sdp"
-                        android:textSize="@dimen/_14ssp"
+                        android:textSize="@dimen/_13ssp"
                         android:text="Phone Number"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                     <EditText
+                        android:id="@+id/phone_user"
+                        android:textSize="@dimen/_13ssp"
                         android:background="@drawable/edit_input"
                         android:layout_width="match_parent"
+                        android:inputType="phone"
+                        android:paddingLeft="@dimen/_10sdp"
+                        android:paddingRight="@dimen/_10sdp"
                         android:layout_height="@dimen/_35sdp"/>
                     <TextView
                         android:layout_marginTop="@dimen/_5sdp"
                         android:layout_marginBottom="@dimen/_2sdp"
-                        android:textSize="@dimen/_14ssp"
+                        android:textSize="@dimen/_13ssp"
                         android:text="Table"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
-                    <EditText
+                    <Spinner
+                        android:id="@+id/table"
+                        android:textSize="@dimen/_13ssp"
                         android:background="@drawable/edit_input"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_35sdp"/>
                     <TextView
                         android:layout_marginTop="@dimen/_5sdp"
                         android:layout_marginBottom="@dimen/_2sdp"
-                        android:textSize="@dimen/_14ssp"
+                        android:textSize="@dimen/_13ssp"
                         android:text="Date Time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                     <EditText
+                        android:id="@+id/date_order"
+                        android:textSize="@dimen/_13ssp"
+                        android:paddingLeft="@dimen/_10sdp"
+                        android:paddingRight="@dimen/_10sdp"
+                        android:inputType="date"
+                        android:hint="dd/MM/yyyy"
                         android:background="@drawable/edit_input"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_35sdp"/>
                     <TextView
                         android:layout_marginTop="@dimen/_5sdp"
                         android:layout_marginBottom="@dimen/_2sdp"
-                        android:textSize="@dimen/_14ssp"
+                        android:textSize="@dimen/_13ssp"
                         android:text="From"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
-                    <EditText
+                    <Spinner
+                        android:id="@+id/time_from"
+                        android:textSize="@dimen/_13ssp"
                         android:background="@drawable/edit_input"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_35sdp"/>
                     <TextView
                         android:layout_marginTop="@dimen/_5sdp"
                         android:layout_marginBottom="@dimen/_2sdp"
-                        android:textSize="@dimen/_14ssp"
+                        android:textSize="@dimen/_13ssp"
                         android:text="To"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
-                    <EditText
+                    <Spinner
+                        android:id="@+id/time_to"
+                        android:textSize="@dimen/_13ssp"
                         android:background="@drawable/edit_input"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_35sdp"/>
                     <TextView
                         android:layout_marginTop="@dimen/_5sdp"
                         android:layout_marginBottom="@dimen/_2sdp"
-                        android:textSize="@dimen/_14ssp"
+                        android:textSize="@dimen/_13ssp"
                         android:text="Number of People"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                     <EditText
+                        android:id="@+id/num_people"
+                        android:textSize="@dimen/_13ssp"
                         android:background="@drawable/edit_input"
                         android:layout_width="match_parent"
+                        android:paddingLeft="@dimen/_10sdp"
+                        android:paddingRight="@dimen/_10sdp"
+                        android:inputType="number"
                         android:layout_marginBottom="@dimen/_10sdp"
                         android:layout_height="@dimen/_35sdp"/>
                 </LinearLayout>
@@ -413,12 +432,13 @@ II. Complimentary incentives: A promotion program is being built"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:layout_width="match_parent"
                         android:gravity="center"
+                        android:textStyle="bold"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/_2sdp"
                         android:text="The dishes"
                         android:padding="@dimen/_5sdp"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_14ssp" />
+                        android:textSize="@dimen/_13ssp" />
                     <View
                         android:layout_gravity="center"
                         android:background="#C3C2C2"
@@ -427,30 +447,36 @@ II. Complimentary incentives: A promotion program is being built"
                         android:layout_width="match_parent"
                         android:layout_marginBottom="@dimen/_10sdp"
                         android:layout_height="1dp"/>
-                    <EditText
+                    <Spinner
+                        android:id="@+id/category"
                         android:background="@drawable/edit_input"
                         android:layout_width="match_parent"
+                        android:textSize="@dimen/_13ssp"
                         android:layout_marginBottom="@dimen/_5sdp"
                         android:layout_height="@dimen/_35sdp"/>
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
                         <EditText
+                            android:id="@+id/searchedt"
                             android:background="@drawable/edit_searchd"
                             android:layout_width="wrap_content"
                             android:layout_weight="1"
-                            android:paddingLeft="@dimen/_5sdp"
-                            android:paddingRight="@dimen/_5sdp"
+                            android:paddingLeft="@dimen/_10sdp"
+                            android:textSize="@dimen/_13ssp"
+                            android:paddingRight="@dimen/_10sdp"
                             android:hint="Search the dishes ..."
-                            android:layout_marginBottom="@dimen/_10sdp"
+                            android:layout_marginBottom="@dimen/_5sdp"
                             android:layout_height="@dimen/_35sdp"/>
                         <androidx.appcompat.widget.AppCompatImageButton
+                            android:id="@+id/searchbtn"
                             android:layout_width="@dimen/_45sdp"
                             android:background="#EAE7E7"
                             android:src="@drawable/search"
                             android:layout_height="@dimen/_35sdp"/>
                     </LinearLayout>
                     <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/list_menu"
                         android:orientation="vertical"
                         android:layout_marginBottom="@dimen/_10sdp"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -458,11 +484,13 @@ II. Complimentary incentives: A promotion program is being built"
                         android:layout_height="wrap_content"/>
                 </LinearLayout>
                 <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/next"
                     android:text="Next"
                     android:background="@color/main"
                     android:layout_width="wrap_content"
                     android:textColor="@color/white"
                     android:layout_gravity="center"
+                    android:textSize="@dimen/_11ssp"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:layout_height="@dimen/_30sdp"/>
             </LinearLayout>

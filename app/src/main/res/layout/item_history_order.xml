@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="@drawable/edit_item"
+    android:padding="@dimen/_5sdp"
+    android:layout_marginBottom="@dimen/_5sdp"
+    android:layout_height="wrap_content">
+    <ImageView
+        android:id="@+id/image"
+        android:background="@drawable/edit_img"
+        android:padding="@dimen/_2sdp"
+        android:layout_width="@dimen/_65sdp"
+        android:layout_height="@dimen/_65sdp"/>
+    <LinearLayout
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/title"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_13ssp"
+            android:text="Cua hoang de"
+            android:paddingBottom="@dimen/_1sdp"
+            android:paddingLeft="@dimen/_10sdp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/category"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_13ssp"
+            android:text="Category: Main dish"
+            android:paddingTop="@dimen/_1sdp"
+            android:paddingBottom="@dimen/_1sdp"
+            android:paddingLeft="@dimen/_10sdp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/price"
+            android:textColor="#009688"
+            android:textSize="@dimen/_13ssp"
+            android:text="Price: 15.00$"
+            android:paddingTop="@dimen/_1sdp"
+            android:paddingBottom="@dimen/_1sdp"
+            android:paddingLeft="@dimen/_10sdp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+    <TextView
+        android:id="@+id/quanlity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/_12sdp"
+        android:paddingTop="@dimen/_3sdp"
+        android:paddingRight="@dimen/_12sdp"
+        android:paddingBottom="@dimen/_3sdp"
+        android:text="x3"
+        android:layout_gravity="center"
+        android:layout_marginRight="1dp"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_14sdp" />
+</LinearLayout>

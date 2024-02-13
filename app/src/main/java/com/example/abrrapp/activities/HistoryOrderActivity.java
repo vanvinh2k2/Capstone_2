@@ -14,6 +14,7 @@ import com.example.abrrapp.models.Order;
 import com.example.abrrapp.retrofit.APIRestaurant;
 import com.example.abrrapp.retrofit.RetrofitClient;
 import com.example.abrrapp.utils.Const;
+import com.example.abrrapp.utils.ReferenceManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +30,7 @@ public class HistoryOrderActivity extends AppCompatActivity {
     CompositeDisposable disposable = new CompositeDisposable();
     List<Order> listOrder;
     OrderHistoryAdapter orderHistoryAdapter;
+    ReferenceManager manager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,8 +42,8 @@ public class HistoryOrderActivity extends AppCompatActivity {
 
     private void getHistoryOrder() {
         disposable.add(apiRestaurant.getListOrder(
-                "102566218799174938142",
-                "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzA1ODkxMDQwLCJpYXQiOjE3MDU4MDQ2NDAsImp0aSI6ImE0ODFlNjI3NGRlYjQ0MmNhMzExNzkxZjk3NzY5MmMxIiwidXNlcl9pZCI6InVzZXIyMWFlYWU0Y2RoIn0.BqSI9sIH9fywAQhuzrgl4xpP7i7WvilPyoSH708S8zY"
+                        manager.getString("_id"),
+                        manager.getString("access")
                 )
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -79,5 +81,6 @@ public class HistoryOrderActivity extends AppCompatActivity {
         orderrcv = findViewById(R.id.list_order);
         listOrder = new ArrayList<>();
         apiRestaurant = RetrofitClient.getInstance(Const.BASE_URL).create(APIRestaurant.class);
+        manager = new ReferenceManager(getApplicationContext());
     }
 }

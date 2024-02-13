@@ -45,7 +45,7 @@ public class AccountFragment extends Fragment {
     private void getProfile() {
         disposable.add(apiRestaurant.getProfile(
                 "user21aeae4cdh",
-                "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzA1ODkxMDQwLCJpYXQiOjE3MDU4MDQ2NDAsImp0aSI6ImE0ODFlNjI3NGRlYjQ0MmNhMzExNzkxZjk3NzY5MmMxIiwidXNlcl9pZCI6InVzZXIyMWFlYWU0Y2RoIn0.BqSI9sIH9fywAQhuzrgl4xpP7i7WvilPyoSH708S8zY"
+                Const.TOKEN
                 )
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
