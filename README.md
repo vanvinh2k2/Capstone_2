@@ -93,4 +93,7 @@ Not yet
 
 ### XVII. Payment Page UI
 
-Not yet
+![p1](https://github.com/vanvinh2k2/Capstone_2/assets/94769800/2b7703ce-255e-4185-b85f-55d9d0c23e48)
+![p2](https://github.com/vanvinh2k2/Capstone_2/assets/94769800/c34c71c1-f149-4b08-afbf-2601217f679a)
+
+
