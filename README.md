@@ -89,7 +89,9 @@
 
 ### XVI. Message Page UI
 
-Not yet
+<div align="center">
+  <img src="https://github.com/vanvinh2k2/Capstone_2/assets/94769800/e7d006f4-26a0-4fa8-adbd-1070fc9f1b49" alt="Splash Image">
+</div>
 
 ### XVII. Payment Page UI
 
