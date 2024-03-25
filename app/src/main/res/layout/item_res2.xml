@@ -20,6 +20,14 @@
             android:background="@drawable/edit_img"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
+        <!--<ImageView
+            android:id="@+id/love"
+            android:src="@drawable/no_love"
+            android:layout_gravity="end"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:layout_marginRight="@dimen/_2sdp"
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="@dimen/_25sdp"/>-->
     </FrameLayout>
     <TextView
         android:id="@+id/title"

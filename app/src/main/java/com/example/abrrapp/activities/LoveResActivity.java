@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.abrrapp.R;
@@ -33,6 +34,7 @@ public class LoveResActivity extends AppCompatActivity {
     CompositeDisposable disposable = new CompositeDisposable();
     List<LikeRestaurant> listRes;
     ReferenceManager manager;
+    ImageView emptyimg;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,10 +45,9 @@ public class LoveResActivity extends AppCompatActivity {
     }
 
     private void getLoveRestaurant() {
-        Log.e("token", manager.getString("_id")+" I "+manager.getString("access"));
         disposable.add(apiRestaurant.getListLikeRes(
                     manager.getString("_id"),
-                    manager.getString("access")
+                    "Bearer " + manager.getString("access")
                 )
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -54,8 +55,10 @@ public class LoveResActivity extends AppCompatActivity {
                         likeRestaurantModel -> {
                             if(likeRestaurantModel.isSuccess()){
                                 listRes = likeRestaurantModel.getData();
-                                loveResAdapter = new LoveRestaurantAdapter(R.layout.item_like_res, LoveResActivity.this, listRes);
-                                loveResrcv.setAdapter(loveResAdapter);
+                                if(listRes.size()>0) {
+                                    loveResAdapter = new LoveRestaurantAdapter(R.layout.item_like_res, LoveResActivity.this, listRes);
+                                    loveResrcv.setAdapter(loveResAdapter);
+                                }else emptyimg.setVisibility(View.VISIBLE);
                             }
                         },
                         throwable -> {
@@ -85,5 +88,6 @@ public class LoveResActivity extends AppCompatActivity {
         listRes = new ArrayList<>();
         apiRestaurant = RetrofitClient.getInstance(Const.BASE_URL).create(APIRestaurant.class);
         manager = new ReferenceManager(getApplicationContext());
+        emptyimg = findViewById(R.id.empty);
     }
 }

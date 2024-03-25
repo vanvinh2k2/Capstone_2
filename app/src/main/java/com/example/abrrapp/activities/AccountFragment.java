@@ -19,6 +19,7 @@ import com.example.abrrapp.models.User;
 import com.example.abrrapp.retrofit.APIRestaurant;
 import com.example.abrrapp.retrofit.RetrofitClient;
 import com.example.abrrapp.utils.Const;
+import com.example.abrrapp.utils.ReferenceManager;
 import com.squareup.picasso.Picasso;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -33,6 +34,7 @@ public class AccountFragment extends Fragment {
     ImageView image;
     APIRestaurant apiRestaurant;
     CompositeDisposable disposable = new CompositeDisposable();
+    ReferenceManager manager;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_account, container, false);
@@ -44,8 +46,8 @@ public class AccountFragment extends Fragment {
 
     private void getProfile() {
         disposable.add(apiRestaurant.getProfile(
-                "user21aeae4cdh",
-                Const.TOKEN
+                        manager.getString("_id"),
+                        "Bearer "+manager.getString("access")
                 )
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -85,6 +87,7 @@ public class AccountFragment extends Fragment {
         logoutbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                manager.clear();
                 Intent intent = new Intent(getContext(), LoginActivity.class);
                 startActivity(intent);
             }
@@ -117,5 +120,6 @@ public class AccountFragment extends Fragment {
         datetxt = view.findViewById(R.id.date_joined);
         changeProfilebtn = view.findViewById(R.id.change_profile);
         image = view.findViewById(R.id.profile_image);
+        manager = new ReferenceManager(getContext());
     }
 }

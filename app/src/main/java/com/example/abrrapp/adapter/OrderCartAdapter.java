@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.abrrapp.R;
+import com.example.abrrapp.activities.OrderActivity;
 import com.example.abrrapp.models.OrderCartItem;
 import com.squareup.picasso.Picasso;
 
@@ -19,10 +20,10 @@ import java.util.List;
 
 public class OrderCartAdapter extends RecyclerView.Adapter<OrderCartAdapter.OrderCartHolder>{
     int layout;
-    Context context;
+    OrderActivity context;
     List<OrderCartItem> listOrderCartItem;
 
-    public OrderCartAdapter(int layout, Context context, List<OrderCartItem> listOrderCartItem) {
+    public OrderCartAdapter(int layout, OrderActivity context, List<OrderCartItem> listOrderCartItem) {
         this.layout = layout;
         this.context = context;
         this.listOrderCartItem = listOrderCartItem;
@@ -42,6 +43,12 @@ public class OrderCartAdapter extends RecyclerView.Adapter<OrderCartAdapter.Orde
         holder.titletxt.setText(orderCartItem.getDish().getTitle());
         holder.quanlitytxt.setText("Quanlity: " + orderCartItem.getQuantity());
         holder.pricetxt.setText("Price: " + orderCartItem.getDish().getPrice()+"$");
+        holder.removeib.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                context.deleteDish(position);
+            }
+        });
     }
 
     @Override

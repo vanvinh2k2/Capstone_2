@@ -5,6 +5,11 @@ public class OrderCartItem {
     Dish dish;
     int quantity;
 
+    public OrderCartItem(Dish dish, int quantity) {
+        this.dish = dish;
+        this.quantity = quantity;
+    }
+
     public String getId() {
         return id;
     }

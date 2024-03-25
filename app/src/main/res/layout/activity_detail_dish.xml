@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"/>
     </androidx.appcompat.widget.Toolbar>
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_marginBottom="@dimen/_5sdp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -162,6 +162,6 @@ II. Complimentary incentives: A promotion program is being built"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
         </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
 </LinearLayout>

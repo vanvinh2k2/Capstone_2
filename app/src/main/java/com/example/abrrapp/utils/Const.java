@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Const {
-    public static final String BASE_URL = "http://192.168.1.10:8000/";
-    public static final String TOKEN = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzA3ODc1NjY0LCJpYXQiOjE3MDc3ODkyNjQsImp0aSI6IjdlMTI3MzA5MWVmMzQ0YTJiYmUwZThiNWRiYThmZjUxIiwidXNlcl9pZCI6InVzZXIyMWFlYWU0Y2RoIn0.GjG7vU_p2tb3YzqCEE2jM_ZoipgI7oPXRcztAQghptM";
+    public static final String BASE_URL = "http://192.168.72.58:8000/";
+    public static final String TOKEN = null;
     public static List<String> timeOrder = new ArrayList<>();
     public static List<String> getTime(){
         timeOrder.add("Choice time");

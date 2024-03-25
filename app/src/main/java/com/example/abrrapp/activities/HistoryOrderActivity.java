@@ -43,7 +43,7 @@ public class HistoryOrderActivity extends AppCompatActivity {
     private void getHistoryOrder() {
         disposable.add(apiRestaurant.getListOrder(
                         manager.getString("_id"),
-                        manager.getString("access")
+                        "Bearer " + manager.getString("access")
                 )
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

@@ -61,4 +61,8 @@ dependencies {
     implementation("com.facebook.android:facebook-android-sdk:9.1.1")
     //paypal
     implementation("com.paypal.sdk:paypal-android-sdk:2.16.0")
+    //sotket
+    implementation("io.socket:socket.io-client:2.0.0")
+
+    implementation("com.squareup.okhttp3:okhttp:4.9.2")
 }

@@ -137,6 +137,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <EditText
+                android:id="@+id/title"
                 android:background="@drawable/edit_input"
                 android:layout_width="match_parent"
                 android:hint="Input title"
@@ -147,6 +148,7 @@
                 android:layout_marginRight="@dimen/_5sdp"
                 android:layout_height="@dimen/_35sdp"/>
             <EditText
+                android:id="@+id/content"
                 android:background="@drawable/edit_input"
                 android:layout_width="match_parent"
                 android:hint="Input content"
@@ -158,6 +160,7 @@
                 android:layout_marginRight="@dimen/_5sdp"
                 android:layout_height="@dimen/_35sdp"/>
             <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/send"
                 android:layout_marginLeft="@dimen/_5sdp"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:text="Send"

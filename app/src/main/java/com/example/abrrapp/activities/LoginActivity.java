@@ -186,7 +186,7 @@ public class LoginActivity extends AppCompatActivity {
         loginbtn = findViewById(R.id.loginaccount);
         show = findViewById(R.id.show);
         eye = findViewById(R.id.eye);
-        loginButton = findViewById(R.id.login_button);
+        //loginButton = findViewById(R.id.login_button);
         manager = new ReferenceManager(getApplicationContext());
         apiRestaurant = RetrofitClient.getInstance(Const.BASE_URL).create(APIRestaurant.class);
     }

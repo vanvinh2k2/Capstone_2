@@ -18,10 +18,22 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints">
 
-        <ImageView
-            android:id="@+id/resimg"
+        <FrameLayout
             android:layout_width="@dimen/_110sdp"
-            android:layout_height="@dimen/_110sdp"/>
+            android:layout_height="@dimen/_110sdp">
+            <ImageView
+                android:id="@+id/resimg"
+                android:layout_width="@dimen/_110sdp"
+                android:layout_height="@dimen/_110sdp"/>
+            <!--<ImageView
+                android:id="@+id/love"
+                android:src="@drawable/no_love"
+                android:layout_gravity="end"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:layout_marginRight="@dimen/_2sdp"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"/>-->
+        </FrameLayout>
 
         <TextView
             android:id="@+id/title"

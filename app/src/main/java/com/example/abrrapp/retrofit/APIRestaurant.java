@@ -16,6 +16,8 @@ import com.example.abrrapp.models.TableModel;
 import com.example.abrrapp.models.Token;
 import com.example.abrrapp.models.UserModel;
 
+import org.json.JSONArray;
+
 import io.reactivex.rxjava3.core.Observable;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -114,5 +116,65 @@ public interface APIRestaurant {
     @FormUrlEncoded
     Observable<DefaultModel> sendEmail(
             @Field("email") String email
+    );
+
+    @POST("api/contact-us/")
+    @FormUrlEncoded
+    Observable<DefaultModel> contactUs(
+            @Field("full_name") String full_name,
+            @Field("email") String email,
+            @Field("phone") String phone,
+            @Field("subject") String subject,
+            @Field("message") String message
+    );
+
+    @POST("api/add-order-cart/{uid}/{rid}/")
+    @FormUrlEncoded
+    Observable<DefaultModel> addOrderCart(
+            @Path("uid") String uid,
+            @Path("rid") String rid,
+            @Field("full_name") String full_name,
+            @Field("phone") String phone,
+            @Field("tid") String tid,
+            @Field("time_from") String time_from,
+            @Field("time_to") String time_to,
+            @Field("number_people") String number_people,
+            @Field("items") JSONArray items,
+            @Field("order_date") String order_date,
+            @Header("Authorization") String credentials
+    );
+
+    @POST("api/update-order-cart/{uid}/{rid}/")
+    @FormUrlEncoded
+    Observable<DefaultModel> updateOrderCart(
+            @Path("uid") String uid,
+            @Path("rid") String rid,
+            @Field("full_name") String full_name,
+            @Field("phone") String phone,
+            @Field("tid") String tid,
+            @Field("time_from") String time_from,
+            @Field("time_to") String time_to,
+            @Field("number_people") String number_people,
+            @Field("items") JSONArray items,
+            @Field("order_date") String order_date,
+            @Header("Authorization") String credentials
+    );
+
+    @POST("api/add-order/{uid}/{rid}/")
+    @FormUrlEncoded
+    Observable<DefaultModel> addOrder(
+            @Path("uid") String uid,
+            @Path("rid") String rid,
+            @Field("full_name") String full_name,
+            @Field("phone") String phone,
+            @Field("tid") String tid,
+            @Field("deposit") float deposit,
+            @Field("price") float price,
+            @Field("time_from") String time_from,
+            @Field("time_to") String time_to,
+            @Field("number_people") int number_people,
+            @Field("items") JSONArray items,
+            @Field("order_date") String order_date,
+            @Header("Authorization") String credentials
     );
 }

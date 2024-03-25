@@ -14,12 +14,17 @@ import android.widget.Toast;
 
 import com.example.abrrapp.R;
 import com.example.abrrapp.adapter.OrderCartAdapter;
+import com.example.abrrapp.models.ItemOrder;
 import com.example.abrrapp.models.OrderCart;
 import com.example.abrrapp.models.OrderCartItem;
 import com.example.abrrapp.retrofit.APIRestaurant;
 import com.example.abrrapp.retrofit.RetrofitClient;
 import com.example.abrrapp.utils.Const;
+import com.example.abrrapp.utils.ReferenceManager;
+import com.paypal.android.sdk.payments.PayPalPayment;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -30,11 +35,18 @@ public class OrderActivity extends AppCompatActivity {
     Toolbar toolbar;
     APIRestaurant apiRestaurant;
     CompositeDisposable disposable = new CompositeDisposable();
-    TextView nameUsertxt, phonetxt, emailtxt, datetxt, timetxt, numPeople, tabletxt, subTotaltxt, totaltxt;
+    TextView nameUsertxt, phonetxt, emailtxt, datetxt, timetxt,
+            numPeople, tabletxt, subTotaltxt, totaltxt;
     RecyclerView orderrcv;
     OrderCartAdapter orderCartAdapter;
     Button paymentbtn;
-
+    ReferenceManager manager;
+    PayPalPayment payPalPayment;
+    String rid, fullName, phone, tid, timeFrom, timeTo, dateOrder;
+    float deposite;
+    int numberPeople;
+    List<OrderCartItem> orderCartItemList;
+    List<ItemOrder> itemOrderList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,16 +61,69 @@ public class OrderActivity extends AppCompatActivity {
         paymentbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), BillActivity.class));
+                if(totalPrice(orderCartItemList)<=100){
+                    payment();
+                }else{
+                    payment();
+                }
             }
         });
     }
 
+    private void payment(){
+        startActivity(new Intent(getApplicationContext(), BillActivity.class));
+
+        /*disposable.add(apiRestaurant.addOrder(
+                        manager.getString("_id"),
+                        rid,
+                        fullName,
+                        phone,
+                        tid,
+                        deposite,
+                        deposite * 100 / 10,
+                        timeFrom,
+                        timeTo,
+                        numberPeople,
+                        "",
+                        dateOrder,
+                        manager.getString("access")
+                )
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        defaultModel -> {
+                            if(defaultModel.isSuccess()){
+                                Toast.makeText(OrderActivity.this, "ok", Toast.LENGTH_SHORT).show();
+                                //startActivity(new Intent(getApplicationContext(), BillActivity.class));
+                            }
+                        },
+                        throwable -> {
+                            Toast.makeText(OrderActivity.this, throwable.getMessage()+"", Toast.LENGTH_SHORT).show();
+                        }
+                ));*/
+    }
+
+    private float totalPrice(List<OrderCartItem> orderCartItems){
+        float price = 0;
+        for(int i=0;i<orderCartItems.size();i++){
+            price += orderCartItems.get(i).getQuantity()*orderCartItems.get(i).getDish().getPrice();
+        }
+        return price;
+    }
+
+    public void deleteDish(int i){
+        orderCartItemList.remove(i);
+        orderCartAdapter.notifyDataSetChanged();
+        subTotaltxt.setText("Total: "+ totalPrice(orderCartItemList) +"$");
+        deposite = totalPrice(orderCartItemList)*10/100;
+        totaltxt.setText("Deposite: "+ deposite +"$");
+    }
+
     private void getOrder() {
         disposable.add(apiRestaurant.getOrderCart(
-                "102566218799174938142",
-                "resedh2aga5a3",
-                Const.TOKEN
+                manager.getString("_id"),
+                rid,
+                "Bearer " + manager.getString("access")
         )
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -67,18 +132,29 @@ public class OrderActivity extends AppCompatActivity {
                             if(orderCartModel.isSuccess()){
                                 OrderCart orderCart = orderCartModel.getData();
                                 nameUsertxt.setText(orderCart.getOrder().getFull_name());
+                                fullName = orderCart.getOrder().getFull_name();
                                 phonetxt.setText(orderCart.getOrder().getPhone());
+                                phone = orderCart.getOrder().getPhone();
                                 emailtxt.setText(orderCart.getOrder().getUser().getEmail());
                                 datetxt.setText(orderCart.getOrder().getOrder_date());
+                                dateOrder = orderCart.getOrder().getOrder_date();
                                 timetxt.setText(orderCart.getOrder().getTime_from().substring(0, 5)+
                                         " - "+orderCart.getOrder().getTime_to().substring(0, 5));
+                                timeFrom = orderCart.getOrder().getTime_from();
+                                timeTo = orderCart.getOrder().getTime_to();
                                 numPeople.setText(orderCart.getOrder().getNumber_people()+" peoples");
+                                numberPeople = orderCart.getOrder().getNumber_people();
                                 tabletxt.setText(orderCart.getOrder().getTable().getTitle());
-                                subTotaltxt.setText("Sub Total: "+ orderCart.getOrder().getPrice()+"$");
-                                totaltxt.setText("Total: "+(orderCart.getOrder().getPrice()-orderCart.getOrder().getDeposit())+"$");
-                                orderCartAdapter = new OrderCartAdapter(R.layout.item_dish_order_2, getApplicationContext(), orderCart.getOrderDetail());
-                                orderrcv.setAdapter(orderCartAdapter);
+                                tid = orderCart.getOrder().getTable().getTid();
+                                orderCartItemList = orderCart.getOrderDetail();
+                                subTotaltxt.setText("Total: "+ totalPrice(orderCart.getOrderDetail()) +"$");
+                                deposite = totalPrice(orderCart.getOrderDetail())*10/100;
+                                totaltxt.setText("Deposite: "+ deposite +"$");
 
+
+
+                                orderCartAdapter = new OrderCartAdapter(R.layout.item_dish_order_2, OrderActivity.this, orderCart.getOrderDetail());
+                                orderrcv.setAdapter(orderCartAdapter);
                             }else{
                                 Toast.makeText(this, "Fail!", Toast.LENGTH_SHORT).show();
                             }
@@ -102,6 +178,16 @@ public class OrderActivity extends AppCompatActivity {
                 }
             });
         }
+        Intent intent = getIntent();
+        rid = intent.getStringExtra("rid");
+    }
+
+    private List<ItemOrder> itemOrders(List<OrderCartItem> orderCartItems){
+        List<ItemOrder> itemOrderList = new ArrayList<>();
+
+
+
+        return itemOrderList;
     }
 
     public void init(){
@@ -118,5 +204,8 @@ public class OrderActivity extends AppCompatActivity {
         subTotaltxt = findViewById(R.id.subtotal);
         totaltxt = findViewById(R.id.deposit);
         paymentbtn = findViewById(R.id.payment);
+        manager = new ReferenceManager(OrderActivity.this);
+        orderCartItemList = new ArrayList<>();
+        itemOrderList = new ArrayList<>();
     }
 }

@@ -1,14 +1,18 @@
 package com.example.abrrapp.activities;
 
+import androidx.annotation.MainThread;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -20,19 +24,32 @@ import com.example.abrrapp.R;
 import com.example.abrrapp.adapter.CategoryDropAdapter;
 import com.example.abrrapp.adapter.DishFeatureAdapter;
 import com.example.abrrapp.adapter.DishOfRestaurantAdapter;
+import com.example.abrrapp.adapter.OrderCartAdapter;
 import com.example.abrrapp.adapter.TableDropAdapter;
 import com.example.abrrapp.adapter.TimeDropAdaper;
 import com.example.abrrapp.models.Category;
 import com.example.abrrapp.models.Dish;
 import com.example.abrrapp.models.DishModel;
+import com.example.abrrapp.models.ItemCart;
+import com.example.abrrapp.models.OrderCart;
+import com.example.abrrapp.models.OrderCartItem;
 import com.example.abrrapp.models.Restaurant;
 import com.example.abrrapp.models.Table;
 import com.example.abrrapp.retrofit.APIRestaurant;
 import com.example.abrrapp.retrofit.RetrofitClient;
 import com.example.abrrapp.utils.Const;
+import com.example.abrrapp.utils.ReferenceManager;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -52,15 +69,19 @@ public class DetailResActivity extends AppCompatActivity {
     Restaurant restaurant;
     APIRestaurant apiRestaurant;
     CompositeDisposable disposable = new CompositeDisposable();
-    String rid;
+    String rid, usernameRes;
     List<Dish> listDish;
     List<Table> listTable;
     List<Category> listCategory;
     DishFeatureAdapter dishFeatureAdapter;
     TableDropAdapter tableDropAdapter;
-    TimeDropAdaper timeDropAdaper;
+    TimeDropAdaper timeToAdaper, timeFromAdaper;
     CategoryDropAdapter categoryDropAdapter;
     DishOfRestaurantAdapter dishOfRestaurantAdapter;
+    public String idTable;
+    public List<OrderCartItem> orderCartItems;
+    ReferenceManager manager;
+    boolean isCheck = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +95,181 @@ public class DetailResActivity extends AppCompatActivity {
         getDropTime();
         getDropCategory();
         getDishOfRes();
+        process();
+        getHistoryCart();
+    }
+
+    private void getHistoryCart() {
+        disposable.add(apiRestaurant.getOrderCart(
+                    manager.getString("_id"),
+                    rid,
+                    "Bearer " + manager.getString("access")
+                )
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        orderCartModel -> {
+                            if(orderCartModel.isSuccess()){
+                                OrderCart orderCart = orderCartModel.getData();
+                                nameUseredt.setText(orderCart.getOrder().getFull_name());
+                                phoneUseredt.setText(orderCart.getOrder().getPhone());
+                                dateOrderedt.setText(orderCart.getOrder().getOrder_date());
+                                numPeopleedt.setText(orderCart.getOrder().getNumber_people() + "");
+                                orderCartItems = orderCart.getOrderDetail();
+                            }else {
+                                isCheck = true;
+                                Log.e("data","er");
+                            }
+                        },
+                        throwable -> {
+                            Log.e("data",throwable.getMessage());
+                        }
+                ));
+    }
+
+    public boolean checkInput(){
+        if(nameUseredt.getText().toString().trim().length()<=0){
+            Toast.makeText(this, "Please input field name!", Toast.LENGTH_SHORT).show();
+            return false;
+        }else if(phoneUseredt.getText().toString().trim().length()<=0){
+            Toast.makeText(this, "Please input field phone!", Toast.LENGTH_SHORT).show();
+            return false;
+        }else if(dateOrderedt.getText().toString().trim().length()<=0){
+            Toast.makeText(this, "Please input field date order!", Toast.LENGTH_SHORT).show();
+            return false;
+        }else if(numPeopleedt.getText().toString().trim().length()<=0){
+            Toast.makeText(this, "Please input field number people!", Toast.LENGTH_SHORT).show();
+            return false;
+        }else if(idTable.compareTo("0")==0){
+            Toast.makeText(this, "Please choice table!", Toast.LENGTH_SHORT).show();
+            return false;
+        }else if(fromspn.getSelectedItemPosition()==0){
+            Toast.makeText(this, "Please choice time from!", Toast.LENGTH_SHORT).show();
+            return false;
+        }else if(tospn.getSelectedItemPosition()==0){
+            Toast.makeText(this, "Please choice time to!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
+    }
+
+    private void process() {
+        chatimg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), ChatActivity.class);
+                intent.putExtra("usernameRes", usernameRes);
+                startActivity(intent);
+            }
+        });
+
+        dateOrderedt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(DetailResActivity.this, "ok", Toast.LENGTH_SHORT).show();
+                Calendar calendar=Calendar.getInstance();
+                int ngay,thang,nam;
+                ngay = calendar.get(Calendar.DATE);
+                thang = calendar.get(Calendar.MONTH);
+                nam = calendar.get(Calendar.YEAR);
+                DatePickerDialog datePickerDialog = new DatePickerDialog(DetailResActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        calendar.set(year,month,dayOfMonth);
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                        dateOrderedt.setText(simpleDateFormat.format(calendar.getTime()));
+                    }
+                },nam,thang,ngay);
+                datePickerDialog.show();
+            }
+        });
+
+        nextbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(checkInput()){
+                    JSONArray jsonObject = new JSONArray();
+                    for(int i = 0;i < orderCartItems.size();i++){
+                        JSONObject item = new JSONObject();
+                        try {
+                            item.put("did", orderCartItems.get(i).getDish().getDid());
+                            item.put("quantity", orderCartItems.get(i).getQuantity());
+                            jsonObject.put(item);
+                        } catch (JSONException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+
+                    if(isCheck){
+                        disposable.add(
+                                apiRestaurant.addOrderCart(
+                                                manager.getString("_id"),
+                                                rid,
+                                                nameUseredt.getText().toString().trim(),
+                                                phoneUseredt.getText().toString().trim(),
+                                                idTable,
+                                                Const.timeOrder.get(fromspn.getSelectedItemPosition()),
+                                                Const.timeOrder.get(tospn.getSelectedItemPosition()),
+                                                numPeopleedt.getText().toString().trim(),
+                                                jsonObject,
+                                                dateOrderedt.getText().toString().trim(),
+                                                "Bearer " + manager.getString("access")
+                                        )
+                                        .subscribeOn(Schedulers.io())
+                                        .observeOn(AndroidSchedulers.mainThread())
+                                        .subscribe(
+                                                defaultModel -> {
+                                                    if(defaultModel.isSuccess()){
+                                                        Intent intent = new Intent(getApplicationContext(), OrderActivity.class);
+                                                        intent.putExtra("rid", rid);
+                                                        startActivity(intent);
+                                                    }else {
+                                                        Toast.makeText(DetailResActivity.this, defaultModel.getMessage()+"", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                },
+                                                throwable -> {
+                                                    Toast.makeText(DetailResActivity.this, throwable.getMessage()+"", Toast.LENGTH_SHORT).show();
+                                                }
+                                        )
+                        );
+                    }else{
+                        disposable.add(
+                                apiRestaurant.updateOrderCart(
+                                                manager.getString("_id"),
+                                                rid,
+                                                nameUseredt.getText().toString().trim(),
+                                                phoneUseredt.getText().toString().trim(),
+                                                idTable,
+                                                Const.timeOrder.get(fromspn.getSelectedItemPosition()),
+                                                Const.timeOrder.get(tospn.getSelectedItemPosition()),
+                                                numPeopleedt.getText().toString().trim(),
+                                                jsonObject,
+                                                dateOrderedt.getText().toString().trim(),
+                                                "Bearer " + manager.getString("access")
+                                        )
+                                        .subscribeOn(Schedulers.io())
+                                        .observeOn(AndroidSchedulers.mainThread())
+                                        .subscribe(
+                                                defaultModel -> {
+                                                    if(defaultModel.isSuccess()){
+                                                        Intent intent = new Intent(getApplicationContext(), OrderActivity.class);
+                                                        intent.putExtra("rid", rid);
+                                                        startActivity(intent);
+                                                    }else {
+                                                        Toast.makeText(DetailResActivity.this, defaultModel.getMessage()+"", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                },
+                                                throwable -> {
+                                                    Toast.makeText(DetailResActivity.this, throwable.getMessage()+"", Toast.LENGTH_SHORT).show();
+                                                }
+                                        )
+                        );
+                    }
+
+
+                }
+            }
+        });
     }
 
     private void getDishOfRes() {
@@ -84,7 +280,7 @@ public class DetailResActivity extends AppCompatActivity {
                         dishFeatureModel -> {
                             if(dishFeatureModel.isSuccess()){
                                 listDish = dishFeatureModel.getData();
-                                dishOfRestaurantAdapter = new DishOfRestaurantAdapter(R.layout.item_dish_order, getApplicationContext(), listDish);
+                                dishOfRestaurantAdapter = new DishOfRestaurantAdapter(R.layout.item_dish_order, DetailResActivity.this, listDish);
                                 dishrcv.setAdapter(dishOfRestaurantAdapter);
                             }
                         },
@@ -114,12 +310,13 @@ public class DetailResActivity extends AppCompatActivity {
     }
 
     private void getDropTime() {
-        timeDropAdaper = new TimeDropAdaper(R.layout.item_list_drop_down, getApplicationContext(), Const.getTime());
-        fromspn.setAdapter(timeDropAdaper);
-        tospn.setAdapter(timeDropAdaper);
+        timeToAdaper = new TimeDropAdaper(R.layout.item_list_drop_down, DetailResActivity.this, Const.getTime());
+        timeFromAdaper = new TimeDropAdaper(R.layout.item_list_drop_down, DetailResActivity.this, Const.getTime());
+        fromspn.setAdapter(timeFromAdaper);
+        tospn.setAdapter(timeToAdaper);
     }
 
-    private void getDropTable() {
+    public void getDropTable() {
         disposable.add(apiRestaurant.getTable(rid)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -128,7 +325,7 @@ public class DetailResActivity extends AppCompatActivity {
                             if(tableModel.isSuccess()){
                                 listTable.add(new Table("0", "Choice table"));
                                 listTable.addAll(tableModel.getData());
-                                tableDropAdapter = new TableDropAdapter(R.layout.item_list_drop_down, getApplicationContext(), listTable);
+                                tableDropAdapter = new TableDropAdapter(R.layout.item_list_drop_down, DetailResActivity.this, listTable);
                                 tablespn.setAdapter(tableDropAdapter);
                             }
                         },
@@ -146,7 +343,7 @@ public class DetailResActivity extends AppCompatActivity {
                         dishFeatureModel -> {
                             if(dishFeatureModel.isSuccess()){
                                 listDish = dishFeatureModel.getData();
-                                dishFeatureAdapter = new DishFeatureAdapter(R.layout.item_feartured_dish, getApplicationContext(), listDish);
+                                dishFeatureAdapter = new DishFeatureAdapter(R.layout.item_feartured_dish, DetailResActivity.this, listDish);
                                 dishFeaturercv.setAdapter(dishFeatureAdapter);
                             }
                         },
@@ -161,6 +358,7 @@ public class DetailResActivity extends AppCompatActivity {
         Bundle bundle = intent.getBundleExtra("bundle");
         restaurant = (Restaurant) bundle.getSerializable("data");
         rid = restaurant.getRid();
+        usernameRes = restaurant.getUsername();
         Picasso.get().load(restaurant.getImage()).into(productimg);
         nametxt.setText(restaurant.getTitle());
         ratingtxt.setText("4 Rating");
@@ -171,13 +369,6 @@ public class DetailResActivity extends AppCompatActivity {
         addresstxt.setText(restaurant.getAddress());
         phonetxt.setText(restaurant.getPhone());
         descriptiontxt.setText(Html.fromHtml(restaurant.getDescription()));
-        nextbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), OrderActivity.class);
-                startActivity(intent);
-            }
-        });
     }
 
     private void getToolBar() {
@@ -226,5 +417,7 @@ public class DetailResActivity extends AppCompatActivity {
         listCategory = new ArrayList<>();
         dishFeaturercv = findViewById(R.id.list_product);
         apiRestaurant = RetrofitClient.getInstance(Const.BASE_URL).create(APIRestaurant.class);
+        orderCartItems = new ArrayList<>();
+        manager = new ReferenceManager(DetailResActivity.this);
     }
 }

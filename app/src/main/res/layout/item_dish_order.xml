@@ -96,8 +96,17 @@
         android:id="@+id/add"
         android:background="@drawable/edit_btn_add"
         android:src="@drawable/baseline_add"
-        android:layout_width="@dimen/_28sdp"
+        android:layout_width="@dimen/_25sdp"
         android:layout_gravity="center"
-        android:layout_height="@dimen/_28sdp"/>
+        android:layout_height="@dimen/_25sdp"/>
+    <ImageButton
+        android:id="@+id/delete"
+        android:src="@drawable/baseline_delete"
+        android:background="@android:color/transparent"
+        android:layout_width="@dimen/_25sdp"
+        android:visibility="gone"
+        android:scaleType="fitXY"
+        android:layout_gravity="center"
+        android:layout_height="@dimen/_25sdp"/>
 
 </LinearLayout>

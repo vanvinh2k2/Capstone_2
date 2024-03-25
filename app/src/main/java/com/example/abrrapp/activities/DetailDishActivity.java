@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -122,6 +123,6 @@ public class DetailDishActivity extends AppCompatActivity {
         viewbtn = findViewById(R.id.view);
         dishrcv = findViewById(R.id.list_res);
         apiRestaurant = RetrofitClient.getInstance(Const.BASE_URL).create(APIRestaurant.class);
-    }
 
+    }
 }

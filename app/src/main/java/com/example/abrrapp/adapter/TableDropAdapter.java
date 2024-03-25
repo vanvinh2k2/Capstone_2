@@ -8,16 +8,17 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.example.abrrapp.R;
+import com.example.abrrapp.activities.DetailResActivity;
 import com.example.abrrapp.models.Table;
 
 import java.util.List;
 
 public class TableDropAdapter extends BaseAdapter {
     int layout;
-    Context context;
+    DetailResActivity context;
     List<Table> listTable;
 
-    public TableDropAdapter(int layout, Context context, List<Table> listRes) {
+    public TableDropAdapter(int layout, DetailResActivity context, List<Table> listRes) {
         this.layout = layout;
         this.context = context;
         this.listTable = listRes;
@@ -44,6 +45,7 @@ public class TableDropAdapter extends BaseAdapter {
                 context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         view = inflater.inflate(layout,null);
         TextView seleted = view.findViewById(R.id.seleted);
+        context.idTable = listTable.get(i).getTid();
         seleted.setText(listTable.get(i).getTitle());
         return view;
     }
@@ -55,6 +57,7 @@ public class TableDropAdapter extends BaseAdapter {
         convertView = inflater.inflate(R.layout.item_drop_down,null);
         TextView tvCategory = convertView.findViewById(R.id.item);
         tvCategory.setText(listTable.get(position).getTitle());
+        context.idTable = listTable.get(position).getTid();
         return convertView;
     }
 }
