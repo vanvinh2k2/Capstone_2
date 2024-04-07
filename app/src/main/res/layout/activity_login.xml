@@ -21,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Sign in Account"
+            android:text="Login Account"
             android:textColor="@color/black"
             android:textSize="@dimen/_20ssp"
             android:textStyle="bold"/>
@@ -41,6 +41,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/_35sdp"
             android:textSize="@dimen/_13ssp"
+            android:hint="user123@gmail.com"
             android:textColor="@color/black"
             android:background="@drawable/edit_input"
             android:paddingLeft="@dimen/_10sdp" />
@@ -65,6 +66,7 @@
                 android:background="@drawable/edit_input"
                 android:inputType="textPassword"
                 android:textSize="@dimen/_13ssp"
+                android:hint="12345user"
                 android:textColor="@color/black"
                 android:paddingRight="@dimen/_38sdp"
                 android:paddingLeft="@dimen/_10sdp"/>
@@ -109,7 +111,7 @@
                 android:text="Forgot password?"
                 android:textSize="@dimen/_13ssp"
                 android:layout_marginRight="50dp"
-                android:textColor="#474646"/>
+                android:textColor="@color/black"/>
 
             <TextView
                 android:id="@+id/registertxt"

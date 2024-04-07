@@ -59,6 +59,16 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        forgetpasswordtxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(LoginActivity.this, ForgetPasswordActivity.class);
+                /*String email = manager.getString("email").length()>0?manager.getString("email"):"";
+                intent.putExtra("email", email);*/
+                startActivity(intent);
+            }
+        });
+
         if(manager.getString("username")!=null) checkRefresh(manager.getString("refresh"));
     }
 

@@ -1,12 +1,15 @@
 package com.example.abrrapp.activities;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import com.google.gson.Gson;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -21,8 +24,17 @@ import com.example.abrrapp.retrofit.APIRestaurant;
 import com.example.abrrapp.retrofit.RetrofitClient;
 import com.example.abrrapp.utils.Const;
 import com.example.abrrapp.utils.ReferenceManager;
+import com.paypal.android.sdk.payments.PayPalConfiguration;
 import com.paypal.android.sdk.payments.PayPalPayment;
+import com.paypal.android.sdk.payments.PayPalService;
+import com.paypal.android.sdk.payments.PaymentActivity;
+import com.paypal.android.sdk.payments.PaymentConfirmation;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -41,6 +53,7 @@ public class OrderActivity extends AppCompatActivity {
     OrderCartAdapter orderCartAdapter;
     Button paymentbtn;
     ReferenceManager manager;
+    public PayPalConfiguration payPalConfiguration;
     PayPalPayment payPalPayment;
     String rid, fullName, phone, tid, timeFrom, timeTo, dateOrder;
     float deposite;
@@ -58,22 +71,54 @@ public class OrderActivity extends AppCompatActivity {
     }
 
     private void getProcess() {
+        payPalConfiguration = new PayPalConfiguration().environment(PayPalConfiguration.ENVIRONMENT_NO_NETWORK)
+                .clientId(Const.YOUR_CLIENT_ID);
+
+        Intent intent = new Intent(this, PayPalService.class);
+        intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, payPalConfiguration);
+        startService(intent);
         paymentbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(totalPrice(orderCartItemList)<=100){
                     payment();
                 }else{
-                    payment();
+                    getPayPal();
                 }
             }
         });
     }
 
-    private void payment(){
-        startActivity(new Intent(getApplicationContext(), BillActivity.class));
+    private void getPayPal(){
+        PayPalPayment payment = new PayPalPayment(new BigDecimal(deposite), "USD","Tổng thanh toán", PayPalPayment.PAYMENT_INTENT_SALE);
+        Intent intent = new Intent(this, PaymentActivity.class);
+        intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION,payPalConfiguration);
+        intent.putExtra(PaymentActivity.EXTRA_PAYMENT, payment);
+        startActivityForResult(intent,1);
+    }
 
-        /*disposable.add(apiRestaurant.addOrder(
+    private void deleteOrderCart(){
+        disposable.add(apiRestaurant.deleteOrderCart(
+                manager.getString("_id"),
+                rid
+        )
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        defaultModel -> {
+                            if(defaultModel.isSuccess()){
+                                startActivity(new Intent(getApplicationContext(), BillActivity.class));
+                            }
+                        },
+                        throwable -> {
+                            Toast.makeText(this, throwable.getMessage()+"", Toast.LENGTH_SHORT).show();
+                        }
+                ));
+    }
+
+    private void payment(){
+        Gson gson = new Gson();
+        disposable.add(apiRestaurant.addOrder(
                         manager.getString("_id"),
                         rid,
                         fullName,
@@ -84,9 +129,9 @@ public class OrderActivity extends AppCompatActivity {
                         timeFrom,
                         timeTo,
                         numberPeople,
-                        "",
+                        gson.toJson(itemOrders(orderCartItemList)),
                         dateOrder,
-                        manager.getString("access")
+                        "Bearer "+manager.getString("access")
                 )
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -94,13 +139,38 @@ public class OrderActivity extends AppCompatActivity {
                         defaultModel -> {
                             if(defaultModel.isSuccess()){
                                 Toast.makeText(OrderActivity.this, "ok", Toast.LENGTH_SHORT).show();
-                                //startActivity(new Intent(getApplicationContext(), BillActivity.class));
+                                deleteOrderCart();
                             }
                         },
                         throwable -> {
                             Toast.makeText(OrderActivity.this, throwable.getMessage()+"", Toast.LENGTH_SHORT).show();
                         }
-                ));*/
+                ));
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(requestCode == 1 && resultCode == RESULT_OK){
+            PaymentConfirmation paymentConfirmation = data.getParcelableExtra(PaymentActivity.EXTRA_RESULT_CONFIRMATION);
+            if(paymentConfirmation != null){
+                try {
+                    String pamentdetail = paymentConfirmation.toJSONObject().toString();
+                    JSONObject jsonObject = new JSONObject(pamentdetail);
+                    Log.e("kq_paypal", jsonObject.toString()+"");
+                    payment();
+                    Intent intent = new Intent(getApplicationContext(), BillActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                } catch (JSONException e) {
+                    Toast.makeText(this, e.getLocalizedMessage()+"", Toast.LENGTH_SHORT).show();
+                }
+            } else if (requestCode== Activity.RESULT_CANCELED) {
+                Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
+            }
+        } else if (requestCode == PaymentActivity.RESULT_EXTRAS_INVALID) {
+            Toast.makeText(this, "Invalid!", Toast.LENGTH_SHORT).show();
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private float totalPrice(List<OrderCartItem> orderCartItems){
@@ -150,9 +220,6 @@ public class OrderActivity extends AppCompatActivity {
                                 subTotaltxt.setText("Total: "+ totalPrice(orderCart.getOrderDetail()) +"$");
                                 deposite = totalPrice(orderCart.getOrderDetail())*10/100;
                                 totaltxt.setText("Deposite: "+ deposite +"$");
-
-
-
                                 orderCartAdapter = new OrderCartAdapter(R.layout.item_dish_order_2, OrderActivity.this, orderCart.getOrderDetail());
                                 orderrcv.setAdapter(orderCartAdapter);
                             }else{
@@ -184,9 +251,17 @@ public class OrderActivity extends AppCompatActivity {
 
     private List<ItemOrder> itemOrders(List<OrderCartItem> orderCartItems){
         List<ItemOrder> itemOrderList = new ArrayList<>();
-
-
-
+        for(int i=0;i<orderCartItems.size();i++){
+            OrderCartItem orderItem = orderCartItems.get(i);
+            float total = orderItem.getQuantity()*orderItem.getDish().getPrice();
+            ItemOrder item = new ItemOrder(
+                    orderItem.getDish().getDid(),
+                    orderItem.getDish().getImage(),
+                    orderItem.getQuantity(),
+                    orderItem.getDish().getPrice(),
+                    total);
+            itemOrderList.add(item);
+        }
         return itemOrderList;
     }
 

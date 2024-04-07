@@ -173,8 +173,30 @@ public interface APIRestaurant {
             @Field("time_from") String time_from,
             @Field("time_to") String time_to,
             @Field("number_people") int number_people,
-            @Field("items") JSONArray items,
+            @Field("items") String items,
             @Field("order_date") String order_date,
+            @Header("Authorization") String credentials
+    );
+
+    @GET("api/delete-order-cart/{uid}/{rid}/")
+    Observable<DefaultModel> deleteOrderCart(
+            @Path("uid") String uid,
+            @Path("rid") String rid
+    );
+
+    @POST("auth/api/send-email/")
+    @FormUrlEncoded
+    Observable<DefaultModel> forgetPassword(
+            @Field("email") String email
+    );
+
+    @POST("api/check-order/{rid}/")
+    @FormUrlEncoded
+    Observable<DefaultModel> checkOrder(
+            @Path("rid") String rid,
+            @Field("time_from") String time_from,
+            @Field("time_to") String time_to,
+            @Field("tid") String tid,
             @Header("Authorization") String credentials
     );
 }

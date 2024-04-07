@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.example.abrrapp.R;
 import com.example.abrrapp.adapter.MessageAdapter;
 import com.example.abrrapp.models.Message;
+import com.example.abrrapp.utils.Const;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -92,7 +93,7 @@ public class ChatActivity extends AppCompatActivity {
         OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder()
-                .url("ws://192.168.72.58:8000/ws/chat/102566218799174938142/")
+                .url("ws://"+ Const.URL +"/ws/chat/102566218799174938142/")
                 .build();
         WebSocketListener webSocketListener = new WebSocketListener() {
             @Override

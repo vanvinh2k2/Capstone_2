@@ -40,6 +40,7 @@ import com.example.abrrapp.retrofit.RetrofitClient;
 import com.example.abrrapp.utils.Const;
 import com.example.abrrapp.utils.ReferenceManager;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.squareup.picasso.Picasso;
 
@@ -99,6 +100,97 @@ public class DetailResActivity extends AppCompatActivity {
         getHistoryCart();
     }
 
+    private Integer getPositionTable(String tid, List<Table> tables){
+        Integer position = 0;
+        for (int i = 0; i < tables.size(); i++) {
+            if (tid.compareTo(tables.get(i).getTid()) == 0) {
+                position = i;
+                break;
+            }
+        }
+        return position;
+    }
+
+    private Integer getPositionTime(String time){
+        Integer position = 0;
+        for (int i = 0; i < Const.getTime().size(); i++) {
+            if (time.compareTo(Const.getTime().get(i)) == 0) {
+                position = i;
+                break;
+            }
+        }
+        return position;
+    }
+
+    private void updateOrderCart(JSONArray jsonObject){
+        disposable.add(
+                apiRestaurant.updateOrderCart(
+                                manager.getString("_id"),
+                                rid,
+                                nameUseredt.getText().toString().trim(),
+                                phoneUseredt.getText().toString().trim(),
+                                idTable,
+                                Const.timeOrder.get(fromspn.getSelectedItemPosition()),
+                                Const.timeOrder.get(tospn.getSelectedItemPosition()),
+                                numPeopleedt.getText().toString().trim(),
+                                jsonObject,
+                                dateOrderedt.getText().toString().trim(),
+                                "Bearer " + manager.getString("access")
+                        )
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(
+                                defaultModel -> {
+                                    if(defaultModel.isSuccess()){
+                                        Intent intent = new Intent(getApplicationContext(), OrderActivity.class);
+                                        intent.putExtra("rid", rid);
+                                        startActivity(intent);
+                                    }else {
+                                        Toast.makeText(DetailResActivity.this, defaultModel.getMessage()+"", Toast.LENGTH_SHORT).show();
+                                    }
+                                },
+                                throwable -> {
+                                    Toast.makeText(DetailResActivity.this, throwable.getMessage()+"", Toast.LENGTH_SHORT).show();
+                                }
+                        )
+        );
+    }
+
+    public void addOrderCart(JSONArray jsonObject){
+        disposable.add(
+                apiRestaurant.addOrderCart(
+                                manager.getString("_id"),
+                                rid,
+                                nameUseredt.getText().toString().trim(),
+                                phoneUseredt.getText().toString().trim(),
+                                idTable,
+                                Const.timeOrder.get(fromspn.getSelectedItemPosition()),
+                                Const.timeOrder.get(tospn.getSelectedItemPosition()),
+                                numPeopleedt.getText().toString().trim(),
+                                jsonObject,
+                                dateOrderedt.getText().toString().trim(),
+                                "Bearer " + manager.getString("access")
+                        )
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(
+                                defaultModel -> {
+                                    if(defaultModel.isSuccess()){
+                                        Toast.makeText(DetailResActivity.this, "ok", Toast.LENGTH_SHORT).show();
+                                        Intent intent = new Intent(getApplicationContext(), OrderActivity.class);
+                                        intent.putExtra("rid", rid);
+                                        startActivity(intent);
+                                    }else {
+                                        Toast.makeText(DetailResActivity.this, defaultModel.getMessage()+"", Toast.LENGTH_SHORT).show();
+                                    }
+                                },
+                                throwable -> {
+                                    Toast.makeText(DetailResActivity.this, throwable.getMessage()+"", Toast.LENGTH_SHORT).show();
+                                }
+                        )
+        );
+    }
+
     private void getHistoryCart() {
         disposable.add(apiRestaurant.getOrderCart(
                     manager.getString("_id"),
@@ -110,13 +202,18 @@ public class DetailResActivity extends AppCompatActivity {
                 .subscribe(
                         orderCartModel -> {
                             if(orderCartModel.isSuccess()){
+                                Toast.makeText(this, "ok", Toast.LENGTH_SHORT).show();
                                 OrderCart orderCart = orderCartModel.getData();
                                 nameUseredt.setText(orderCart.getOrder().getFull_name());
                                 phoneUseredt.setText(orderCart.getOrder().getPhone());
                                 dateOrderedt.setText(orderCart.getOrder().getOrder_date());
                                 numPeopleedt.setText(orderCart.getOrder().getNumber_people() + "");
                                 orderCartItems = orderCart.getOrderDetail();
+                                tospn.setSelection(getPositionTime(orderCart.getOrder().getTime_to().toString().substring(0,5)));
+                                fromspn.setSelection(getPositionTime(orderCart.getOrder().getTime_from().toString().substring(0,5)));
+                                tablespn.setSelection(getPositionTable(orderCart.getOrder().getTable().getTid(),listTable));
                             }else {
+                                Toast.makeText(this, "ko", Toast.LENGTH_SHORT).show();
                                 isCheck = true;
                                 Log.e("data","er");
                             }
@@ -199,74 +296,31 @@ public class DetailResActivity extends AppCompatActivity {
                             throw new RuntimeException(e);
                         }
                     }
+                    disposable.add(apiRestaurant.checkOrder(
+                                        rid,
+                                        Const.timeOrder.get(fromspn.getSelectedItemPosition()),
+                                        Const.timeOrder.get(tospn.getSelectedItemPosition()),
+                                        idTable,
+                                        "Bearer " + manager.getString("access")
 
-                    if(isCheck){
-                        disposable.add(
-                                apiRestaurant.addOrderCart(
-                                                manager.getString("_id"),
-                                                rid,
-                                                nameUseredt.getText().toString().trim(),
-                                                phoneUseredt.getText().toString().trim(),
-                                                idTable,
-                                                Const.timeOrder.get(fromspn.getSelectedItemPosition()),
-                                                Const.timeOrder.get(tospn.getSelectedItemPosition()),
-                                                numPeopleedt.getText().toString().trim(),
-                                                jsonObject,
-                                                dateOrderedt.getText().toString().trim(),
-                                                "Bearer " + manager.getString("access")
-                                        )
-                                        .subscribeOn(Schedulers.io())
-                                        .observeOn(AndroidSchedulers.mainThread())
-                                        .subscribe(
-                                                defaultModel -> {
-                                                    if(defaultModel.isSuccess()){
-                                                        Intent intent = new Intent(getApplicationContext(), OrderActivity.class);
-                                                        intent.putExtra("rid", rid);
-                                                        startActivity(intent);
-                                                    }else {
-                                                        Toast.makeText(DetailResActivity.this, defaultModel.getMessage()+"", Toast.LENGTH_SHORT).show();
-                                                    }
-                                                },
-                                                throwable -> {
-                                                    Toast.makeText(DetailResActivity.this, throwable.getMessage()+"", Toast.LENGTH_SHORT).show();
+                                ).subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(
+                                        defaultModel -> {
+                                            if(defaultModel.isSuccess()){
+                                                if(isCheck){
+                                                    addOrderCart(jsonObject);
+                                                } else {
+                                                    updateOrderCart(jsonObject);
                                                 }
-                                        )
-                        );
-                    }else{
-                        disposable.add(
-                                apiRestaurant.updateOrderCart(
-                                                manager.getString("_id"),
-                                                rid,
-                                                nameUseredt.getText().toString().trim(),
-                                                phoneUseredt.getText().toString().trim(),
-                                                idTable,
-                                                Const.timeOrder.get(fromspn.getSelectedItemPosition()),
-                                                Const.timeOrder.get(tospn.getSelectedItemPosition()),
-                                                numPeopleedt.getText().toString().trim(),
-                                                jsonObject,
-                                                dateOrderedt.getText().toString().trim(),
-                                                "Bearer " + manager.getString("access")
-                                        )
-                                        .subscribeOn(Schedulers.io())
-                                        .observeOn(AndroidSchedulers.mainThread())
-                                        .subscribe(
-                                                defaultModel -> {
-                                                    if(defaultModel.isSuccess()){
-                                                        Intent intent = new Intent(getApplicationContext(), OrderActivity.class);
-                                                        intent.putExtra("rid", rid);
-                                                        startActivity(intent);
-                                                    }else {
-                                                        Toast.makeText(DetailResActivity.this, defaultModel.getMessage()+"", Toast.LENGTH_SHORT).show();
-                                                    }
-                                                },
-                                                throwable -> {
-                                                    Toast.makeText(DetailResActivity.this, throwable.getMessage()+"", Toast.LENGTH_SHORT).show();
-                                                }
-                                        )
-                        );
-                    }
-
-
+                                            }else {
+                                                Toast.makeText(DetailResActivity.this, defaultModel.getMessage()+"", Toast.LENGTH_SHORT).show();
+                                            }
+                                        },
+                                        throwable -> {
+                                            Toast.makeText(DetailResActivity.this, throwable.getMessage()+"", Toast.LENGTH_SHORT).show();
+                                        }
+                                ));
                 }
             }
         });
