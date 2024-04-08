@@ -66,6 +66,7 @@ public class DetailResActivity extends AppCompatActivity {
     EditText nameUseredt, phoneUseredt, dateOrderedt, numPeopleedt, searchedt;
     Button nextbtn;
     ImageButton searchbtn;
+    ImageView lovebtn, unlovebtn;
     Spinner tablespn, fromspn, tospn, categoryspn;
     Restaurant restaurant;
     APIRestaurant apiRestaurant;
@@ -98,6 +99,7 @@ public class DetailResActivity extends AppCompatActivity {
         getDishOfRes();
         process();
         getHistoryCart();
+        checkLike();
     }
 
     private Integer getPositionTable(String tid, List<Table> tables){
@@ -176,7 +178,6 @@ public class DetailResActivity extends AppCompatActivity {
                         .subscribe(
                                 defaultModel -> {
                                     if(defaultModel.isSuccess()){
-                                        Toast.makeText(DetailResActivity.this, "ok", Toast.LENGTH_SHORT).show();
                                         Intent intent = new Intent(getApplicationContext(), OrderActivity.class);
                                         intent.putExtra("rid", rid);
                                         startActivity(intent);
@@ -202,7 +203,6 @@ public class DetailResActivity extends AppCompatActivity {
                 .subscribe(
                         orderCartModel -> {
                             if(orderCartModel.isSuccess()){
-                                Toast.makeText(this, "ok", Toast.LENGTH_SHORT).show();
                                 OrderCart orderCart = orderCartModel.getData();
                                 nameUseredt.setText(orderCart.getOrder().getFull_name());
                                 phoneUseredt.setText(orderCart.getOrder().getPhone());
@@ -213,7 +213,6 @@ public class DetailResActivity extends AppCompatActivity {
                                 fromspn.setSelection(getPositionTime(orderCart.getOrder().getTime_from().toString().substring(0,5)));
                                 tablespn.setSelection(getPositionTable(orderCart.getOrder().getTable().getTid(),listTable));
                             }else {
-                                Toast.makeText(this, "ko", Toast.LENGTH_SHORT).show();
                                 isCheck = true;
                                 Log.e("data","er");
                             }
@@ -250,6 +249,70 @@ public class DetailResActivity extends AppCompatActivity {
         return true;
     }
 
+    public void deleteLike(String rid){
+        disposable.add(apiRestaurant.delLike(
+                        manager.getString("_id"),
+                        rid,
+                        "Bearer " + manager.getString("access")
+                )
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        likeRestaurantModel -> {
+                            if(likeRestaurantModel.isSuccess()){
+                                Toast.makeText(this, likeRestaurantModel.getMessage()+"", Toast.LENGTH_SHORT).show();
+                            }
+                        },
+                        throwable -> {
+                            Toast.makeText(this, throwable.getMessage()+"", Toast.LENGTH_SHORT).show();
+                        }
+                ));
+    }
+
+    public void addLike(String rid){
+        disposable.add(apiRestaurant.addLike(
+                        manager.getString("_id"),
+                        rid,
+                        "Bearer " + manager.getString("access")
+                )
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        defaultModel -> {
+                            if(defaultModel.isSuccess()){
+                                Toast.makeText(this, defaultModel.getMessage()+"", Toast.LENGTH_SHORT).show();
+                            }
+                        },
+                        throwable -> {
+                            Toast.makeText(this, throwable.getMessage()+"", Toast.LENGTH_SHORT).show();
+                        }
+                ));
+    }
+
+    public void checkLike(){
+        disposable.add(apiRestaurant.checkLike(
+                        manager.getString("_id"),
+                        rid,
+                        "Bearer " + manager.getString("access")
+                )
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        defaultModel -> {
+                            if(defaultModel.isSuccess()){
+                                unlovebtn.setVisibility(View.VISIBLE);
+                                lovebtn.setVisibility(View.GONE);
+                            }else{
+                                lovebtn.setVisibility(View.VISIBLE);
+                                unlovebtn.setVisibility(View.GONE);
+                            }
+                        },
+                        throwable -> {
+                            Toast.makeText(this, throwable.getMessage()+"", Toast.LENGTH_SHORT).show();
+                        }
+                ));
+    }
+
     private void process() {
         chatimg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -260,10 +323,29 @@ public class DetailResActivity extends AppCompatActivity {
             }
         });
 
+        lovebtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteLike(rid);
+                lovebtn.setVisibility(View.GONE);
+                unlovebtn.setVisibility(View.VISIBLE);
+                liketxt.setText((Integer.parseInt(liketxt.getText().toString()) - 1) +"");
+            }
+        });
+
+        unlovebtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addLike(rid);
+                lovebtn.setVisibility(View.VISIBLE);
+                unlovebtn.setVisibility(View.GONE);
+                liketxt.setText((Integer.parseInt(liketxt.getText().toString()) + 1) +"");
+            }
+        });
+
         dateOrderedt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(DetailResActivity.this, "ok", Toast.LENGTH_SHORT).show();
                 Calendar calendar=Calendar.getInstance();
                 int ngay,thang,nam;
                 ngay = calendar.get(Calendar.DATE);
@@ -469,6 +551,8 @@ public class DetailResActivity extends AppCompatActivity {
         listDish = new ArrayList<>();
         listTable = new ArrayList<>();
         listCategory = new ArrayList<>();
+        lovebtn = findViewById(R.id.love);
+        unlovebtn = findViewById(R.id.un_love);
         dishFeaturercv = findViewById(R.id.list_product);
         apiRestaurant = RetrofitClient.getInstance(Const.BASE_URL).create(APIRestaurant.class);
         orderCartItems = new ArrayList<>();

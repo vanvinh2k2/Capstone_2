@@ -122,10 +122,18 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
                 <ImageView
+                    android:id="@+id/love"
                     android:src="@drawable/love"
+                    android:visibility="gone"
                     android:layout_marginLeft="@dimen/_2sdp"
-                    android:layout_width="@dimen/_18sdp"
-                    android:layout_height="@dimen/_18sdp"/>
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"/>
+                <ImageView
+                    android:id="@+id/un_love"
+                    android:src="@drawable/unlove"
+                    android:layout_marginLeft="@dimen/_2sdp"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_marginTop="@dimen/_5sdp"

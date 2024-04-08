@@ -1,6 +1,7 @@
 package com.example.abrrapp.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class ForgetPasswordActivity extends AppCompatActivity {
     private TextView emailedt;
     private Button sendbtn;
+    Toolbar toolbar;
     CompositeDisposable disposable = new CompositeDisposable();
     APIRestaurant apiRestaurant;
     @Override
@@ -29,6 +31,7 @@ public class ForgetPasswordActivity extends AppCompatActivity {
         setContentView(R.layout.activity_forget_password);
         init();
         sendEmail();
+        getToolBar();
     }
 
     private void sendEmail() {
@@ -56,10 +59,25 @@ public class ForgetPasswordActivity extends AppCompatActivity {
             }
         });
     }
+    private void getToolBar() {
+        setSupportActionBar(toolbar);
+        if(getSupportActionBar() != null){
+            getSupportActionBar().setTitle("");
+            getSupportActionBar().setHomeAsUpIndicator(R.drawable.baseline_arrow_back);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    finish();
+                }
+            });
+        }
+    }
 
     public void init(){
         emailedt = findViewById(R.id.email);
         sendbtn = findViewById(R.id.confirm);
+        toolbar = findViewById(R.id.toolbar);
         apiRestaurant = RetrofitClient.getInstance(Const.BASE_URL).create(APIRestaurant.class);
     }
 }

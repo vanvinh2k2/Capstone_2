@@ -39,7 +39,33 @@ public class DishFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_dish, container, false);
         init(view);
         getDish();
+        searchDish();
         return view;
+    }
+
+    private void searchDish() {
+        searchbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String text = searchedt.getText().toString().trim();
+                List<Dish> dishSearch = new ArrayList<>();
+                if(text.length()>0){
+                    for(int i=0;i<listDish.size();i++) {
+                        if (listDish.get(i).getTitle().toLowerCase().contains(text.toLowerCase())) {
+                            dishSearch.add(listDish.get(i));
+                        }
+                    }
+                }else{
+                    dishSearch.addAll(listDish);
+                }
+                dishAdapter.setListDish(dishSearch);
+                dishAdapter.notifyDataSetChanged();
+            }
+        });
+    }
+
+    public void deleteDish(String did){
+
     }
 
     private void getDish() {

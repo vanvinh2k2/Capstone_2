@@ -27,7 +27,9 @@ import com.example.abrrapp.adapter.RestaurantHotAdapter;
 import com.example.abrrapp.models.Restaurant;
 import com.example.abrrapp.retrofit.APIRestaurant;
 import com.example.abrrapp.retrofit.RetrofitClient;
+import com.example.abrrapp.utils.ReferenceManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,8 +45,10 @@ public class HomeFragment extends Fragment {
     RestaurantAdapter resAdapter;
     ArrayList<Restaurant> listRes, listResHot;
     FloatingActionButton callphone;
+    ImageView profileImage;
     ViewFlipper banner;
     APIRestaurant apiRestaurant;
+    ReferenceManager manager;
     CompositeDisposable disposable = new CompositeDisposable();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -58,6 +62,10 @@ public class HomeFragment extends Fragment {
     }
 
     private void actionViewFlipper() {
+        Picasso.get()
+                .load(manager.getString("avatar"))
+                .placeholder(R.drawable.user)
+                .into(profileImage);
         List<Integer> quangCao = new ArrayList<>();
         quangCao.add(R.drawable.banner);
         quangCao.add(R.drawable.banner2);
@@ -80,20 +88,31 @@ public class HomeFragment extends Fragment {
         callphone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ActivityCompat.requestPermissions(requireActivity(), new String[] {android.Manifest.permission.CALL_PHONE}, 123);
+                if (ActivityCompat.checkSelfPermission(requireContext(), android.Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                    requestPermissions(new String[]{android.Manifest.permission.CALL_PHONE}, 12);
+                } else {
+                    makePhoneCall();
+                }
             }
         });
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if(requestCode==123 && grantResults.length>0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-            Intent intent = new Intent();
-            intent.setAction(Intent.ACTION_DIAL);
-            intent.setData(Uri.parse("tel:0354342295"));
-            startActivity(intent);
+        if (requestCode == 12) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                makePhoneCall();
+            } else {
+                Toast.makeText(requireContext(), "Permission denied", Toast.LENGTH_SHORT).show();
+            }
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    private void makePhoneCall() {
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        intent.setData(Uri.parse("tel:0354342295"));
+        startActivity(intent);
     }
 
     private void getRestaurant() {
@@ -136,6 +155,8 @@ public class HomeFragment extends Fragment {
         apiRestaurant = RetrofitClient.getInstance(Const.BASE_URL).create(APIRestaurant.class);
         listRes = new ArrayList<>();
         listResHot = new ArrayList<>();
+        profileImage = view.findViewById(R.id.profile_image);
+        manager = new ReferenceManager(getContext());
     }
 
 

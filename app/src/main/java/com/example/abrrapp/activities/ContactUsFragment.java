@@ -1,5 +1,6 @@
 package com.example.abrrapp.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -16,6 +17,7 @@ import com.example.abrrapp.retrofit.APIRestaurant;
 import com.example.abrrapp.retrofit.RetrofitClient;
 import com.example.abrrapp.utils.Const;
 import com.example.abrrapp.utils.ReferenceManager;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
@@ -27,6 +29,7 @@ public class ContactUsFragment extends Fragment {
     CompositeDisposable disposable = new CompositeDisposable();
     APIRestaurant apiRestaurant;
     ReferenceManager manager;
+    FloatingActionButton chatbot;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_contact_us, container, false);
@@ -60,12 +63,19 @@ public class ContactUsFragment extends Fragment {
                         ));
             }
         });
+        chatbot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), ChatbotActivity.class));
+            }
+        });
     }
 
     public void init(View view){
         titletxt = view.findViewById(R.id.title);
         contenttxt = view.findViewById(R.id.content);
         sendbtn = view.findViewById(R.id.send);
+        chatbot = view.findViewById(R.id.chatbot);
         apiRestaurant = RetrofitClient.getInstance(Const.BASE_URL).create(APIRestaurant.class);
         manager = new ReferenceManager(getActivity());
     }

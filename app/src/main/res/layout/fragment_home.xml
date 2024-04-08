@@ -42,7 +42,7 @@
                         android:layout_height="@dimen/_35sdp"
                         android:layout_weight="1"
                         android:background="@drawable/edit_fsearch"
-                        android:hint="What do you need?"
+                        android:hint="Search restaurant ..."
                         android:paddingLeft="@dimen/_5sdp"
                         android:paddingRight="@dimen/_3sdp"
                         android:textColor="@color/black"

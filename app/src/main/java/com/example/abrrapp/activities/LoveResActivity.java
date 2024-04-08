@@ -82,6 +82,28 @@ public class LoveResActivity extends AppCompatActivity {
         }
     }
 
+    public void deleteLike(String rid){
+        disposable.add(apiRestaurant.delLike(
+                        manager.getString("_id"),
+                        rid,
+                        "Bearer " + manager.getString("access")
+        )
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        likeRestaurantModel -> {
+                            if(likeRestaurantModel.isSuccess()){
+                                Toast.makeText(this, likeRestaurantModel.getMessage()+"", Toast.LENGTH_SHORT).show();
+                                loveResAdapter.setListRes(likeRestaurantModel.getData());
+                                loveResAdapter.notifyDataSetChanged();
+                            }
+                        },
+                        throwable -> {
+                            Toast.makeText(this, throwable.getMessage()+"", Toast.LENGTH_SHORT).show();
+                        }
+                ));
+    }
+
     public void init(){
         toolbar = findViewById(R.id.toolbar);
         loveResrcv = findViewById(R.id.loveRes);

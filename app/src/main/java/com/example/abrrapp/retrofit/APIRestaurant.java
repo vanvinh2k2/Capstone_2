@@ -199,4 +199,25 @@ public interface APIRestaurant {
             @Field("tid") String tid,
             @Header("Authorization") String credentials
     );
+
+    @GET("api/delete-like/{uid}/{rid}/")
+    Observable<LikeRestaurantModel> delLike(
+            @Path("uid") String uid,
+            @Path("rid") String rid,
+            @Header("Authorization") String credentials
+    );
+
+    @GET("api/add-like/{uid}/{rid}/")
+    Observable<DefaultModel> addLike(
+            @Path("uid") String uid,
+            @Path("rid") String rid,
+            @Header("Authorization") String credentials
+    );
+
+    @GET("api/check-like/{uid}/{rid}/")
+    Observable<DefaultModel> checkLike(
+            @Path("uid") String uid,
+            @Path("rid") String rid,
+            @Header("Authorization") String credentials
+    );
 }

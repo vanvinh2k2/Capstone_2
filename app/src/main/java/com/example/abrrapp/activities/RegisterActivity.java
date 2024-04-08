@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -19,8 +19,6 @@ import com.example.abrrapp.retrofit.RetrofitClient;
 import com.example.abrrapp.utils.Const;
 import com.example.abrrapp.utils.ReferenceManager;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -29,7 +27,7 @@ public class RegisterActivity extends AppCompatActivity {
     TextView logintxt;
     EditText nameedt, emailedt, passwordedt, copasswordedt;
     Button createbtn;
-    ImageView eye1, eye2;
+    ImageView eyeimg1, eyeimg2;
     CheckBox show1, show2;
     APIRestaurant apiRestaurant;
     CompositeDisposable disposable = new CompositeDisposable();
@@ -73,6 +71,37 @@ public class RegisterActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        eyeimg1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (show1.isChecked()) {
+                    show1.setChecked(false);
+                    eyeimg1.setImageResource(R.drawable.eye);
+                    passwordedt.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                } else {
+                    show1.setChecked(true);
+                    eyeimg1.setImageResource(R.drawable.hidden);
+                    passwordedt.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                }
+            }
+        });
+
+        eyeimg2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (show2.isChecked()) {
+                    show2.setChecked(false);
+                    eyeimg2.setImageResource(R.drawable.eye);
+                    copasswordedt.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                } else {
+                    show2.setChecked(true);
+                    eyeimg2.setImageResource(R.drawable.hidden);
+                    copasswordedt.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                }
+            }
+        });
+
         createbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -121,8 +150,8 @@ public class RegisterActivity extends AppCompatActivity {
         passwordedt = findViewById(R.id.password);
         copasswordedt = findViewById(R.id.passwordcf);
         createbtn = findViewById(R.id.create);
-        eye1 = findViewById(R.id.eyeimg);
-        eye2 = findViewById(R.id.eyeimg2);
+        eyeimg1 = findViewById(R.id.eyeimg);
+        eyeimg2 = findViewById(R.id.eyeimg2);
         show1 = findViewById(R.id.show1);
         show2 = findViewById(R.id.show2);
         apiRestaurant = RetrofitClient.getInstance(Const.BASE_URL).create(APIRestaurant.class);

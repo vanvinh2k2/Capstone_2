@@ -31,6 +31,9 @@ public class DishAdapter extends RecyclerView.Adapter<DishAdapter.DishHolder>{
         this.context = context;
         this.listDish = listDish;
     }
+    public void setListDish(List<Dish> listDish) {
+        this.listDish = listDish;
+    }
 
     @NonNull
     @Override
@@ -42,6 +45,7 @@ public class DishAdapter extends RecyclerView.Adapter<DishAdapter.DishHolder>{
     @Override
     public void onBindViewHolder(@NonNull DishHolder holder, int position) {
         Dish dish = listDish.get(position);
+        holder.titletxt.setText(dish.getTitle());
         holder.byRestxt.setText(dish.getRestaurant().getTitle());
         holder.oldPricetxt.setText(dish.getOld_price()+"$");
         holder.pricetxt.setText(dish.getPrice()+"$");
