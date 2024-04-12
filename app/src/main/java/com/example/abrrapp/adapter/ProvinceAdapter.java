@@ -6,28 +6,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-
 import com.example.abrrapp.R;
-import com.example.abrrapp.activities.DetailResActivity;
-import com.example.abrrapp.activities.MenuActivity;
-import com.example.abrrapp.models.Table;
+import com.example.abrrapp.models.Province;
 
 import java.util.List;
 
-public class TableDropAdapter extends BaseAdapter {
+public class ProvinceAdapter extends BaseAdapter {
     int layout;
-    MenuActivity context;
-    List<Table> listTable;
+    Context context;
+    List<Province> listProvince;
 
-    public TableDropAdapter(int layout, MenuActivity context, List<Table> listRes) {
+    public ProvinceAdapter(int layout, Context context, List<Province> listProvince) {
         this.layout = layout;
         this.context = context;
-        this.listTable = listRes;
+        this.listProvince = listProvince;
     }
 
     @Override
     public int getCount() {
-        return listTable.size();
+        return listProvince.size();
     }
 
     @Override
@@ -46,8 +43,7 @@ public class TableDropAdapter extends BaseAdapter {
                 context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         view = inflater.inflate(layout,null);
         TextView seleted = view.findViewById(R.id.seleted);
-        context.idTable = listTable.get(i).getTid();
-        seleted.setText(listTable.get(i).getTitle());
+        seleted.setText(listProvince.get(i).getProvince_name());
         return view;
     }
 
@@ -57,8 +53,7 @@ public class TableDropAdapter extends BaseAdapter {
                 context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         convertView = inflater.inflate(R.layout.item_drop_down,null);
         TextView tvCategory = convertView.findViewById(R.id.item);
-        tvCategory.setText(listTable.get(position).getTitle());
-        context.idTable = listTable.get(position).getTid();
+        tvCategory.setText(listProvince.get(position).getProvince_name());
         return convertView;
     }
 }

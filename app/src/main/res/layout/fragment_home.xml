@@ -35,7 +35,7 @@
                         android:layout_width="@dimen/_40sdp"
                         android:layout_height="@dimen/_40sdp"
                         android:layout_marginRight="@dimen/_10sdp"
-                        android:src="@drawable/user" />
+                        android:src="@drawable/user2" />
 
                     <EditText
                         android:layout_width="wrap_content"

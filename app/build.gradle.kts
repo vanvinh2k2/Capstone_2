@@ -65,4 +65,6 @@ dependencies {
     implementation("io.socket:socket.io-client:2.0.0")
 
     implementation("com.squareup.okhttp3:okhttp:4.9.2")
+    compileOnly("org.projectlombok:lombok:1.18.28")
+
 }

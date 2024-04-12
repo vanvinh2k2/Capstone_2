@@ -8,8 +8,8 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,6 +20,9 @@ import com.example.abrrapp.retrofit.APIRestaurant;
 import com.example.abrrapp.retrofit.RetrofitClient;
 import com.example.abrrapp.utils.Const;
 import com.example.abrrapp.utils.ReferenceManager;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.squareup.picasso.Picasso;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -28,9 +31,9 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class AccountFragment extends Fragment {
     TabHost tabHost;
-    TextView changePasswordtxt, usernametxt, uidtxt, nametxt,
-            emailtxt, phonetxt, addresstxt, providertxt, datetxt;
-    Button logoutbtn, changeProfilebtn;
+    TextView usernametxt, nametxt, emailtxt, phonetxt, addresstxt, providertxt, datetxt;
+    ImageView logouttxt, changeProfiletxt;
+    LinearLayout changePasswordtxt;
     ImageView image;
     APIRestaurant apiRestaurant;
     CompositeDisposable disposable = new CompositeDisposable();
@@ -59,7 +62,6 @@ public class AccountFragment extends Fragment {
                                 usernametxt.setText(user.getUsername());
                                 if(user.getFull_name() == null) nametxt.setText("Not Have");
                                 else nametxt.setText(user.getFull_name());
-                                uidtxt.setText(user.getId());
                                 if(user.getAddress() == null) nametxt.setText("Not Have");
                                 else addresstxt.setText(user.getAddress());
                                 datetxt.setText(user.getDate_joined());
@@ -76,6 +78,8 @@ public class AccountFragment extends Fragment {
     }
 
     private void process() {
+        if(manager.getString("provider").compareTo("Email")!=0)
+            changePasswordtxt.setVisibility(View.GONE);
         changePasswordtxt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -84,9 +88,10 @@ public class AccountFragment extends Fragment {
             }
         });
 
-        logoutbtn.setOnClickListener(new View.OnClickListener() {
+        logouttxt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                signOutGoogle();
                 manager.clear();
                 Intent intent = new Intent(getContext(), LoginActivity.class);
                 startActivity(intent);
@@ -94,9 +99,14 @@ public class AccountFragment extends Fragment {
         });
     }
 
+    private void signOutGoogle() {
+        GoogleSignInClient googleSignInClient = GoogleSignIn.getClient(getContext(), GoogleSignInOptions.DEFAULT_SIGN_IN);
+        googleSignInClient.signOut();
+    }
+
     public void init(View view){
         changePasswordtxt = view.findViewById(R.id.change_password);
-        logoutbtn = view.findViewById(R.id.logout);
+        logouttxt = view.findViewById(R.id.logout);
         apiRestaurant = RetrofitClient.getInstance(Const.BASE_URL).create(APIRestaurant.class);
         tabHost = view.findViewById(R.id.tabHost);
         tabHost.setup();
@@ -111,14 +121,13 @@ public class AccountFragment extends Fragment {
         spec2.setIndicator("Dashbroad");
         tabHost.addTab(spec2);
         usernametxt = view.findViewById(R.id.username);
-        uidtxt = view.findViewById(R.id.uid);
         nametxt = view.findViewById(R.id.fullname);
         emailtxt = view.findViewById(R.id.email);
         phonetxt = view.findViewById(R.id.phone);
         addresstxt = view.findViewById(R.id.address);
         providertxt = view.findViewById(R.id.provider);
         datetxt = view.findViewById(R.id.date_joined);
-        changeProfilebtn = view.findViewById(R.id.change_profile);
+        changeProfiletxt = view.findViewById(R.id.change_profile);
         image = view.findViewById(R.id.profile_image);
         manager = new ReferenceManager(getContext());
     }

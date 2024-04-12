@@ -21,6 +21,13 @@ import com.example.abrrapp.retrofit.APIRestaurant;
 import com.example.abrrapp.retrofit.RetrofitClient;
 import com.example.abrrapp.utils.Const;
 import com.example.abrrapp.utils.ReferenceManager;
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -28,12 +35,18 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
+import com.google.gson.Gson;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Arrays;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements FacebookCallback<LoginResult> {
     TextView register, forgetpasswordtxt, googletxt;
     EditText emailedt, passwordedt;
     Button loginbtn;
@@ -45,6 +58,7 @@ public class LoginActivity extends AppCompatActivity {
     GoogleSignInClient gsc;
     CompositeDisposable disposable = new CompositeDisposable();
     ReferenceManager manager;
+    CallbackManager callbackManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +66,7 @@ public class LoginActivity extends AppCompatActivity {
         init();
         process();
         google();
+        facebook();
     }
 
     private void google() {
@@ -65,37 +80,75 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    /*private void registerGoogle(String name1, String email1, String id1, String avatar1) {
-        disposable.add(apiRestaurant.loginGoogle(avatar1, name1, email1, id1)
+    private void facebook() {
+        loginButton = findViewById(R.id.login_button);
+        loginButton.setLoginText("Continue with Facebook");
+        loginButton.setLogoutText("Continue with Facebook");
+        loginButton.setReadPermissions(Arrays.asList("email", "public_profile"));
+        callbackManager = CallbackManager.Factory.create();
+        loginButton.registerCallback(callbackManager, this);
+    }
+
+    private void registerGoogle(String name1, String email1, String id1, String avatar1) {
+        Log.e("registerGoogle: ", name1+" "+ email1+" "+ avatar1+" "+ name1+" "+ id1);
+        disposable.add(apiRestaurant.loginGoogle(name1, email1, avatar1, name1, id1)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        userModel -> {
+                            if(userModel.isSuccess()) saveInfor((User) userModel.getData());
+                        },
+                        throwable -> {text(throwable.getMessage());}
+                ));
+    }
+
+    private void registerFacebook(String name1, String id1, String avatar1) {
+        /*disposable.add(apiRestaurant.loginFacebook(avatar1, name1, id1, name1, id1)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         userModel -> {
                             if(userModel.isSuccess()){
-                                Toast.makeText(this, "Bạn đã đăng nhập với Google", Toast.LENGTH_SHORT).show();
-                                User user = (User) userModel.getData();
-                                manager.putString("_id", user.get_id());
-                                manager.putString("token", userModel.getAccessToken());
-                                manager.putString("username", user.getDisplayName());
-                                manager.putString("email", user.getEmail());
-                                manager.putString("avatar", user.getAvatar());
-                                manager.putString("isblock", user.getIsBlocked());
-                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                startActivity(intent);
+                                saveInfor((User) userModel.getData());
                             }
                         },
                         throwable -> {
                             text(throwable.getMessage());
                         }
-                ));
-    }*/
+                ));*/
+    }
+
+    private void result() {
+        GraphRequest graphRequest = GraphRequest.newMeRequest(
+                AccessToken.getCurrentAccessToken(),
+                new GraphRequest.GraphJSONObjectCallback() {
+                    @Override
+                    public void onCompleted(JSONObject object, GraphResponse response) {
+                        String person, avatar, id;
+                        try {
+                            person = object.getString("name");
+                            //email1 = object.getString("email");
+                            id = object.getString("id");
+                            avatar = object.getJSONObject("picture").getJSONObject("data").getString("url");
+                            Log.e("kq_fb","Name: "+person+"\tIdFacebook: "+id+"\t Avatar: "+avatar);
+                            registerFacebook(person, id, avatar);
+                        } catch (JSONException e) {
+                            throw new RuntimeException(e);
+                        } catch (Exception ex) {
+                            Log.e("kq", ex.getMessage());
+                        }
+                    }
+                });
+        Bundle parame = new Bundle();
+        parame.putString("fields", "id, name, email, picture");
+        graphRequest.setParameters(parame);
+        graphRequest.executeAsync();
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == Const.CODE_GOOGLE){
-            Toast.makeText(this, "ok", Toast.LENGTH_SHORT).show();
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 task.getResult(ApiException.class);
@@ -105,14 +158,17 @@ public class LoginActivity extends AppCompatActivity {
                     String email = acct.getEmail();
                     String id = acct.getId();
                     String photoUrl = String.valueOf(acct.getPhotoUrl());
-                    Log.e("kq_google","Name: "+person+"\tEmail: "+email+"\tIdGoogle: "+id+"\t Avatar: "+photoUrl);
-                    //registerGoogle(person, email, id, photoUrl);
+
+                    if(photoUrl.compareTo("null") == 0) photoUrl = Const.BASE_URL + "media/image/default.png";
+                    Gson g = new Gson();
+                    Log.e("kq_google","Name: "+person+"\tEmail: "+g.toJson(acct)+"\tIdGoogle: "+id+"\t Avatar: "+photoUrl);
+                    registerGoogle(person, email, id, photoUrl);
                 }
             } catch (ApiException e) {
                 throw new RuntimeException(e);
             }
         }else{
-            //callbackManager.onActivityResult(requestCode, resultCode, data);
+            callbackManager.onActivityResult(requestCode, resultCode, data);
         }
 
     }
@@ -171,9 +227,7 @@ public class LoginActivity extends AppCompatActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         checkModel -> {
-                            if(checkModel != null){
-                                checkAccess(manager.getString("access"));
-                            }
+                            if(checkModel != null) checkAccess(manager.getString("access"));
                             else{
                                 Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -197,9 +251,7 @@ public class LoginActivity extends AppCompatActivity {
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 startActivity(intent);
                             }
-                            else{
-                                refreshToken(manager.getString("refresh"));
-                            }
+                            else refreshToken(manager.getString("refresh"));
                         },
                         throwable -> {
                             Toast.makeText(this, throwable.getMessage()+" 2", Toast.LENGTH_SHORT).show();
@@ -227,9 +279,7 @@ public class LoginActivity extends AppCompatActivity {
     private void loginAccount() {
         String email1 = emailedt.getText().toString().trim();
         String password1 = passwordedt.getText().toString().trim();
-        if(checkInput()){
-            checkAccount(email1, password1);
-        }
+        if(checkInput()) checkAccount(email1, password1);
     }
 
     private void checkAccount(String email1, String password1) {
@@ -238,32 +288,32 @@ public class LoginActivity extends AppCompatActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         userModel -> {
-                            if(userModel.isSuccess()){
-                                User user = (User) userModel.getData();
-                                manager.putString("_id", user.getId());
-                                manager.putString("refresh", user.getToken().getRefresh());
-                                manager.putString("access", user.getToken().getAccess());
-                                manager.putString("username", user.getUsername());
-                                try {
-                                    manager.putString("email", user.getEmail());
-                                }catch(Exception e){
-                                    Toast.makeText(this, e.getMessage()+"", Toast.LENGTH_SHORT).show();
-                                }
-                                manager.putString("avatar", user.getAvatar());
-                                manager.putString("is_active", user.getIs_active()+"");
-                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                startActivity(intent);
-                            }
-                            else{
-                                text("Email or Password is wrong!");
-                            }
+                            if(userModel.isSuccess()) saveInfor((User) userModel.getData());
+                            else text("Email or Password is wrong!");
                         },
                         throwable -> {
                             text(throwable.getMessage());
-                            Log.e("er",throwable.getMessage());
                         }
                 ));
+    }
+
+    private void saveInfor(User user){
+        manager.putString("_id", user.getId());
+        manager.putString("refresh", user.getToken().getRefresh());
+        manager.putString("access", user.getToken().getAccess());
+        manager.putString("username", user.getUsername());
+        manager.putString("phone", user.getPhone());
+        manager.putString("provider", user.getProvider());
+        try {
+            manager.putString("email", user.getEmail());
+        }catch(Exception e){
+            Toast.makeText(this, e.getMessage()+"", Toast.LENGTH_SHORT).show();
+        }
+        manager.putString("avatar", user.getAvatar());
+        manager.putString("is_active", user.getIs_active()+"");
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 
     boolean checkInput(){
@@ -289,8 +339,23 @@ public class LoginActivity extends AppCompatActivity {
         loginbtn = findViewById(R.id.loginaccount);
         show = findViewById(R.id.show);
         eyeimg = findViewById(R.id.eye);
-        //loginButton = findViewById(R.id.login_button);
+        loginButton = findViewById(R.id.login_button);
         manager = new ReferenceManager(getApplicationContext());
         apiRestaurant = RetrofitClient.getInstance(Const.BASE_URL).create(APIRestaurant.class);
+    }
+
+    @Override
+    public void onSuccess(LoginResult loginResult) {
+        //result();
+    }
+
+    @Override
+    public void onCancel() {
+
+    }
+
+    @Override
+    public void onError(FacebookException error) {
+
     }
 }

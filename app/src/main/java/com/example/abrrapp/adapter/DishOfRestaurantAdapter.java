@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.abrrapp.R;
 import com.example.abrrapp.activities.DetailResActivity;
+import com.example.abrrapp.activities.MenuActivity;
 import com.example.abrrapp.models.Dish;
 import com.example.abrrapp.models.OrderCartItem;
 import com.google.gson.Gson;
@@ -26,11 +27,11 @@ import java.util.List;
 
 public class DishOfRestaurantAdapter extends RecyclerView.Adapter<DishOfRestaurantAdapter.DishOfRestaurantHolder>{
     int layout;
-    DetailResActivity context;
+    MenuActivity context;
     List<Dish> listDish;
     private List<Integer> quantities;
 
-    public DishOfRestaurantAdapter(int layout, DetailResActivity context, List<Dish> listDish) {
+    public DishOfRestaurantAdapter(int layout, MenuActivity context, List<Dish> listDish) {
         this.layout = layout;
         this.context = context;
         this.listDish = listDish;
@@ -57,6 +58,9 @@ public class DishOfRestaurantAdapter extends RecyclerView.Adapter<DishOfRestaura
                 holder.deletebtn.setVisibility(View.VISIBLE);
                 break;
             }
+        }
+        if(dish.isSuggested()){
+            holder.suggessed.setVisibility(View.VISIBLE);
         }
         Picasso.get().load(dish.getImage()).into(holder.image);
         holder.quanlitytxt.setText(quantities.get(position).toString());
@@ -114,7 +118,7 @@ public class DishOfRestaurantAdapter extends RecyclerView.Adapter<DishOfRestaura
     public class DishOfRestaurantHolder extends RecyclerView.ViewHolder{
         ImageView image;
         ImageButton addbtn, deletebtn;
-        TextView titletxt, pricetxt, tangtxt, giamtxt;
+        TextView titletxt, pricetxt, tangtxt, giamtxt, suggessed;
         EditText quanlitytxt;
         public DishOfRestaurantHolder(@NonNull View itemView) {
             super(itemView);
@@ -125,6 +129,7 @@ public class DishOfRestaurantAdapter extends RecyclerView.Adapter<DishOfRestaura
             giamtxt = itemView.findViewById(R.id.giam);
             titletxt = itemView.findViewById(R.id.title);
             pricetxt = itemView.findViewById(R.id.price);
+            suggessed = itemView.findViewById(R.id.suggessed);
             quanlitytxt = itemView.findViewById(R.id.quanlity);
         }
     }

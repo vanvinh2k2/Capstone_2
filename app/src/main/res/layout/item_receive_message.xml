@@ -11,7 +11,7 @@
         android:layout_height="@dimen/_35sdp"
         android:background="@drawable/background_icon"
         android:scaleType="centerCrop"
-        android:src="@drawable/user"
+        android:src="@drawable/user2"
         app:layout_constraintBottom_toBottomOf="@+id/textMessage"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"

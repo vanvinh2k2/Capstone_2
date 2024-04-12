@@ -19,6 +19,8 @@
             android:layout_height="wrap_content">
 
             <LinearLayout
+                android:paddingLeft="@dimen/_5sdp"
+                android:paddingRight="@dimen/_5sdp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -147,7 +149,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Team_C1SE.37@gmail.com"
+                            android:text="Team_C2SE.34@gmail.com"
                             android:textColor="@color/black"
                             android:textSize="@dimen/_13ssp"
                             android:textStyle="italic" />

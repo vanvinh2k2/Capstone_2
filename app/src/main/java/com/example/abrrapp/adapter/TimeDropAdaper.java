@@ -9,16 +9,17 @@ import android.widget.TextView;
 
 import com.example.abrrapp.R;
 import com.example.abrrapp.activities.DetailResActivity;
+import com.example.abrrapp.activities.MenuActivity;
 import com.example.abrrapp.models.Table;
 
 import java.util.List;
 
 public class TimeDropAdaper extends BaseAdapter {
     int layout;
-    DetailResActivity context;
+    MenuActivity context;
     List<String> listTime;
 
-    public TimeDropAdaper(int layout, DetailResActivity context, List<String> listTime) {
+    public TimeDropAdaper(int layout, MenuActivity context, List<String> listTime) {
         this.layout = layout;
         this.context = context;
         this.listTime = listTime;

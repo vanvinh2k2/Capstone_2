@@ -6,8 +6,16 @@ public class Dish implements Serializable {
     String did, title, image, description, product_status, date;
     Restaurant restaurant;
     float price, old_price;
-    boolean featured, digital;
+    boolean featured, digital, suggested = false;
     Category category;
+
+    public boolean isSuggested() {
+        return suggested;
+    }
+
+    public void setSuggested(boolean suggested) {
+        this.suggested = suggested;
+    }
 
     public String getDid() {
         return did;

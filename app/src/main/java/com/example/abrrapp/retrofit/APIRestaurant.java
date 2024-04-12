@@ -2,16 +2,22 @@ package com.example.abrrapp.retrofit;
 
 
 import com.example.abrrapp.models.CategoryModel;
+import com.example.abrrapp.models.ChatbotModel;
 import com.example.abrrapp.models.CheckModel;
 import com.example.abrrapp.models.DefaultModel;
 import com.example.abrrapp.models.DetailRestaurantModel;
 import com.example.abrrapp.models.DishFeatureModel;
 import com.example.abrrapp.models.DishModel;
+import com.example.abrrapp.models.DishSuggestModel;
 import com.example.abrrapp.models.LikeRestaurantModel;
+import com.example.abrrapp.models.NumModel;
 import com.example.abrrapp.models.OrderCartModel;
 import com.example.abrrapp.models.OrderItemModel;
 import com.example.abrrapp.models.OrderModel;
+import com.example.abrrapp.models.ProvinceModel;
 import com.example.abrrapp.models.RestaurantModel;
+import com.example.abrrapp.models.SearchAI;
+import com.example.abrrapp.models.SearchAIModel;
 import com.example.abrrapp.models.TableModel;
 import com.example.abrrapp.models.Token;
 import com.example.abrrapp.models.UserModel;
@@ -19,11 +25,14 @@ import com.example.abrrapp.models.UserModel;
 import org.json.JSONArray;
 
 import io.reactivex.rxjava3.core.Observable;
+import okhttp3.MultipartBody;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
 
 public interface APIRestaurant {
@@ -200,6 +209,11 @@ public interface APIRestaurant {
             @Header("Authorization") String credentials
     );
 
+    @GET("api/count/{uid}/")
+    Observable<NumModel> num(
+            @Path("uid") String uid
+    );
+
     @GET("api/delete-like/{uid}/{rid}/")
     Observable<LikeRestaurantModel> delLike(
             @Path("uid") String uid,
@@ -220,4 +234,60 @@ public interface APIRestaurant {
             @Path("rid") String rid,
             @Header("Authorization") String credentials
     );
+
+    @GET("api/province/")
+    Observable<ProvinceModel> getProvince();
+
+    @POST("auth/api/login/google/")
+    @FormUrlEncoded
+    Observable<UserModel> loginGoogle(
+            @Field("username") String username,
+            @Field("email") String email,
+            @Field("image") String image,
+            @Field("full_name") String full_name,
+            @Field("id") String id
+    );
+
+    @POST("auth/api/login/facebook/")
+    @FormUrlEncoded
+    Observable<UserModel> loginFacebook(
+            @Field("username") String username,
+            @Field("email") String email,
+            @Field("image") String image,
+            @Field("full_name") String full_name,
+            @Field("id") String id
+    );
+    @Multipart
+    @POST("api/search-ai/")
+    Observable<SearchAIModel> searchAI(
+            @Part MultipartBody.Part image
+    );
+
+    @POST("auth/api/update-password/{uid}/")
+    @FormUrlEncoded
+    Observable<DefaultModel> updatePassword(
+            @Path("uid") String uid,
+            @Field("old_password") String old_password,
+            @Field("new_password") String new_password,
+            @Header("Authorization") String credentials
+    );
+
+    @GET("api/suggest-food/{uid}/{rid}/")
+    Observable<DishSuggestModel> suggestFood(
+            @Path("uid") String uid,
+            @Path("rid") String rid
+    );
+
+    @GET("chatbot/list-chat/{uid}/")
+    Observable<ChatbotModel> listChatbot(
+            @Path("uid") String uid
+    );
+
+    @POST("chatbot/response/{uid}/")
+    @FormUrlEncoded
+    Observable<ChatbotModel> sendChatbot(
+            @Path("uid") String uid,
+            @Field("body") String body
+    );
+
 }

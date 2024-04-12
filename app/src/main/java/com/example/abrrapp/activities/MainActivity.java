@@ -12,14 +12,28 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.abrrapp.R;
+import com.example.abrrapp.retrofit.APIRestaurant;
+import com.example.abrrapp.retrofit.RetrofitClient;
+import com.example.abrrapp.utils.Const;
+import com.example.abrrapp.utils.ReferenceManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigation;
     FrameLayout loveRes, historyOrder;
+    TextView liketxt, ordertxt;
+    ReferenceManager manager;
+    APIRestaurant apiRestaurant;
+    CompositeDisposable disposable = new CompositeDisposable();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,9 +88,32 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onResume() {
+        disposable.add(apiRestaurant.num(manager.getString("_id"))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        numModel -> {
+                            if(numModel.isSuccess()){
+                                liketxt.setText(numModel.getData().getNum_like()+"");
+                                ordertxt.setText(numModel.getData().getNum_order()+"");
+                            }
+                        },
+                        throwable -> {
+                            Toast.makeText(this, throwable.getMessage()+"", Toast.LENGTH_SHORT).show();
+                        }
+                ));
+        super.onResume();
+    }
+
     private void init(){
         bottomNavigation = findViewById(R.id.menu_nav);
         loveRes = findViewById(R.id.loveRes);
         historyOrder = findViewById(R.id.historyOrder);
+        liketxt = findViewById(R.id.count_love);
+        ordertxt = findViewById(R.id.count_his);
+        manager = new ReferenceManager(this);
+        apiRestaurant = RetrofitClient.getInstance(Const.BASE_URL).create(APIRestaurant.class);
     }
 }

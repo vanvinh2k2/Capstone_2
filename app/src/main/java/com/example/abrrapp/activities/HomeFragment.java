@@ -10,7 +10,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +34,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.core.Scheduler;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
@@ -64,7 +62,7 @@ public class HomeFragment extends Fragment {
     private void actionViewFlipper() {
         Picasso.get()
                 .load(manager.getString("avatar"))
-                .placeholder(R.drawable.user)
+                .placeholder(R.drawable.user2)
                 .into(profileImage);
         List<Integer> quangCao = new ArrayList<>();
         quangCao.add(R.drawable.banner);

@@ -14,32 +14,27 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.abrrapp.R;
 import com.example.abrrapp.adapter.MessageAdapter;
 import com.example.abrrapp.models.Message;
 import com.example.abrrapp.utils.Const;
+import com.example.abrrapp.utils.ReferenceManager;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.net.URISyntaxException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 
-import io.socket.client.IO;
-import io.socket.client.Socket;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -58,6 +53,7 @@ public class ChatActivity extends AppCompatActivity {
     MessageAdapter adapter;
     List<Message> messageList;
     String receiver;
+    ReferenceManager manager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,7 +89,7 @@ public class ChatActivity extends AppCompatActivity {
         OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder()
-                .url("ws://"+ Const.URL +"/ws/chat/102566218799174938142/")
+                .url("ws://"+ Const.URL +"/ws/chat/"+manager.getString("_id")+"/")
                 .build();
         WebSocketListener webSocketListener = new WebSocketListener() {
             @Override
@@ -141,7 +137,7 @@ public class ChatActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        adapter = new MessageAdapter(messageList, R.drawable.user);
+                        adapter = new MessageAdapter(messageList, R.drawable.user2);
                         messagercv.setAdapter(adapter);
                     }
                 });
@@ -189,6 +185,9 @@ public class ChatActivity extends AppCompatActivity {
         }
         Intent intent = getIntent();
         receiver = intent.getStringExtra("usernameRes");
+        Picasso.get().load(intent.getStringExtra("imageRes")).placeholder(R.drawable.user).into(receiverimg);
+        receivertxt.setText(intent.getStringExtra("titleRes"));
+
     }
 
     public void init(){
@@ -197,5 +196,6 @@ public class ChatActivity extends AppCompatActivity {
         receivertxt = findViewById(R.id.name);
         contenttxt = findViewById(R.id.inputMessage);
         sendfl = findViewById(R.id.layoutSend);
+        manager = new ReferenceManager(ChatActivity.this);
     }
 }

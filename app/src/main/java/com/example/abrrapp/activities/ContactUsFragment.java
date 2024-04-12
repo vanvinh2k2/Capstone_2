@@ -38,29 +38,47 @@ public class ContactUsFragment extends Fragment {
         return view;
     }
 
+    boolean checkInput(){
+        if(titletxt.getText().toString().trim().isEmpty()){
+            text("Please input title!");
+            titletxt.requestFocus();
+            return false;
+        }else if(contenttxt.getText().toString().trim().isEmpty()){
+            text("Please input content!");
+            contenttxt.requestFocus();
+            return false;
+        }else return true;
+    }
+
+    void text(String v){
+        Toast.makeText(getContext(), v+"", Toast.LENGTH_SHORT).show();
+    }
+
     private void process() {
         sendbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                disposable.add(apiRestaurant.contactUs(
-                        "ok",
-                        manager.getString("email"),
-                        titletxt.getText().toString().trim(),
-                        "123456789",
-                        contenttxt.getText().toString().trim()
-                        )
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(
-                                defaultModel -> {
-                                    if(defaultModel.isSuccess()){
-                                        Toast.makeText(getContext(), defaultModel.getMessage()+"", Toast.LENGTH_SHORT).show();
+                if(checkInput()){
+                    disposable.add(apiRestaurant.contactUs(
+                                    manager.getString("username"),
+                                    manager.getString("email"),
+                                    manager.getString("phone"),
+                                    titletxt.getText().toString().trim(),
+                                    contenttxt.getText().toString().trim()
+                            )
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(
+                                    defaultModel -> {
+                                        if(defaultModel.isSuccess()){
+                                            Toast.makeText(getContext(), defaultModel.getMessage()+"", Toast.LENGTH_SHORT).show();
+                                        }
+                                    },
+                                    throwable -> {
+                                        Toast.makeText(getContext(), throwable.getMessage()+"", Toast.LENGTH_SHORT).show();
                                     }
-                                },
-                                throwable -> {
-                                    Toast.makeText(getContext(), throwable.getMessage()+"", Toast.LENGTH_SHORT).show();
-                                }
-                        ));
+                            ));
+                }
             }
         });
         chatbot.setOnClickListener(new View.OnClickListener() {
