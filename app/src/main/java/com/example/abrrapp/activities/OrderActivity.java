@@ -106,9 +106,7 @@ public class OrderActivity extends AppCompatActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         defaultModel -> {
-                            if(defaultModel.isSuccess()){
-                                startActivity(new Intent(getApplicationContext(), BillActivity.class));
-                            }
+                            if(defaultModel.isSuccess()) startActivity(new Intent(getApplicationContext(), BillActivity.class));
                         },
                         throwable -> {
                             Toast.makeText(this, throwable.getMessage()+"", Toast.LENGTH_SHORT).show();
@@ -118,6 +116,7 @@ public class OrderActivity extends AppCompatActivity {
 
     private void payment(){
         Gson gson = new Gson();
+        float deposite2 = (float) (Math.round((deposite * 100 / 10)*100)/100.00);
         disposable.add(apiRestaurant.addOrder(
                         manager.getString("_id"),
                         rid,
@@ -125,7 +124,7 @@ public class OrderActivity extends AppCompatActivity {
                         phone,
                         tid,
                         deposite,
-                        deposite * 100 / 10,
+                        deposite2,
                         timeFrom,
                         timeTo,
                         numberPeople,
@@ -137,10 +136,7 @@ public class OrderActivity extends AppCompatActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         defaultModel -> {
-                            if(defaultModel.isSuccess()){
-                                Toast.makeText(OrderActivity.this, "ok", Toast.LENGTH_SHORT).show();
-                                deleteOrderCart();
-                            }
+                            if(defaultModel.isSuccess()) deleteOrderCart();
                         },
                         throwable -> {
                             Toast.makeText(OrderActivity.this, throwable.getMessage()+"", Toast.LENGTH_SHORT).show();
@@ -156,7 +152,6 @@ public class OrderActivity extends AppCompatActivity {
                 try {
                     String pamentdetail = paymentConfirmation.toJSONObject().toString();
                     JSONObject jsonObject = new JSONObject(pamentdetail);
-                    Log.e("kq_paypal", jsonObject.toString()+"");
                     payment();
                     Intent intent = new Intent(getApplicationContext(), BillActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

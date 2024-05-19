@@ -18,7 +18,7 @@ public class BillActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bill);
         init();
-        getToolBar();
+        //getToolBar();
         getProcess();
     }
 
@@ -26,13 +26,13 @@ public class BillActivity extends AppCompatActivity {
         homebtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), HomeFragment.class));
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
             }
         });
         orderbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), OrderActivity.class));
+                startActivity(new Intent(getApplicationContext(), HistoryOrderActivity.class));
             }
         });
     }

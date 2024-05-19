@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -38,9 +39,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -53,7 +60,7 @@ public class MenuActivity extends AppCompatActivity {
     Toolbar toolbar;
     EditText nameUseredt, phoneUseredt, dateOrderedt, numPeopleedt, searchedt;
     Button nextbtn;
-    List<Dish> listDish;
+    List<Dish> listDish, dishListDisplay;
     ImageButton searchbtn;
     Spinner tablespn, fromspn, tospn, categoryspn;
     APIRestaurant apiRestaurant;
@@ -68,9 +75,9 @@ public class MenuActivity extends AppCompatActivity {
     public String idTable;
     List<DishSuggest> dishSuggestList;
     public List<OrderCartItem> orderCartItems;
-    boolean isCheck = false;
     ReferenceManager manager;
     CompositeDisposable disposable = new CompositeDisposable();
+    public String Cid = "", searchDish = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,6 +98,28 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     private void process() {
+        categoryspn.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                suggestFood();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+        searchedt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (hasFocus) {
+                    searchDish = searchedt.getText().toString().trim();
+                    Toast.makeText(MenuActivity.this, searchDish, Toast.LENGTH_SHORT).show();
+                    suggestFood();
+                }
+            }
+        });
+
         dateOrderedt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -115,32 +144,22 @@ public class MenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(checkInput()){
-                    JSONArray jsonObject = new JSONArray();
-                    for(int i = 0;i < orderCartItems.size();i++){
-                        JSONObject item = new JSONObject();
-                        try {
-                            item.put("did", orderCartItems.get(i).getDish().getDid());
-                            item.put("quantity", orderCartItems.get(i).getQuantity());
-                            jsonObject.put(item);
-                        } catch (JSONException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
+                    //Gson g = new Gson();
+                    //Log.e("onClickOk: ", g.toJson(convertData()));
                     disposable.add(apiRestaurant.checkOrder(
                                     rid,
                                     Const.timeOrder.get(fromspn.getSelectedItemPosition()),
                                     Const.timeOrder.get(tospn.getSelectedItemPosition()),
                                     idTable,
+                                    dateOrderedt.getText().toString().trim(),
                                     "Bearer " + manager.getString("access")
 
                             ).subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(
                                     defaultModel -> {
-                                        if(defaultModel.isSuccess()){
-                                            if(isCheck) addOrderCart(jsonObject);
-                                            else updateOrderCart(jsonObject);
-                                        }else Toast.makeText(MenuActivity.this, defaultModel.getMessage()+"", Toast.LENGTH_SHORT).show();
+                                        if(defaultModel.isSuccess()) orderCart(convertData());
+                                        else Toast.makeText(MenuActivity.this, defaultModel.getMessage()+"", Toast.LENGTH_SHORT).show();
                                     },
                                     throwable -> {
                                         Toast.makeText(MenuActivity.this, throwable.getMessage()+"", Toast.LENGTH_SHORT).show();
@@ -149,6 +168,36 @@ public class MenuActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public JSONArray convertData(){
+        JSONArray jsonObject = new JSONArray();
+        for(int i = 0;i < orderCartItems.size();i++){
+            JSONObject item = new JSONObject();
+            try {
+                item.put("did", orderCartItems.get(i).getDish().getDid());
+                item.put("quantity", orderCartItems.get(i).getQuantity());
+                jsonObject.put(item);
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return jsonObject;
+    }
+
+    public void orderCart(JSONArray jsonObject){
+        disposable.add(apiRestaurant.checkOrderCart(manager.getString("_id"), rid)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        defaultModel -> {
+                            if(defaultModel.isSuccess()) updateOrderCart(jsonObject);
+                            else addOrderCart(jsonObject);
+                        },
+                        throwable -> {
+                            Toast.makeText(this, throwable.getMessage()+"", Toast.LENGTH_SHORT).show();
+                        }
+                ));
     }
 
     private List<DishSuggest> setDish(List<DishSuggest> dishList){
@@ -171,7 +220,7 @@ public class MenuActivity extends AppCompatActivity {
                             if(dishFeatureModel.isSuccess()){
                                 List<DishSuggest> suggests = setDish(dishSuggestList);
                                 listDish = dishFeatureModel.getData();
-                                List<Dish> dishListDisplay = new ArrayList<>();
+                                dishListDisplay = new ArrayList<>();
                                 for (int i=0;i<listDish.size();i++)
                                     for(int j=0;j< suggests.size();j++)
                                         if(listDish.get(i).getDid().compareTo(suggests.get(j).getDid())==0) {
@@ -188,9 +237,7 @@ public class MenuActivity extends AppCompatActivity {
                                         }
                                     if (!trungDid) dishListDisplay.add(listDish.get(i));
                                 }
-                                Gson g = new Gson();
-                                Log.e("getDishOfRes: ", g.toJson(dishListDisplay));
-                                dishOfRestaurantAdapter = new DishOfRestaurantAdapter(R.layout.item_dish_order, MenuActivity.this, dishListDisplay);
+                                dishOfRestaurantAdapter = new DishOfRestaurantAdapter(R.layout.item_dish_order, MenuActivity.this, filterDish());
                                 dishrcv.setAdapter(dishOfRestaurantAdapter);
                             }
                         },
@@ -199,6 +246,24 @@ public class MenuActivity extends AppCompatActivity {
                         }
                 ));
     }
+
+    public List<Dish> filterDish(){
+        List<Dish> dishData = new ArrayList<>();
+        if(Cid.compareTo("0") !=0){
+            //Toast.makeText(this, "ok", Toast.LENGTH_SHORT).show();
+            for (int i=0;i<dishListDisplay.size();i++)
+                if(dishListDisplay.get(i).getCategory().getCid().compareTo(Cid) == 0) dishData.add(dishListDisplay.get(i));
+        }
+        if(searchDish.compareTo("") !=0){
+            for (int i=0;i<dishListDisplay.size();i++)
+                if(dishListDisplay.get(i).getTitle().toLowerCase().contains(searchDish)) dishData.add(dishListDisplay.get(i));
+        }
+        //Toast.makeText(this, "ko", Toast.LENGTH_SHORT).show();
+        if(Cid.compareTo("0") ==0 && searchDish.compareTo("") == 0) dishData.addAll(dishListDisplay);
+        return dishData;
+    }
+
+
 
     private void getDropCategory() {
         disposable.add(apiRestaurant.getCategory()
@@ -209,7 +274,7 @@ public class MenuActivity extends AppCompatActivity {
                             if(categoryModel.isSuccess()){
                                 listCategory.add(new Category("0", "All category"));
                                 listCategory.addAll(categoryModel.getData());
-                                categoryDropAdapter = new CategoryDropAdapter(R.layout.item_list_drop_down, getApplicationContext(), listCategory);
+                                categoryDropAdapter = new CategoryDropAdapter(R.layout.item_list_drop_down, MenuActivity.this, listCategory);
                                 categoryspn.setAdapter(categoryDropAdapter);
                             }
                         },
@@ -409,9 +474,6 @@ public class MenuActivity extends AppCompatActivity {
                                 tospn.setSelection(getPositionTime(orderCart.getOrder().getTime_to().toString().substring(0,5)));
                                 fromspn.setSelection(getPositionTime(orderCart.getOrder().getTime_from().toString().substring(0,5)));
                                 tablespn.setSelection(getPositionTable(orderCart.getOrder().getTable().getTid(),listTable));
-                            }else {
-                                isCheck = true;
-                                Log.e("data","er");
                             }
                         },
                         throwable -> {
@@ -420,29 +482,87 @@ public class MenuActivity extends AppCompatActivity {
                 ));
     }
 
-    public boolean checkInput(){
-        if(nameUseredt.getText().toString().trim().length()<=0){
-            Toast.makeText(this, "Please input field name!", Toast.LENGTH_SHORT).show();
-            return false;
-        }else if(phoneUseredt.getText().toString().trim().length()<=0){
-            Toast.makeText(this, "Please input field phone!", Toast.LENGTH_SHORT).show();
-            return false;
-        }else if(dateOrderedt.getText().toString().trim().length()<=0){
-            Toast.makeText(this, "Please input field date order!", Toast.LENGTH_SHORT).show();
-            return false;
-        }else if(numPeopleedt.getText().toString().trim().length()<=0){
-            Toast.makeText(this, "Please input field number people!", Toast.LENGTH_SHORT).show();
-            return false;
-        }else if(idTable.compareTo("0")==0){
-            Toast.makeText(this, "Please choice table!", Toast.LENGTH_SHORT).show();
-            return false;
-        }else if(fromspn.getSelectedItemPosition()==0){
-            Toast.makeText(this, "Please choice time from!", Toast.LENGTH_SHORT).show();
-            return false;
-        }else if(tospn.getSelectedItemPosition()==0){
-            Toast.makeText(this, "Please choice time to!", Toast.LENGTH_SHORT).show();
+    public double convertTimeToDecimal(String timeString) {
+        String[] timeComponents = timeString.split(":");
+        Gson g = new Gson();
+        int hours = Integer.parseInt(timeComponents[0]);
+        int minutes = Integer.parseInt(timeComponents[1]);
+        double decimalTime = hours + (double) minutes / 60;
+        Log.e("convertTimeToDecimal: ", decimalTime+"");
+        return decimalTime;
+    }
+
+    public static boolean isValidDateFormat(String dateStr, String dateFormat) {
+        SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
+        sdf.setLenient(false);
+        try {
+            Date date = sdf.parse(dateStr);
+            return dateStr.equals(sdf.format(date));
+        } catch (ParseException e) {
             return false;
         }
-        return true;
     }
+
+    public static LocalDateTime createLocalDateTime(String dateStr, String timeStr) {
+        LocalDate date = LocalDate.parse(dateStr);
+        LocalTime time = LocalTime.parse(timeStr);
+        LocalDateTime localDateTime = LocalDateTime.of(date, time);
+        return localDateTime;
+    }
+
+    public static boolean isAfterCurrentTimePlus5Hours(LocalDateTime currentTime, LocalDateTime inputTime) {
+        LocalDateTime currentTimePlus5Hours = currentTime.plus(5, ChronoUnit.HOURS);
+        return inputTime.isAfter(currentTimePlus5Hours);
+    }
+
+    public boolean checkInput(){
+        try{
+            LocalDateTime inputTime = createLocalDateTime(dateOrderedt.getText().toString().trim(), Const.timeOrder.get(fromspn.getSelectedItemPosition()));
+            LocalDateTime currentTime = LocalDateTime.now();
+            if(nameUseredt.getText().toString().trim().length()<=0){
+                Toast.makeText(this, "Please input field name!", Toast.LENGTH_SHORT).show();
+                return false;
+            }else if(phoneUseredt.getText().toString().trim().length()<=0){
+                Toast.makeText(this, "Please input field phone!", Toast.LENGTH_SHORT).show();
+                return false;
+            }else if(dateOrderedt.getText().toString().trim().length()<=0){
+                Toast.makeText(this, "Please input field date order!", Toast.LENGTH_SHORT).show();
+                return false;
+            }else if(isValidDateFormat(dateOrderedt.getText().toString().trim(), "yyyy-MM-dd") == false){
+                Toast.makeText(this, "Please input field date order valid!", Toast.LENGTH_SHORT).show();
+                return false;
+            }else if(numPeopleedt.getText().toString().trim().length()<=0){
+                Toast.makeText(this, "Please input field number people!", Toast.LENGTH_SHORT).show();
+                return false;
+            }else if(idTable.compareTo("0")==0){
+                Toast.makeText(this, "Please choice table!", Toast.LENGTH_SHORT).show();
+                return false;
+            }else if(fromspn.getSelectedItemPosition()==0){
+                Toast.makeText(this, "Please choice time from!", Toast.LENGTH_SHORT).show();
+                return false;
+            }else if(tospn.getSelectedItemPosition()==0){
+                Toast.makeText(this, "Please choice time to!", Toast.LENGTH_SHORT).show();
+                return false;
+            }else if(isAfterCurrentTimePlus5Hours(currentTime, inputTime) == false){
+                Toast.makeText(this, "Please select the order date again!", Toast.LENGTH_SHORT).show();
+                return false;
+            }else if(convertTimeToDecimal(Const.timeOrder.get(tospn.getSelectedItemPosition())) <= convertTimeToDecimal(Const.timeOrder.get(fromspn.getSelectedItemPosition()))){
+                Toast.makeText(this, "Please enter arrival time which must be less than return time!", Toast.LENGTH_SHORT).show();
+                return false;
+            }else if((double)(convertTimeToDecimal(Const.timeOrder.get(tospn.getSelectedItemPosition())) - convertTimeToDecimal(Const.timeOrder.get(fromspn.getSelectedItemPosition()))) < 1.5){
+                Toast.makeText(this, "Please input time from > time to 90 minutes!", Toast.LENGTH_SHORT).show();
+                return false;
+            }else if((double)(convertTimeToDecimal(Const.timeOrder.get(tospn.getSelectedItemPosition())) - convertTimeToDecimal(Const.timeOrder.get(fromspn.getSelectedItemPosition()))) > 2.5){
+                Toast.makeText(this, "Please input time from and time to < 2.5 hours!", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+            return true;
+        }
+        catch (Exception e){
+            Toast.makeText(this, "Please input field date order!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+    }
+
 }

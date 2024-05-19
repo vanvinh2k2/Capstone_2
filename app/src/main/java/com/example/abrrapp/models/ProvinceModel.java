@@ -2,8 +2,6 @@ package com.example.abrrapp.models;
 
 import java.util.List;
 
-import lombok.Getter;
-
 
 public class ProvinceModel {
     private List<Province> results;

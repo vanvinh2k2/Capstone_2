@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.abrrapp.R;
 import com.example.abrrapp.activities.DetailResActivity;
+import com.example.abrrapp.models.Rating;
 import com.example.abrrapp.models.Restaurant;
 import com.example.abrrapp.onClick.ItemClickListener;
 import com.squareup.picasso.Picasso;
@@ -23,11 +24,13 @@ import java.util.ArrayList;
 public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.RestaurantHolder>{
     int layout;
     ArrayList<Restaurant> listRes;
+    ArrayList<Rating> listRate;
     Context context;
 
-    public RestaurantAdapter(int layout, ArrayList<Restaurant> listRes, Context context) {
+    public RestaurantAdapter(int layout, ArrayList<Restaurant> listRes, ArrayList<Rating> listRate, Context context) {
         this.layout = layout;
         this.listRes = listRes;
+        this.listRate = listRate;
         this.context = context;
     }
 
@@ -42,7 +45,11 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
     public void onBindViewHolder(@NonNull RestaurantHolder holder, int position) {
         Restaurant restaurant = listRes.get(position);
         holder.title.setText(restaurant.getTitle());
-        holder.rate.setText("4");
+        for(int i=0;i< listRate.size();i++) {
+            if (listRate.get(i).getRid().compareTo(restaurant.getRid()) == 0) {
+                holder.rate.setText(listRate.get(i).getAvg_rating()+"");
+            }
+        }
         holder.open.setText(restaurant.getTime_open().substring(0, 5)+ " - "+ restaurant.getTime_close().substring(0, 5));
         holder.address.setText(restaurant.getAddress());
         Picasso.get().load(restaurant.getImage()).into(holder.image);

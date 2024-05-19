@@ -1,12 +1,19 @@
 package com.example.abrrapp.utils;
 
+import android.widget.Toast;
+
+import com.example.abrrapp.models.Rating;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+
 public class Const {
-    public static final String BASE_URL = "http://192.168.1.5:8000/";
-    public static final String CHATBOT_URL = "http://192.168.1.5:8080/";
-    public static final String URL = "192.168.1.5:8000";
+    public static final String BASE_URL = "http://192.168.180.59:8000/";
+    public static final String CHATBOT_URL = "http://192.168.180.59:8080/";
+    public static final String URL = "192.168.180.59:8000";
     public static String YOUR_CLIENT_ID = "AVm9fmANN9euH1b4XXzxQhch6SKZGMMd1vapJ_1B28V7wZuXltElTExDr1rtVUJkJ11lKOkpYae2sR05";
     public static int CODE_GOOGLE = 1000;
     public static List<String> timeOrder = new ArrayList<>();
@@ -92,3 +99,15 @@ public class Const {
         return timeOrder;
     }
 }
+/*
+ok Trang tim kiem nha hang
+ok Trang update ho so user
+ok search for menu
+ok load rate
+ok tim tich hop map
+ok thong ke
+cancel order
+review restaurant
+notification
+chia se len fb
+ */

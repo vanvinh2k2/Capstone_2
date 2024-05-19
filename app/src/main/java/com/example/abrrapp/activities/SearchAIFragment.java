@@ -1,13 +1,17 @@
 package com.example.abrrapp.activities;
-
-import static android.app.Activity.RESULT_OK;
-
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.location.Address;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -33,6 +37,7 @@ import com.example.abrrapp.R;
 import com.example.abrrapp.adapter.ProvinceAdapter;
 import com.example.abrrapp.adapter.RestaurantAdapter;
 import com.example.abrrapp.models.Province;
+import com.example.abrrapp.models.Rating;
 import com.example.abrrapp.models.Restaurant;
 import com.example.abrrapp.retrofit.APIRestaurant;
 import com.example.abrrapp.retrofit.RetrofitClient;
@@ -42,9 +47,11 @@ import com.google.gson.Gson;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
@@ -62,20 +69,94 @@ public class SearchAIFragment extends Fragment {
     Bitmap anh;
     int CodeCamera = 123,CodeColection = 125;
     ProvinceAdapter provinceAdapter;
+    private LocationManager locationManager;
     RestaurantAdapter resAdapter, resSearchAdapter;
     RecyclerView listResrcv, listResCurrentrcv;
     APIRestaurant apiRestaurant;
     ArrayList<Restaurant> listRes, listSearchRes;
     ReferenceManager manager;
+    ArrayList<Rating> listRate;
     CompositeDisposable disposable = new CompositeDisposable();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search_a_i, container, false);
         init(view);
+        getRating();
         getProvince();
-        getRestaurantCurrent();
+        getLocation();
         process();
         return view;
+    }
+
+    private void getLocation(){
+        locationManager = (LocationManager) requireActivity().getSystemService(Context.LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // Nếu không có quyền, yêu cầu người dùng cấp quyền
+            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            return;
+        }
+        // Lấy vị trí hiện tại
+        Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        Gson g = new Gson(); 
+
+        if (location != null) {
+            // Hiển thị vị trí
+            showLocation(location);
+        }
+        // Đăng ký người nghe vị trí mới
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                // Khi vị trí thay đổi, hiển thị vị trí mới
+                showLocation(location);
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+            }
+        });
+    }
+
+    private void showLocation(Location location) {
+        double latitude = location.getLatitude();
+        double longitude = location.getLongitude();
+        // Hiển thị vị trí dưới dạng địa chỉ
+        try {
+            Geocoder geocoder = new Geocoder(requireContext(), Locale.getDefault());
+            List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
+            if (addresses.size() > 0) {
+                String address = addresses.get(0).getAddressLine(0);
+                Toast.makeText(requireContext(), "Your location: " + address, Toast.LENGTH_LONG).show();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void getRating(){
+        disposable.add(apiRestaurant.getRatingAll()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        ratingModel -> {
+                            if(ratingModel.isSuccess()){
+                                listRate = (ArrayList<Rating>) ratingModel.getData();
+                                getRestaurantCurrent();
+                            }
+                        },
+                        throwable -> {
+                            Toast.makeText(getContext(), throwable.getMessage()+"", Toast.LENGTH_SHORT).show();
+                        }
+                ));
     }
 
     private void process() {
@@ -137,7 +218,7 @@ public class SearchAIFragment extends Fragment {
                                 for(int i=0;i<searchAIModel.getData().getRestaurant().size();i++)
                                     listSearchRes.add(searchAIModel.getData().getRestaurant().get(i).getRestaurant());
                                 if(listSearchRes.size()>0){
-                                    resSearchAdapter = new RestaurantAdapter(R.layout.item_res2, listSearchRes, getContext());
+                                    resSearchAdapter = new RestaurantAdapter(R.layout.item_res2, listSearchRes, listRate, getContext());
                                     listResrcv.setAdapter(resSearchAdapter);
                                     noimg.setVisibility(View.GONE);
                                     listResrcv.setVisibility(View.VISIBLE);
@@ -145,7 +226,6 @@ public class SearchAIFragment extends Fragment {
                                     noimg.setVisibility(View.VISIBLE);
                                     listResrcv.setVisibility(View.GONE);
                                 }
-
                             }
                         },
                         throwable -> {
@@ -170,6 +250,13 @@ public class SearchAIFragment extends Fragment {
                 startActivityForResult(intent,CodeColection);
             }
             else Toast.makeText(getActivity(), "Bạn ko cho phép truy cập vào thư viện", Toast.LENGTH_SHORT).show();
+        }
+        if(requestCode == 1){
+            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Nếu người dùng cấp quyền, tiếp tục lấy vị trí
+                @SuppressLint("MissingPermission") Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                if(location != null) showLocation(location);
+            } else Toast.makeText(requireContext(), "Permission denied", Toast.LENGTH_SHORT).show();
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
@@ -226,7 +313,7 @@ public class SearchAIFragment extends Fragment {
                 .subscribe(
                         restaurantModel -> {
                             listRes = (ArrayList<Restaurant>) restaurantModel.getResults();
-                            resAdapter = new RestaurantAdapter(R.layout.item_res2, listRes, getContext());
+                            resAdapter = new RestaurantAdapter(R.layout.item_res2, listRes, listRate, getContext());
                             listResCurrentrcv.setAdapter(resAdapter);
                         },
                         throwable -> {
@@ -250,6 +337,7 @@ public class SearchAIFragment extends Fragment {
         noimg = view.findViewById(R.id.not_found);
         noteimg = view.findViewById(R.id.note);
         manager = new ReferenceManager(getContext());
+        listRate = new ArrayList<>();
         apiRestaurant = RetrofitClient.getInstance(Const.BASE_URL).create(APIRestaurant.class);
     }
 }

@@ -15,6 +15,7 @@ import com.example.abrrapp.models.OrderCartModel;
 import com.example.abrrapp.models.OrderItemModel;
 import com.example.abrrapp.models.OrderModel;
 import com.example.abrrapp.models.ProvinceModel;
+import com.example.abrrapp.models.RatingModel;
 import com.example.abrrapp.models.RestaurantModel;
 import com.example.abrrapp.models.SearchAI;
 import com.example.abrrapp.models.SearchAIModel;
@@ -26,6 +27,7 @@ import org.json.JSONArray;
 
 import io.reactivex.rxjava3.core.Observable;
 import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -206,6 +208,7 @@ public interface APIRestaurant {
             @Field("time_from") String time_from,
             @Field("time_to") String time_to,
             @Field("tid") String tid,
+            @Field("order_date") String order_date,
             @Header("Authorization") String credentials
     );
 
@@ -289,5 +292,41 @@ public interface APIRestaurant {
             @Path("uid") String uid,
             @Field("body") String body
     );
+
+    @GET("api/check-order-cart/{uid}/{rid}/")
+    Observable<DefaultModel> checkOrderCart(
+            @Path("uid") String uid,
+            @Path("rid") String rid
+    );
+
+    @POST("api/edit-profile/{uid}/")
+    @FormUrlEncoded
+    Observable<DefaultModel> updateProfileNotImage(
+            @Path("uid") String uid,
+            @Field("full_name") String full_name,
+            @Field("phone") String phone,
+            @Field("address") String address,
+            @Header("Authorization") String credentials
+    );
+
+    @POST("api/edit-profile/{uid}/")
+    @Multipart
+    Observable<DefaultModel> updateProfile(
+            @Path("uid") String uid,
+            @Part MultipartBody.Part image,
+            @Part("full_name") RequestBody full_name,
+            @Part("phone") RequestBody phone,
+            @Part("address") RequestBody address,
+            @Header("Authorization") String credentials
+    );
+
+    @POST("api/search-restaurant/")
+    @FormUrlEncoded
+    Observable<RestaurantModel> searchRestaurant(
+            @Field("q") String q
+    );
+
+    @GET("api/rating-all/")
+    Observable<RatingModel> getRatingAll();
 
 }

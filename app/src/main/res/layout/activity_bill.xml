@@ -29,7 +29,6 @@
         tools:ignore="ExtraText,MissingConstraints">
         <ImageView
             android:src="@drawable/exclamation"
-            android:layout_marginTop="@dimen/_5sdp"
             android:layout_width="@dimen/_50sdp"
             android:layout_height="@dimen/_50sdp"/>
         <TextView
@@ -39,7 +38,7 @@
             android:layout_marginBottom="@dimen/_10sdp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Waiting for payment"
+            android:text="Waiting for confirmation"
             tools:ignore="MissingConstraints" />
         <TextView
             android:textColor="@color/black"
@@ -47,11 +46,11 @@
             android:layout_width="wrap_content"
             android:gravity="center"
             android:layout_height="wrap_content"
-            android:text="Protect your rights with the system - only receive goods and pay when the purchase order is in the Shipping status"
+            android:text="You need to wait for the above order to be confirmed from the restaurant"
             tools:ignore="MissingConstraints" />
         <LinearLayout
             android:gravity="center"
-            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_20sdp"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_marginBottom="@dimen/_10sdp"
@@ -72,6 +71,7 @@
                 android:layout_width="@dimen/_90sdp"
                 android:layout_height="wrap_content"/>
         </LinearLayout>
+
     </LinearLayout>
 
 </LinearLayout>

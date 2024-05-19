@@ -63,8 +63,10 @@ dependencies {
     implementation("com.paypal.sdk:paypal-android-sdk:2.16.0")
     //sotket
     implementation("io.socket:socket.io-client:2.0.0")
-
-    implementation("com.squareup.okhttp3:okhttp:4.9.2")
-    compileOnly("org.projectlombok:lombok:1.18.28")
+    //BarChart
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+    //Google Map
+    implementation("com.google.android.gms:play-services-maps:18.1.0")
+    implementation("com.google.android.gms:play-services-location:21.0.1")
 
 }

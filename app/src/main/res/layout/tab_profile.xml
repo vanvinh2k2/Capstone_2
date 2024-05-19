@@ -45,13 +45,6 @@
                                 android:textColor="#474646"
                                 android:textSize="@dimen/_14ssp"
                                 android:layout_height="wrap_content"/>
-                            <!--<TextView
-                                android:id="@+id/username"
-                                android:layout_width="match_parent"
-                                android:text="vinhngo24"
-                                android:textColor="#474646"
-                                android:textSize="@dimen/_15ssp"
-                                android:layout_height="wrap_content"/>-->
                         </LinearLayout>
 
                     </LinearLayout>

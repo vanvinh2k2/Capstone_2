@@ -126,7 +126,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_35sdp"
                     android:background="@drawable/edit_input"
-                    android:hint="dd/MM/yyyy"
+                    android:hint="yyyy-MM-dd"
+                    android:enabled="true"
                     android:inputType="date"
                     android:paddingLeft="@dimen/_10sdp"
                     android:paddingRight="@dimen/_10sdp"
@@ -248,7 +249,7 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/list_menu"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/_450sdp"
                     android:layout_marginBottom="@dimen/_10sdp"
                     android:orientation="vertical"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />

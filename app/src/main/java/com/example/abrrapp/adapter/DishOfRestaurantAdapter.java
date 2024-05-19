@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -70,9 +71,18 @@ public class DishOfRestaurantAdapter extends RecyclerView.Adapter<DishOfRestaura
         holder.tangtxt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(quantities.get(position)<=15){
+                //Gson g = new Gson();
+                if(quantities.get(position) <= 15){
                     quantities.set(position, quantities.get(position) + 1);
                     holder.quanlitytxt.setText(quantities.get(position).toString());
+                    for(int i=0; i<context.orderCartItems.size();i++){
+                        if(dish.getDid().compareTo(context.orderCartItems.get(i).getDish().getDid())==0){
+                            context.orderCartItems.get(i).setQuantity(quantities.get(position));
+                            //Toast.makeText(context, context.orderCartItems.get(i).getQuantity()+" and "+context.orderCartItems.get(i).getDish().getTitle(), Toast.LENGTH_SHORT).show();
+                            //Log.d("onClickData: ", g.toJson(context.convertData()));
+                        }
+                    }
+
                 }
             }
         });
@@ -80,9 +90,16 @@ public class DishOfRestaurantAdapter extends RecyclerView.Adapter<DishOfRestaura
         holder.giamtxt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(quantities.get(position)>1){
+                //Gson g = new Gson();
+                if(quantities.get(position) > 1){
                     quantities.set(position, quantities.get(position) - 1);
                     holder.quanlitytxt.setText(quantities.get(position).toString());
+                    for(int i=0; i<context.orderCartItems.size();i++){
+                        if(dish.getDid().compareTo(context.orderCartItems.get(i).getDish().getDid())==0){
+                            context.orderCartItems.get(i).setQuantity(quantities.get(position));
+                        }
+                    }
+                    //Toast.makeText(context, g.toJson(quantities)+"", Toast.LENGTH_SHORT).show();
                 }
             }
         });

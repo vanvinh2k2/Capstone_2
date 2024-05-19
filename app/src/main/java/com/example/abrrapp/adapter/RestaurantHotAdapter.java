@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +16,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.abrrapp.R;
 import com.example.abrrapp.activities.DetailResActivity;
+import com.example.abrrapp.models.Rating;
 import com.example.abrrapp.models.Restaurant;
 import com.example.abrrapp.onClick.ItemClickListener;
+import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -25,11 +28,13 @@ public class RestaurantHotAdapter extends RecyclerView.Adapter<RestaurantHotAdap
 
     int layout;
     ArrayList<Restaurant> listRes;
+    ArrayList<Rating> listRate;
     Context context;
 
-    public RestaurantHotAdapter(int layout, ArrayList<Restaurant> listRes, Context context) {
+    public RestaurantHotAdapter(int layout, ArrayList<Restaurant> listRes, ArrayList<Rating> listRate, Context context) {
         this.layout = layout;
         this.listRes = listRes;
+        this.listRate = listRate;
         this.context = context;
     }
 
@@ -44,7 +49,11 @@ public class RestaurantHotAdapter extends RecyclerView.Adapter<RestaurantHotAdap
     public void onBindViewHolder(@NonNull RestaurantHotHolder holder, int position) {
         Restaurant restaurant = listRes.get(position);
         holder.title.setText(restaurant.getTitle());
-        holder.rate.setText("4");
+        for(int i=0;i< listRate.size();i++) {
+            if (listRate.get(i).getRid().compareTo(restaurant.getRid()) == 0) {
+                holder.rate.setText(listRate.get(i).getAvg_rating()+"");
+            }
+        }
         holder.open.setText(restaurant.getTime_open().substring(0, 5)+ " - "+ restaurant.getTime_close().substring(0, 5));
         Picasso.get().load(restaurant.getImage()).into(holder.image);
         holder.setItemClickListener(new ItemClickListener() {

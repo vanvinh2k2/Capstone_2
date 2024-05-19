@@ -1,9 +1,213 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".activities.ChangeProfileActivity">
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        app:titleTextColor="@color/white"
+        android:background="@color/main"
+        android:layout_height="?attr/actionBarSize"
+        tools:ignore="MissingConstraints">
+        <TextView
+            android:text="Update profile"
+            android:textSize="@dimen/_14ssp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </androidx.appcompat.widget.Toolbar>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:layout_marginBottom="@dimen/_15sdp"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <FrameLayout
+            android:layout_width="@dimen/_80sdp"
+            android:layout_height="@dimen/_80sdp">
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profile_image"
+                android:layout_width="@dimen/_80sdp"
+                android:layout_height="@dimen/_80sdp"
+                android:src="@drawable/user"
+                app:civ_border_color="@color/main"
+                app:civ_border_width="@dimen/_1sdp" />
+            <ImageButton
+                android:id="@+id/camera"
+                android:layout_gravity="bottom|end"
+                android:src="@drawable/baseline_camera"
+                android:layout_width="@dimen/_20sdp"
+                android:scaleType="fitXY"
+                android:layout_marginBottom="-2dp"
+                android:background="@color/white"
+                android:layout_height="@dimen/_20sdp"/>
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:text="vinhngo24"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_15ssp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:paddingRight="@dimen/_10sdp"
+            android:paddingLeft="@dimen/_10sdp"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:src="@drawable/user2"
+                    android:background="@drawable/edit_contact"
+                    android:padding="@dimen/_6sdp"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"/>
+                <LinearLayout
+                    android:paddingLeft="@dimen/_5sdp"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_width="wrap_content"
+                        android:text="Full name"
+                        android:layout_marginBottom="@dimen/_5sdp"
+                        android:gravity="left"
+                        android:textColor="#474646"
+                        android:textSize="@dimen/_13ssp"
+                        android:layout_height="wrap_content"/>
+                    <EditText
+                        android:id="@+id/fullname"
+                        android:layout_width="match_parent"
+                        android:text="Ngo Van Vinh"
+                        android:background="@drawable/edit_input"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_13ssp"
+                        android:paddingLeft="@dimen/_5sdp"
+                        android:paddingRight="@dimen/_5sdp"
+                        android:layout_height="@dimen/_35sdp"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="@dimen/_5sdp"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:src="@drawable/phone_48"
+                    android:background="@drawable/edit_contact"
+                    android:padding="@dimen/_6sdp"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"/>
+
+                <LinearLayout
+                    android:paddingLeft="@dimen/_5sdp"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_width="wrap_content"
+                        android:text="Phone"
+                        android:gravity="left"
+                        android:layout_marginBottom="@dimen/_5sdp"
+                        android:textColor="#474646"
+                        android:textSize="@dimen/_13ssp"
+                        android:layout_height="wrap_content"/>
+                    <EditText
+                        android:id="@+id/phone"
+                        android:layout_width="match_parent"
+                        android:text="Not have"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_13ssp"
+                        android:background="@drawable/edit_input"
+                        android:paddingLeft="@dimen/_5sdp"
+                        android:paddingRight="@dimen/_5sdp"
+                        android:layout_height="@dimen/_35sdp"/>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="@dimen/_5sdp"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:src="@drawable/location"
+                    android:background="@drawable/edit_contact"
+                    android:padding="@dimen/_6sdp"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"/>
+                <LinearLayout
+                    android:paddingLeft="@dimen/_5sdp"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_width="wrap_content"
+                        android:text="Address"
+                        android:gravity="left"
+                        android:textColor="#474646"
+                        android:layout_marginBottom="@dimen/_5sdp"
+                        android:textSize="@dimen/_13ssp"
+                        android:layout_height="wrap_content"/>
+                    <EditText
+                        android:id="@+id/address"
+                        android:layout_width="match_parent"
+                        android:text="Hội An, Quảng Nam"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_13ssp"
+                        android:padding="@dimen/_5sdp"
+                        android:background="@drawable/edit_input"
+                        android:paddingLeft="@dimen/_5sdp"
+                        android:paddingRight="@dimen/_5sdp"
+                        android:layout_height="@dimen/_35sdp"/>
+
+                </LinearLayout>
+            </LinearLayout>
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/update"
+                android:textColor="@color/white"
+                android:text="Update"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:background="@drawable/edit_button"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_35sdp"/>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

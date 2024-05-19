@@ -38,6 +38,7 @@
                         android:src="@drawable/user2" />
 
                     <EditText
+                        android:id="@+id/searchedt"
                         android:layout_width="wrap_content"
                         android:layout_height="@dimen/_35sdp"
                         android:layout_weight="1"
@@ -49,6 +50,7 @@
                         android:textSize="@dimen/_12ssp" />
 
                     <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/searchbtn"
                         android:layout_width="wrap_content"
                         android:layout_height="@dimen/_35sdp"
                         android:background="@drawable/edit_search"
