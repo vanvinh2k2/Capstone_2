@@ -126,12 +126,12 @@ public class RegisterActivity extends AppCompatActivity {
                 .subscribe(
                         userModel -> {
                             if(userModel.isSuccess()){
-                                text("Tạo tài khoản thành công");
+                                text("Account successfully created.");
                                 Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 startActivity(intent);
                             }else{
-                                text("Tài khoản đã tồn tại!");
+                                text("Account already exists!");
                             }
                         },
                         throwable -> {

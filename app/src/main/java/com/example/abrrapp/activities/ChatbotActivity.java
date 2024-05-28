@@ -52,7 +52,7 @@ public class ChatbotActivity extends AppCompatActivity {
     }
 
     private void getListChat() {
-        disposable.add(apiRestaurant.listChatbot("102566218799174938142")
+        disposable.add(apiRestaurant.listChatbot(manager.getString("_id"))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
@@ -76,24 +76,26 @@ public class ChatbotActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String body = contenttxt.getText().toString().trim();
-                chatbotList.add(new Chatbot("...", body));
-                adapter.notifyDataSetChanged();
-                messagercv.smoothScrollToPosition(chatbotList.size()-1);
-                disposable.add(apiRestaurant.sendChatbot("102566218799174938142", body)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(
-                                chatbotModel -> {
-                                    if(chatbotModel.isSuccess()){
-                                        contenttxt.setText("");
-                                        getListChat();
-                                        messagercv.smoothScrollToPosition(chatbotList.size()-1);
+                if(body.length() > 0){
+                    chatbotList.add(new Chatbot("...", body));
+                    adapter.notifyDataSetChanged();
+                    messagercv.smoothScrollToPosition(chatbotList.size()-1);
+                    disposable.add(apiRestaurant.sendChatbot(manager.getString("_id"), body)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(
+                                    chatbotModel -> {
+                                        if(chatbotModel.isSuccess()){
+                                            contenttxt.setText("");
+                                            getListChat();
+                                            messagercv.smoothScrollToPosition(chatbotList.size()-1);
+                                        }
+                                    },
+                                    throwable -> {
+                                        Toast.makeText(ChatbotActivity.this, throwable.getMessage()+"", Toast.LENGTH_SHORT).show();
                                     }
-                                },
-                                throwable -> {
-                                    Toast.makeText(ChatbotActivity.this, throwable.getMessage()+"", Toast.LENGTH_SHORT).show();
-                                }
-                        ));
+                            ));
+                }
             }
         });
     }

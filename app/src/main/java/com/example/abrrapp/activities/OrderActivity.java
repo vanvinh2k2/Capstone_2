@@ -90,7 +90,7 @@ public class OrderActivity extends AppCompatActivity {
     }
 
     private void getPayPal(){
-        PayPalPayment payment = new PayPalPayment(new BigDecimal(deposite), "USD","Tổng thanh toán", PayPalPayment.PAYMENT_INTENT_SALE);
+        PayPalPayment payment = new PayPalPayment(new BigDecimal(deposite), "USD","Total payment", PayPalPayment.PAYMENT_INTENT_SALE);
         Intent intent = new Intent(this, PaymentActivity.class);
         intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION,payPalConfiguration);
         intent.putExtra(PaymentActivity.EXTRA_PAYMENT, payment);
@@ -117,6 +117,7 @@ public class OrderActivity extends AppCompatActivity {
     private void payment(){
         Gson gson = new Gson();
         float deposite2 = (float) (Math.round((deposite * 100 / 10)*100)/100.00);
+        if(deposite2 < 100) deposite = 0;
         disposable.add(apiRestaurant.addOrder(
                         manager.getString("_id"),
                         rid,
@@ -181,7 +182,9 @@ public class OrderActivity extends AppCompatActivity {
         orderCartAdapter.notifyDataSetChanged();
         subTotaltxt.setText("Total: "+ totalPrice(orderCartItemList) +"$");
         deposite = totalPrice(orderCartItemList)*10/100;
-        totaltxt.setText("Deposite: "+ deposite +"$");
+        if(totalPrice(orderCartItemList)>=100)
+            totaltxt.setText("Deposite: "+ deposite +"$");
+        else totaltxt.setText("Deposite: 0$");
     }
 
     private void getOrder() {
@@ -214,7 +217,9 @@ public class OrderActivity extends AppCompatActivity {
                                 orderCartItemList = orderCart.getOrderDetail();
                                 subTotaltxt.setText("Total: "+ totalPrice(orderCart.getOrderDetail()) +"$");
                                 deposite = totalPrice(orderCart.getOrderDetail())*10/100;
-                                totaltxt.setText("Deposite: "+ deposite +"$");
+                                if(totalPrice(orderCart.getOrderDetail())>=100)
+                                    totaltxt.setText("Deposite: "+ deposite +"$");
+                                else totaltxt.setText("Deposite: 0$");
                                 orderCartAdapter = new OrderCartAdapter(R.layout.item_dish_order_2, OrderActivity.this, orderCart.getOrderDetail());
                                 orderrcv.setAdapter(orderCartAdapter);
                             }else{

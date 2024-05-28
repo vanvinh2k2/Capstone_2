@@ -7,7 +7,7 @@
     <TextView
         android:layout_width="match_parent"
         android:gravity="center"
-        android:text="Statistics of order list according to the most recent half year"
+        android:text="Statistics of order list according to the most recent year"
         android:padding="@dimen/_10sdp"
         android:textStyle="bold"
         android:textColor="@color/black"
@@ -26,8 +26,8 @@
         android:paddingLeft="@dimen/_5sdp"
         android:paddingRight="@dimen/_5sdp"
         android:layout_marginTop="@dimen/_5sdp"
-        android:text="Total expenses in the year: 200$"
-        android:textColor="@color/green"
+        android:text="Total expenses in the year: 0$"
+        android:textColor="@color/black"
         android:textSize="@dimen/_13ssp"
         android:layout_height="wrap_content"
         tools:ignore="MissingConstraints" />

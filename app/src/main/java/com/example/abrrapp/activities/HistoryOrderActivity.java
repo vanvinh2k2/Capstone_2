@@ -83,4 +83,10 @@ public class HistoryOrderActivity extends AppCompatActivity {
         apiRestaurant = RetrofitClient.getInstance(Const.BASE_URL).create(APIRestaurant.class);
         manager = new ReferenceManager(getApplicationContext());
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getHistoryOrder();
+    }
 }

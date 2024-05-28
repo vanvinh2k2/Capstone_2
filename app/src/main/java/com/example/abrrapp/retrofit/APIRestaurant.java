@@ -19,6 +19,7 @@ import com.example.abrrapp.models.RatingModel;
 import com.example.abrrapp.models.RestaurantModel;
 import com.example.abrrapp.models.SearchAI;
 import com.example.abrrapp.models.SearchAIModel;
+import com.example.abrrapp.models.StatisticModel;
 import com.example.abrrapp.models.TableModel;
 import com.example.abrrapp.models.Token;
 import com.example.abrrapp.models.UserModel;
@@ -329,4 +330,15 @@ public interface APIRestaurant {
     @GET("api/rating-all/")
     Observable<RatingModel> getRatingAll();
 
+    @GET("api/statistics-user/{uid}/")
+    Observable<StatisticModel> getStatistic(
+            @Path("uid") String uid,
+            @Header("Authorization") String credentials
+    );
+
+    @GET("api/cancel-order/{oid}/")
+    Observable<DefaultModel> cancelOrder(
+            @Path("oid") String oid,
+            @Header("Authorization") String credentials
+    );
 }

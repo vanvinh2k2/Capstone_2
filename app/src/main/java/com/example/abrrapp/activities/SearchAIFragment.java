@@ -2,6 +2,7 @@ package com.example.abrrapp.activities;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.location.Address;
 import android.content.Context;
 import android.content.Intent;
@@ -69,6 +70,7 @@ public class SearchAIFragment extends Fragment {
     Bitmap anh;
     int CodeCamera = 123,CodeColection = 125;
     ProvinceAdapter provinceAdapter;
+    private ProgressDialog progressDialog;
     private LocationManager locationManager;
     RestaurantAdapter resAdapter, resSearchAdapter;
     RecyclerView listResrcv, listResCurrentrcv;
@@ -83,7 +85,7 @@ public class SearchAIFragment extends Fragment {
         init(view);
         getRating();
         getProvince();
-        getLocation();
+        //getLocation();
         process();
         return view;
     }
@@ -188,6 +190,7 @@ public class SearchAIFragment extends Fragment {
         searchbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                progressDialog.show();
                 searchAI();
             }
         });
@@ -226,6 +229,7 @@ public class SearchAIFragment extends Fragment {
                                     noimg.setVisibility(View.VISIBLE);
                                     listResrcv.setVisibility(View.GONE);
                                 }
+                                progressDialog.dismiss();
                             }
                         },
                         throwable -> {
@@ -338,6 +342,11 @@ public class SearchAIFragment extends Fragment {
         noteimg = view.findViewById(R.id.note);
         manager = new ReferenceManager(getContext());
         listRate = new ArrayList<>();
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("Loading data...");
+        progressDialog.setTitle("Please wait");
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.setCancelable(false);
         apiRestaurant = RetrofitClient.getInstance(Const.BASE_URL).create(APIRestaurant.class);
     }
 }

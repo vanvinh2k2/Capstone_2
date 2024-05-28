@@ -47,7 +47,9 @@ public class TableDropAdapter extends BaseAdapter {
         view = inflater.inflate(layout,null);
         TextView seleted = view.findViewById(R.id.seleted);
         context.idTable = listTable.get(i).getTid();
-        seleted.setText(listTable.get(i).getTitle());
+        if(i != 0) seleted.setText(listTable.get(i).getTitle()
+                + " ("+ listTable.get(i).getNumber_seat() + " peoples)");
+        else seleted.setText(listTable.get(i).getTitle());
         return view;
     }
 
@@ -57,7 +59,9 @@ public class TableDropAdapter extends BaseAdapter {
                 context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         convertView = inflater.inflate(R.layout.item_drop_down,null);
         TextView tvCategory = convertView.findViewById(R.id.item);
-        tvCategory.setText(listTable.get(position).getTitle());
+        if(position != 0) tvCategory.setText(listTable.get(position).getTitle()
+                        + " ("+ listTable.get(position).getNumber_seat() + " peoples)");
+        else tvCategory.setText(listTable.get(position).getTitle());
         context.idTable = listTable.get(position).getTid();
         return convertView;
     }

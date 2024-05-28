@@ -5,6 +5,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -33,6 +34,7 @@ public class DetailHistoryOrderActivity extends AppCompatActivity {
     TextView nametxt, phonetxt, emailtxt, datetxt, timetxt, numPeopletxt, tabletxt,
     subTotaltxt, depositedtxt, totaltxt, statustxt;
     Button cancelbtn;
+    boolean iscancel = true;
     RecyclerView orderrcv;
     OrderDishHistoryAdapter orderDishHistoryAdapter;
     List<OrderItem> listOrderItem;
@@ -50,6 +52,38 @@ public class DetailHistoryOrderActivity extends AppCompatActivity {
         getToolBar();
         getData();
         getDishOrder();
+        process();
+    }
+
+    private void process() {
+        cancelbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(iscancel){
+                    disposable.add(apiRestaurant.cancelOrder(
+                                    oid,
+                                    manager.getString("access")
+                            )
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(
+                                    defaultModel -> {
+                                        if(defaultModel.isSuccess()){
+                                            cancelbtn.setBackgroundColor(Color.GRAY);
+                                            iscancel = false;
+                                            statustxt.setText("Status order: Cancel");
+                                            Toast.makeText(DetailHistoryOrderActivity.this, "Successful.", Toast.LENGTH_SHORT).show();
+                                        }
+                                    },
+                                    throwable -> {
+                                        Toast.makeText(DetailHistoryOrderActivity.this, "Cancel fail!", Toast.LENGTH_SHORT).show();
+                                    }
+                            ));
+                }else{
+                    Toast.makeText(DetailHistoryOrderActivity.this, "Cancel fail!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     private void getDishOrder() {
@@ -106,6 +140,14 @@ public class DetailHistoryOrderActivity extends AppCompatActivity {
         float total = order.getPrice()-order.getDeposit();
         totaltxt.setText("Grand Total: "+total+"$");
         statustxt.setText("Status order: " + arr.get(order.getProduct_status()));
+        if(order.getDeposit() != 0){
+            cancelbtn.setBackgroundColor(Color.GRAY);
+            iscancel = false;
+        }
+        if(order.getProduct_status().compareTo("cancel") == 0){
+            iscancel = false;
+            cancelbtn.setBackgroundColor(Color.GRAY);
+        }
     }
 
     public void init(){

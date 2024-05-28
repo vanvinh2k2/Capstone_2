@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,10 +24,12 @@ import com.example.abrrapp.utils.Const;
 import com.example.abrrapp.utils.ReferenceManager;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -40,7 +43,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class AccountFragment extends Fragment {
     TabHost tabHost;
-    TextView usernametxt, nametxt, emailtxt, phonetxt, addresstxt, providertxt, datetxt;
+    TextView usernametxt, nametxt, emailtxt, phonetxt, addresstxt, providertxt, datetxt, totaltxt;
     ImageView logouttxt, changeProfiletxt;
     LinearLayout changePasswordtxt;
     ImageView image;
@@ -54,60 +57,75 @@ public class AccountFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_account, container, false);
         init(view);
         process();
+        getStatistics();
         getProfile();
-        getChart();
         return view;
     }
 
-    // Tạo một danh sách các nhãn cho trục X
-    private ArrayList<String> getLabels() {
-        ArrayList<String> labels = new ArrayList<>();
-        labels.add(""); // Để dành cho vị trí 0
-        labels.add("Jan");
-        labels.add("Feb");
-        labels.add("Mar");
-        labels.add("Apr");
-        labels.add("May");
-        labels.add("Jun");
-        labels.add("Jul");
-        labels.add("Aug");
-        labels.add("Sep");
-        labels.add("Oct");
-        labels.add("Nov");
-        labels.add("Dec");
-        return labels;
+    private void getStatistics() {
+        disposable.add(apiRestaurant.getStatistic(
+                manager.getString("_id"),
+                "Bearer "+manager.getString("access")
+        )
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        statisticModel -> {
+                            if(statisticModel.isSuccess()){
+                                ArrayList data = (ArrayList) statisticModel.getData().getNum_order();
+                                getChart(data);
+                                totaltxt.setText("Total expenses in the year: " + statisticModel.getData().getTotal() + "$");
+                            }
+                        },
+                        throwable -> {
+                            Toast.makeText(getActivity(), throwable.getMessage()+"", Toast.LENGTH_SHORT).show();
+                        }
+                ));
     }
-    private void getChart() {
-        ArrayList<BarEntry> v = new ArrayList<>();
-        v.add(new BarEntry(1, 42));
-        v.add(new BarEntry(2, 12));
-        v.add(new BarEntry(3, 22));
-        v.add(new BarEntry(4, 62));
-        v.add(new BarEntry(5, 22));
-        v.add(new BarEntry(6, 62));
-        v.add(new BarEntry(7, 12));
-        v.add(new BarEntry(8, 10));
-        v.add(new BarEntry(9, 38));
-        v.add(new BarEntry(10, 32));
-        v.add(new BarEntry(11, 72));
-        v.add(new BarEntry(12, 13));
 
+    private void getChart(ArrayList data) {
+        ArrayList<BarEntry> v = new ArrayList<>();
+        v.add(new BarEntry(0, (Float) data.get(0)));
+        v.add(new BarEntry(2, (Float) data.get(1)));
+        v.add(new BarEntry(3, (Float) data.get(2)));
+        v.add(new BarEntry(4, (Float) data.get(3)));
+        v.add(new BarEntry(5, (Float) data.get(4)));
+        v.add(new BarEntry(6, (Float) data.get(5)));
+        v.add(new BarEntry(7, (Float) data.get(6)));
+        v.add(new BarEntry(8, (Float) data.get(7)));
+        v.add(new BarEntry(9, (Float) data.get(8)));
+        v.add(new BarEntry(10, (Float) data.get(9)));
+        v.add(new BarEntry(11, (Float) data.get(10)));
+        v.add(new BarEntry(12, (Float) data.get(11)));
         BarDataSet barDataSet = new BarDataSet(v, "order");
         barDataSet.setColors(Color.GREEN);
         barDataSet.setValueTextColor(Color.BLACK);
-        barDataSet.setValueTextSize(10f);
+        barDataSet.setValueTextSize(0f);
 
         BarData barData = new BarData(barDataSet);
         bar.setFitBars(true);
         bar.setData(barData);
         bar.getDescription().setText("month");
         bar.animateY(2000);
+
         XAxis xAxis = bar.getXAxis();
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM); // Thiết lập vị trí của trục X là dưới cùng
-        xAxis.setCenterAxisLabels(true); // Thiết lập các nhãn ở trung tâm của cột
-        xAxis.setValueFormatter(new IndexAxisValueFormatter(getLabels2()));
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM); // Set X-axis position at the bottom
+        xAxis.setCenterAxisLabels(true); // Set the labels in the center of the columns
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(getLabels()));
+        // Adjust Y-axis to start at zero and remove any bottom padding
+        YAxis leftAxis = bar.getAxisLeft();
+        leftAxis.setAxisMinimum(0f); // Ensure the y-axis starts at zero
+        leftAxis.setGranularity(1f); // Set granularity to 1
+        leftAxis.setDrawAxisLine(true);
+        leftAxis.setDrawGridLines(true);
+        leftAxis.setDrawZeroLine(true); // Draw a zero line to make sure zero value aligns with the axis
+        YAxis rightAxis = bar.getAxisRight();
+        rightAxis.setAxisMinimum(0f); // Ensure the right y-axis also starts at zero
+        rightAxis.setGranularity(1f); // Set granularity to 1
+        rightAxis.setEnabled(false); // Disable the right axis if not needed
+        bar.setExtraOffsets(0, 0, 0, 0);
     }
-    private ArrayList<String> getLabels2() {
+    private ArrayList<String> getLabels() {
         ArrayList<String> labels = new ArrayList<>();
         labels.add("1");
         labels.add("2");
@@ -219,6 +237,7 @@ public class AccountFragment extends Fragment {
         image = view.findViewById(R.id.profile_image);
         manager = new ReferenceManager(getContext());
         bar = view.findViewById(R.id.barChart);
+        totaltxt = view.findViewById(R.id.total);
     }
 
     @Override
